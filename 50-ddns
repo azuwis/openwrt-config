@@ -1,0 +1,3 @@
+opkg_install ddns-scripts
+uci_delete ddns.myddns_ipv4 ddns.myddns_ipv6
+service_enable ddns

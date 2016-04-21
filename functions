@@ -1,0 +1,58 @@
+#!/bin/sh
+set -eu
+
+opkg_update() {
+    if [ "$(find /var/opkg-lists/ -type f | wc -l)" -eq 0 ]; then
+        echo "update opkg cache"
+        opkg update
+    fi
+}
+
+opkg_installed() {
+    opkg status "$1" | grep -q installed
+}
+
+opkg_install() {
+    for package in "$@"
+    do
+        if ! opkg_installed "$package"; then
+            echo "install package $package"
+            opkg install "$package"
+        fi
+    done
+}
+
+opkg_install_url() {
+    ipk_url="$1"
+    ipk_img="$(basename "$ipk_url")"
+    ipk_name=$(basename "$ipk_url" | awk -F_ '{print $1}')
+    if ! opkg_installed "$ipk_name"; then
+        cd /tmp/
+        wget "$ipk_url"
+        echo "install package $ipk_name"
+        opkg install "$ipk_img"
+    fi
+}
+
+uci_delete() {
+    for config in "$@"
+    do
+        if uci -q get "$config"; then
+            echo "uci delete $config"
+            uci delete "$config"
+        fi
+    done
+}
+
+service_enable() {
+    for service in "$@"
+    do
+        echo "enable/restart service $service"
+        "/etc/init.d/$service" enable
+        "/etc/init.d/$service" restart
+    done
+}
+
+hr() {
+    printf '%s\n' ------------------------------------------------------------
+}

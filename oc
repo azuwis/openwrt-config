@@ -1,0 +1,34 @@
+#!/bin/bash
+
+host="$1"
+shift
+
+backup() {
+    ssh "$host" 'sysupgrade --create-backup -' | tar zxf -
+}
+
+push() {
+    file="$1"
+    scp -p "$file" "${host}:/${file}"
+}
+
+generate_script() {
+    cat functions
+    for module in [0-9][0-9]-*
+    do
+        cat <<EOF
+hr
+echo "Begin $module"
+EOF
+        if [ -x "$module" ]; then
+            bash "$module"
+        else
+            cat "$module"
+        fi
+        cat <<EOF
+echo "End $module"
+EOF
+    done
+}
+
+generate_script | ssh "$host" 's=/tmp/openwrt-config; cat > $s; sh $s; rm $s'
