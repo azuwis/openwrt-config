@@ -37,7 +37,7 @@ opkg_install_url() {
 uci_delete() {
     for config in "$@"
     do
-        if uci -q get "$config"; then
+        if uci -q get "$config" >/dev/null; then
             echo "uci delete $config"
             uci delete "$config"
         fi
@@ -51,6 +51,17 @@ service_enable() {
         "/etc/init.d/$service" enable
         "/etc/init.d/$service" restart
     done
+}
+
+service_restart() {
+    service="$1"
+    if uci changes | grep -qEv '^\w+\.[^.]+='; then
+        uci commit
+        echo "restart service $service"
+        "/etc/init.d/$service" restart
+    else
+        uci commit
+    fi
 }
 
 hr() {

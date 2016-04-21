@@ -1,7 +1,14 @@
 #!/bin/bash
 
-host="$1"
+target="$1"
 shift
+
+source "$target"
+port="${port:-22}"
+
+if [ -f "${target}.gpg" ]; then
+    source <(gpg -qd "${target}.gpg")
+fi
 
 backup() {
     ssh "$host" 'sysupgrade --create-backup -' | tar zxf -
@@ -14,21 +21,17 @@ push() {
 
 generate_script() {
     cat functions
-    for module in [0-9][0-9]-*
+    for module in $modules
     do
         cat <<EOF
 hr
 echo "Begin $module"
 EOF
-        if [ -x "$module" ]; then
-            bash "$module"
-        else
-            cat "$module"
-        fi
+        envsubst < "$module"
         cat <<EOF
 echo "End $module"
 EOF
     done
 }
 
-generate_script | ssh "$host" 's=/tmp/openwrt-config; cat > $s; sh $s; rm $s'
+generate_script | ssh -p "$port" "$host" 's=/tmp/openwrt-config; cat > $s; sh $s; rm $s'
