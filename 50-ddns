@@ -14,4 +14,4 @@ config service 'duckdns'
     option username '${ddns_duckdns_username}'
 EOF
 
-service_restart ddns
+service restart ddns

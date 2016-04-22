@@ -53,15 +53,24 @@ service_enable() {
     done
 }
 
-service_restart() {
-    service="$1"
-    if uci changes | grep -qEv '^\w+\.[^.]+='; then
-        uci commit
-        echo "restart service $service"
-        "/etc/init.d/$service" restart
-    else
-        uci commit
-    fi
+service() {
+    action="$1"
+    service="$2"
+    case "$action" in
+        reload|restart)
+            if uci changes | grep -qEv '^\w+\.[^.]+='; then
+                uci commit
+                echo "$action service $service"
+                "/etc/init.d/$service" "$action"
+            else
+                uci commit
+            fi
+            ;;
+        *)
+            echo "$action service $service"
+            "/etc/init.d/$service" "$action"
+            ;;
+    esac
 }
 
 hr() {
