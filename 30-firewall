@@ -1,10 +1,11 @@
 #!/bin/sh
 cat <<EOF
 uci_del_type firewall redirect
+echo "uci import firewall"
 uci -m import firewall <<UCI
 EOF
 
-gpg --batch --no-tty -qd ${0}-config.gpg
+cat ${0}-config
 
 cat <<EOF
 UCI
