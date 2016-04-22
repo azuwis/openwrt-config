@@ -7,17 +7,18 @@ KEEP='rm'
 target="$1"
 shift
 
-while getopts ":gkx" Option
+source "$target"
+port="${port:-22}"
+
+while getopts ":gkm:x" Option
 do
     case "$Option" in
         g) GEN_ONLY='yes' ;;
         k) KEEP='echo keep remote' ;;
+        m) modules="$OPTARG" ;;
         x) DEBUG='-x' ;;
     esac
 done
-
-source "$target"
-port="${port:-22}"
 
 if [ -f "${target}.gpg" ]; then
     source <(gpg --batch --no-tty -qd "${target}.gpg")
