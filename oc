@@ -13,9 +13,10 @@ fi
 
 port="${port:-22}"
 
-while getopts ":gkm:p:x" Option
+while getopts ":gh:km:p:x" Option
 do
     case "$Option" in
+        h) host="$OPTARG" ;;
         g) GEN_ONLY='yes' ;;
         k) KEEP='echo keep remote' ;;
         m) modules="$OPTARG" ;;
