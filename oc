@@ -2,15 +2,17 @@
 
 DEBUG=''
 GEN_ONLY='no'
+KEEP='rm'
 
 target="$1"
 shift
 
-while getopts ":xg" Option
+while getopts ":gkx" Option
 do
     case "$Option" in
-        x) DEBUG='-x' ;;
         g) GEN_ONLY='yes' ;;
+        k) KEEP='echo keep remote' ;;
+        x) DEBUG='-x' ;;
     esac
 done
 
@@ -54,4 +56,4 @@ if [ "$GEN_ONLY" = 'yes' ]; then
     exit
 fi
 
-generate_script | ssh -p "$port" "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; rm $s'
+generate_script | ssh -p "$port" "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; '$KEEP' $s'
