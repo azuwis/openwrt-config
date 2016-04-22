@@ -34,6 +34,18 @@ opkg_install_url() {
     fi
 }
 
+uci_add_list() {
+    key="$1"
+    shift
+    for value in "$@"
+    do
+        if ! printf "$(uci -q -d '\n' get "$key")" | grep -qxF "$value"; then
+            echo "uci add_list $key=$value"
+            uci add_list "$key=$value"
+        fi
+    done
+}
+
 uci_delete() {
     for config in "$@"
     do
