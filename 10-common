@@ -8,4 +8,4 @@ EOF
 service reload system
 
 uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
-service reload dnsmasq
+service reload dnsmasq dhcp

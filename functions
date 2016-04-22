@@ -81,9 +81,10 @@ service_enable() {
 service() {
     action="$1"
     service="$2"
+    config="${3:-$service}"
     case "$action" in
         reload|restart)
-            if uci changes | grep -qEv '^\w+\.[^.]+='; then
+            if [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]; then
                 uci commit
                 echo "service $action $service"
                 "/etc/init.d/$service" "$action"
@@ -100,4 +101,16 @@ service() {
 
 hr() {
     printf '%s\n' ------------------------------------------------------------
+}
+
+md5sums="$(cd /etc/config; md5sum *)"
+
+md5sum_config() {
+    config="$1"
+    echo "$md5sums" | grep -F " $config" | cut -d' ' -f1
+}
+
+md5sum_uci() {
+    config="$1"
+    uci export "$config" | grep -v '^package '| md5sum | cut -d' ' -f1
 }
