@@ -55,6 +55,7 @@ EOF
     do
         cat <<EOF
 echo "Begin $module"
+echo
 EOF
         if [ -x "$module" ]; then
             "./$module"
@@ -62,7 +63,6 @@ EOF
             envsubst < "$module"
         fi
         cat <<EOF
-echo "End $module"
 hr
 # ----------------------------------------------------------
 EOF
