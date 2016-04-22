@@ -34,6 +34,9 @@ push() {
 
 generate_script() {
     cat functions
+    cat <<EOF
+# ----------------------------------------------------------
+EOF
     for module in $modules
     do
         cat <<EOF
@@ -47,6 +50,7 @@ EOF
         cat <<EOF
 echo "End $module"
 hr
+# ----------------------------------------------------------
 EOF
     done
 }
