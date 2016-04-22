@@ -1,4 +1,6 @@
 #!/bin/bash
+# PRE:
+# 1) telnet  2) passwd 3) reboot
 
 DEBUG=''
 GEN_ONLY='no'
