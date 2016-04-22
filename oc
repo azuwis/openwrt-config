@@ -1,7 +1,16 @@
 #!/bin/bash
 
+DEBUG=''
+
 target="$1"
 shift
+
+while getopts ":x" Option
+do
+    case "$Option" in
+        x) DEBUG='-x' ;;
+    esac
+done
 
 source "$target"
 port="${port:-22}"
@@ -34,4 +43,4 @@ EOF
     done
 }
 
-generate_script | ssh -p "$port" "$host" 's=/tmp/openwrt-config; cat > $s; sh $s; rm $s'
+generate_script | ssh -p "$port" "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; rm $s'
