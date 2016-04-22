@@ -5,7 +5,7 @@ echo "uci import firewall"
 uci -m import firewall <<UCI
 EOF
 
-cat ${0}-config
+cat ${0#?????}.conf
 
 cat <<EOF
 UCI
