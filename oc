@@ -36,7 +36,11 @@ generate_script() {
 hr
 echo "Begin $module"
 EOF
-        envsubst < "$module"
+        if [ -x "$module" ]; then
+            "./$module"
+        else
+            envsubst < "$module"
+        fi
         cat <<EOF
 echo "End $module"
 EOF
