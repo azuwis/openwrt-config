@@ -85,11 +85,8 @@ service() {
     case "$action" in
         reload|restart)
             if [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]; then
-                uci commit
                 echo "service $action $service"
                 "/etc/init.d/$service" "$action"
-            else
-                uci commit
             fi
             ;;
         *)

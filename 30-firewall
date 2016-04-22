@@ -8,5 +8,6 @@ gpg --batch --no-tty -qd ${0}-config.gpg
 
 cat <<EOF
 UCI
+uci commit
 service reload firewall 2>/dev/null
 EOF
