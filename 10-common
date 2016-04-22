@@ -1,8 +1,8 @@
 opkg_install ca-certificates curl ip miniupnpd wget
 
 uci batch <<EOF
-set system.@system[0].timezone='CST-8'
 set system.@system[0].hostname='${system_hostname}'
+set system.@system[0].timezone='CST-8'
 set system.@system[0].zonename='Asia/Shanghai'
 EOF
 service reload system
