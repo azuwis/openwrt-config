@@ -56,6 +56,19 @@ uci_delete() {
     done
 }
 
+uci_del_type() {
+    config="$1"
+    type="$2"
+    deleted="0"
+    while uci -q delete "${config}.@${type}[-1]"
+    do
+        deleted=$((deleted+1))
+    done
+    if [ "$deleted" -gt 0 ]; then
+        echo "uci delete $deleted $config.@$type[x]"
+    fi
+}
+
 service_enable() {
     for service in "$@"
     do

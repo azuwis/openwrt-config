@@ -1,0 +1,12 @@
+#/bin/sh
+cat <<EOF
+uci_del_type firewall redirect
+uci -m import firewall <<UCI
+EOF
+
+gpg -qd ${0}-config.gpg
+
+cat <<EOF
+UCI
+service reload firewall
+EOF
