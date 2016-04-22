@@ -3,11 +3,14 @@
 DEBUG=''
 GEN_ONLY='no'
 KEEP='rm'
+modules="$(ls -1 [0-9][0-9]-*)"
 
 target="$1"
-shift
+if [ -f "$target" ]; then
+    source "$target"
+    shift
+fi
 
-source "$target"
 port="${port:-22}"
 
 while getopts ":gkm:x" Option
