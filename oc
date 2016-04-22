@@ -18,7 +18,7 @@ source "$target"
 port="${port:-22}"
 
 if [ -f "${target}.gpg" ]; then
-    source <(gpg -qd "${target}.gpg")
+    source <(gpg --batch --no-tty -qd "${target}.gpg")
 fi
 
 backup() {
