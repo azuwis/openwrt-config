@@ -9,6 +9,15 @@ target="$1"
 if [ -f "$target" ]; then
     source "$target"
     shift
+else
+    echo "$target not exists"
+    exit
+fi
+
+if [ -f "${target}.gpg" ]; then
+    source <(gpg --batch --no-tty -qd "${target}.gpg")
+else
+    echo "$target.gpg not exist"
 fi
 
 ssh_options=''
@@ -27,10 +36,6 @@ do
         x) DEBUG='-x' ;;
     esac
 done
-
-if [ -f "${target}.gpg" ]; then
-    source <(gpg --batch --no-tty -qd "${target}.gpg")
-fi
 
 backup() {
     ssh "$host" 'sysupgrade --create-backup -' | tar zxf -
