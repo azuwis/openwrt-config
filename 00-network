@@ -1,0 +1,7 @@
+uci batch <<EOF
+set network.wan.proto='pppoe'
+set network.wan.username='${network_wan_username}'
+set network.wan.password='${network_wan_password}'
+EOF
+uci commit
+service reload network
