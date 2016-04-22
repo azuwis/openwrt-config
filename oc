@@ -33,7 +33,6 @@ generate_script() {
     for module in $modules
     do
         cat <<EOF
-hr
 echo "Begin $module"
 EOF
         if [ -x "$module" ]; then
@@ -43,6 +42,7 @@ EOF
         fi
         cat <<EOF
 echo "End $module"
+hr
 EOF
     done
 }
