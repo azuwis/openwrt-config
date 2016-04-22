@@ -1,14 +1,16 @@
 #!/bin/bash
 
 DEBUG=''
+GEN_ONLY='no'
 
 target="$1"
 shift
 
-while getopts ":x" Option
+while getopts ":xg" Option
 do
     case "$Option" in
         x) DEBUG='-x' ;;
+        g) GEN_ONLY='yes' ;;
     esac
 done
 
@@ -46,5 +48,10 @@ hr
 EOF
     done
 }
+
+if [ "$GEN_ONLY" = 'yes' ]; then
+    generate_script
+    exit
+fi
 
 generate_script | ssh -p "$port" "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; rm $s'
