@@ -1,5 +1,5 @@
+uci_delete network.globals.ula_prefix
 uci batch <<EOF
-delete network.globals.ula_prefix
 set network.wan.proto='pppoe'
 set network.wan.username='${network_wan_username}'
 set network.wan.password='${network_wan_password}'
