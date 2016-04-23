@@ -84,8 +84,9 @@ fi
 for local_module in $local_modules
 do
     echo "Begin local  $local_module"
+    echo
     source "$local_module"
-    printf '\n%s\n' ------------------------------------------------------------
+    printf '%s\n' ------------------------------------------------------------
 done
 
 generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; '$KEEP' $s'
