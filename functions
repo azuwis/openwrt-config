@@ -99,6 +99,9 @@ service() {
     config="${3:-$service}"
     case "$action" in
         reload|restart)
+            if ! uci -q get "$config" >/dev/null; then
+                return
+            fi
             if [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]; then
                 echo "service $action $service"
                 "/etc/init.d/$service" "$action"
