@@ -1,0 +1,51 @@
+#!/bin/sh
+
+CONF=/tmp/dnsmasq.d/ipv6.conf
+DNS_SERVER='2001:4860:4860::8888'
+
+# When wan6 is up
+if [ "$INTERFACE" = "wan6" ] && [ "$ACTION" = "ifup" ]; then
+    local domain
+    grep -Ev '(^#|^\s*$)' /etc/ipv6-domains | while read domain
+    do
+        echo "server=/$domain/${DNS_SERVER}"
+    done > $CONF
+    /etc/init.d/dnsmasq restart
+fi
+
+# When wan6 is down
+if [ "$INTERFACE" = "wan6" ] && [ "$ACTION" = "ifdown" ]; then
+    rm $CONF
+    /etc/init.d/dnsmasq restart
+fi
+
+# When wan/pppoe is up
+if [ "$INTERFACE" = "wan" ] && [ "$ACTION" = "ifup" ] \
+       && [ "$(uci -q get network.wan.proto)" = "pppoe" ] \
+       && [ "$(uci -q get network.wan6.proto)" = "6in4" ]; then
+
+    . /usr/lib/ddns/dynamic_dns_functions.sh
+
+    local tunnelid username password updatekey
+
+    tunnelid="$(uci -q get network.wan6.tunnelid)"
+    username="$(uci -q get network.wan6.username)"
+    password="$(uci -q get network.wan6.password)"
+    updatekey="$(uci -q get network.wan6.updatekey)"
+
+    [ -n "$tunnelid" -a -n "$username" -a \( -n "$password" -o -n "$updatekey" \) ] && {
+        [ -n "$updatekey" ] && password="$updatekey"
+
+        local url="http://ipv4.tunnelbroker.net/nic/update?username=$username&password=$password&hostname=$tunnelid"
+        local try=0
+        local max=5
+
+        while [ $((++try)) -le $max ]; do
+            ( exec wget -qO- "$url" 2>/dev/null | grep -qF "$(get_current_ip)" ) &
+		        local pid=$!
+		        ( sleep 10; kill $pid 2>/dev/null ) &
+		        wait $pid && break
+	      done
+    }
+
+fi

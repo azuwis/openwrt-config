@@ -1,0 +1,2 @@
+push files/99-ipv6 /etc/hotplug.d/iface/99-ipv6
+push files/ipv6-domains /etc/ipv6-domains
