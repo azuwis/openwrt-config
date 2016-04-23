@@ -1,8 +1,8 @@
 uci_delete network.globals.ula_prefix
 uci batch <<EOF
-set network.wan.proto='pppoe'
-set network.wan.username='${network_wan_username}'
 set network.wan.password='${network_wan_password}'
+set network.wan.proto='${network_wan_proto}'
+set network.wan.username='${network_wan_username}'
 EOF
 uci commit
 service reload network
