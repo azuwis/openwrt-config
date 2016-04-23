@@ -5,7 +5,8 @@
 DEBUG=''
 GEN_ONLY='no'
 KEEP='rm'
-modules="$(ls -1 [0-9][0-9]-*)"
+modules="$(ls -1 [0-9][0-46-9]-*)"
+local_modules="$(ls -1 [0-9]5-*)"
 
 target="$1"
 if [ -f "$target" ]; then
@@ -22,10 +23,10 @@ else
     echo "$target.gpg not exist"
 fi
 
-scp="scp"
+scp="scp -pq"
 ssh="ssh"
 if [ x"$port" != x ]; then
-    scp="scp -P$port"
+    scp="scp -pqP$port"
     ssh="ssh -p$port"
 fi
 
@@ -46,8 +47,10 @@ backup() {
 }
 
 push() {
-    file="$1"
-    $scp -p "$file" "${host}:/${file}"
+    src="$1"
+    dest="$2"
+    echo "$src -> $dest"
+    $scp "$src" "${host}:${dest}"
 }
 
 generate_script() {
@@ -58,7 +61,7 @@ EOF
     for module in $modules
     do
         cat <<EOF
-echo "Begin $module"
+echo "Begin remote $module"
 echo
 EOF
         if [ -x "$module" ]; then
@@ -77,5 +80,12 @@ if [ "$GEN_ONLY" = 'yes' ]; then
     generate_script
     exit
 fi
+
+for local_module in $local_modules
+do
+    echo "Begin local  $local_module"
+    source "$local_module"
+    printf '\n%s\n' ------------------------------------------------------------
+done
 
 generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; '$KEEP' $s'
