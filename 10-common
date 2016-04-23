@@ -5,6 +5,8 @@ set system.@system[0].hostname='${system_hostname}'
 set system.@system[0].timezone='CST-8'
 set system.@system[0].zonename='Asia/Shanghai'
 EOF
+uci_delete system.ntp.server
+uci_add_list system.ntp.server 0.debian.pool.ntp.org 1.debian.pool.ntp.org 2.debian.pool.ntp.org 3.debian.pool.ntp.org
 uci_commit system
 service reload system
 
