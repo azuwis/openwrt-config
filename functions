@@ -52,8 +52,9 @@ uci_commit() {
         return
     fi
     if [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]; then
-        echo "uci commit"
+        echo "uci changes:"
         uci changes "$config"
+        echo
         uci commit
     else
         rm -f "/var/.uci/$config"
