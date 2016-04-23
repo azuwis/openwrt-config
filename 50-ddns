@@ -1,7 +1,6 @@
 opkg_install ca-certificates ddns-scripts
 
 uci_delete ddns.myddns_ipv4 ddns.myddns_ipv6 ddns.duckdns
-echo "uci import ddns.duckdns"
 uci -m import ddns <<EOF
 config service 'duckdns'
     option cacert '/etc/ssl/certs'

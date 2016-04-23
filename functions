@@ -41,7 +41,6 @@ uci_add_list() {
     for value in "$@"
     do
         if ! printf "$(uci -q -d '\n' get "$key")" | grep -qxF "$value"; then
-            echo "uci add_list $key=$value"
             uci add_list "$key=$value"
         fi
     done
@@ -65,7 +64,6 @@ uci_delete() {
     for config in "$@"
     do
         if uci -q get "$config" >/dev/null; then
-            echo "uci delete $config"
             uci delete "$config"
         fi
     done
@@ -79,9 +77,6 @@ uci_del_type() {
     do
         deleted=$((deleted+1))
     done
-    if [ "$deleted" -gt 0 ]; then
-        echo "uci delete $deleted $config.@$type[x]"
-    fi
 }
 
 service_enable() {

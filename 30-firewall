@@ -1,7 +1,6 @@
 #!/bin/sh
 cat <<EOF
 uci_del_type firewall redirect
-echo "uci import firewall.@redirect[x]"
 uci -m import firewall <<UCI
 EOF
 
