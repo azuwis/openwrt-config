@@ -13,10 +13,10 @@ opkg_installed() {
 }
 
 opkg_install() {
-    opkg_update
     for package in "$@"
     do
         if ! opkg_installed "$package"; then
+            opkg_update
             echo "install package $package"
             opkg install "$package"
         fi
