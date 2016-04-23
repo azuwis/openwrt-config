@@ -9,6 +9,7 @@ uci_delete system.ntp.server
 uci_add_list system.ntp.server 0.debian.pool.ntp.org 1.debian.pool.ntp.org 2.debian.pool.ntp.org 3.debian.pool.ntp.org
 uci_commit system
 service reload system
+service restart sysntpd system
 
 uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
 uci_commit dhcp
