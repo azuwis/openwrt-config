@@ -7,8 +7,10 @@ EOF
 uci_commit network
 service reload network
 
-uci_delete wireless.radio0.disabled wireless.radio1.disabled
-uci batch <<EOF
+if uci -q get wireless >/dev/null; then
+  uci batch <<EOF
+delete wireless.radio0.disabled
+delete wireless.radio1.disabled
 set wireless.@wifi-iface[0].encryption='${wireless_iface0_encryption}'
 set wireless.@wifi-iface[0].key='${wireless_iface0_key}'
 set wireless.@wifi-iface[0].ssid='${wireless_iface0_ssid}'
@@ -17,5 +19,6 @@ set wireless.@wifi-iface[1].key='${wireless_iface1_key}'
 set wireless.@wifi-iface[1].ssid='${wireless_iface1_ssid}'
 set wireless.radio1.channel='165'
 EOF
-uci_commit wireless
-service reload network wireless
+  uci_commit wireless
+  service reload network wireless
+fi
