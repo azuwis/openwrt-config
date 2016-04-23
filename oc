@@ -49,8 +49,16 @@ backup() {
 push() {
     src="$1"
     dest="$2"
-    echo "$src -> $dest"
-    $scp "$src" "${host}:${dest}"
+    if [ ! -e "$src" ]; then
+        echo "push: $src does not exist"
+        return
+    fi
+    md5sum_src=$(md5sum "$src" | cut -d' ' -f1)
+    md5sum_dest=$($ssh "$host" "md5sum $dest 2>/dev/null | cut -d' ' -f1")
+    if [ x"$md5sum_src" != x"$md5sum_dest" ]; then
+        echo "push: $src -> $dest"
+        $scp "$src" "${host}:${dest}"
+    fi
 }
 
 generate_script() {
