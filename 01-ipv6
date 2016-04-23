@@ -14,7 +14,7 @@ ipv6_domains() {
 
 if [ ! -e files/ipv6-domains ]; then
     if [ ! -e files/ipv6-hosts ]; then
-        curl -fsSLo files/ipv6-hosts https://github.com/lennylxx/ipv6-hosts/raw/master/hosts
+        download https://github.com/lennylxx/ipv6-hosts/raw/master/hosts files/ipv6-hosts
     fi
     ipv6_domains files/ipv6-hosts > files/ipv6-domains
 fi

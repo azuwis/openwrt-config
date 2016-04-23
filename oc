@@ -47,6 +47,19 @@ backup() {
     $ssh "$host" 'sysupgrade --create-backup -' | tar zxf -
 }
 
+download() {
+    url="$1"
+    basename="$(basename "$url")"
+    file="$2"
+    if [ x"$file" = x ]; then
+        file="files/$basename"
+    fi
+    if [ ! -e "$file" ]; then
+        echo "download: $url -> $file"
+        curl -fsSLo "$file" "$url"
+    fi
+}
+
 push() {
     src="$1"
     dest="$2"
