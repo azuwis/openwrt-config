@@ -22,9 +22,9 @@ else
     echo "$target.gpg not exist"
 fi
 
-ssh_options=''
+ssh="ssh"
 if [ x"$port" != x ]; then
-    ssh_options="-p$port"
+    ssh="ssh -p$port"
 fi
 
 while getopts ":gh:km:p:x" Option
@@ -34,7 +34,7 @@ do
         g) GEN_ONLY='yes' ;;
         k) KEEP='echo keep remote' ;;
         m) modules="$OPTARG" ;;
-        p) ssh_options="-p$OPTARG" ;;
+        p) ssh="ssh -p$OPTARG" ;;
         x) DEBUG='-x' ;;
     esac
 done
@@ -76,4 +76,4 @@ if [ "$GEN_ONLY" = 'yes' ]; then
     exit
 fi
 
-generate_script | ssh $ssh_options "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; '$KEEP' $s'
+generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; '$KEEP' $s'
