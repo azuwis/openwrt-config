@@ -3,6 +3,7 @@ uci batch <<EOF
 set network.wan.password='${network_wan_password}'
 set network.wan.proto='${network_wan_proto}'
 set network.wan.username='${network_wan_username}'
+set network.wan6.proto='none'
 EOF
 uci_commit network
 service reload network
