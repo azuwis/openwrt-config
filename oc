@@ -56,7 +56,7 @@ download() {
     fi
     if [ ! -e "$file" ]; then
         echo "download: $url -> $file"
-        curl -fsSLo "$file" "$url"
+        curl -#fSLo "$file" "$url"
     fi
 }
 
