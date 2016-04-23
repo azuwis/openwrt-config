@@ -30,13 +30,14 @@ if [ x"$port" != x ]; then
     ssh="ssh -p$port"
 fi
 
-while getopts ":gh:km:p:x" Option
+while getopts ":gh:kl:m:p:x" Option
 do
     case "$Option" in
         h) host="$OPTARG" ;;
         g) GEN_ONLY='yes' ;;
         k) KEEP='echo keep remote' ;;
         m) modules="$OPTARG" ;;
+        l) local_modules="$OPTARG" ;;
         p) ssh="ssh -p$OPTARG" ;;
         x) DEBUG='-x' ;;
     esac
