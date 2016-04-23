@@ -93,7 +93,13 @@ for local_module in $local_modules
 do
     echo "Begin local  $local_module"
     echo
+    if [ x"$DEBUG" != x ]; then
+        set -x
+    fi
     source "$local_module"
+    if [ x"$DEBUG" != x ]; then
+        set +x
+    fi
     printf '%s\n' ------------------------------------------------------------
 done
 
