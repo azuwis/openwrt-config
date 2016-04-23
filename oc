@@ -22,8 +22,10 @@ else
     echo "$target.gpg not exist"
 fi
 
+scp="scp"
 ssh="ssh"
 if [ x"$port" != x ]; then
+    scp="scp -P$port"
     ssh="ssh -p$port"
 fi
 
@@ -40,12 +42,12 @@ do
 done
 
 backup() {
-    ssh "$host" 'sysupgrade --create-backup -' | tar zxf -
+    $ssh "$host" 'sysupgrade --create-backup -' | tar zxf -
 }
 
 push() {
     file="$1"
-    scp -p "$file" "${host}:/${file}"
+    $scp -p "$file" "${host}:/${file}"
 }
 
 generate_script() {
