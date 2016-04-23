@@ -1,11 +1,11 @@
 ipv6_domains() {
     hostfile="$1"
-    sed -e '/^[[:space:]]*$/d' \
-        -e '/^[[:space:]]*#/d' \
-        -e 's/ #.*//' \
-        -e '/^[[:digit:]]\+\./d' "$hostfile" \
-        | fromdos  | \
-        sed -e '/ localhost$/d' \
+    fromdos < "$hostfile" | \
+        sed -e '/^[[:space:]]*$/d' \
+            -e '/^[[:space:]]*#/d' \
+            -e 's/ #.*//' \
+            -e '/^[[:digit:]]\+\./d' \
+            -e '/ localhost$/d' \
             -e 's/^[[:digit:]].*[. ]\([0-9a-z-]\+\.ac\.jp\)$/\1/' \
             -e 's/^[[:digit:]].*[. ]\([0-9a-z-]\+\.com\?\.[a-z]\+\)$/\1/' \
             -e 's/^[[:digit:]].*[. ]\([0-9a-z-]\+\.[a-z]\+\)$/\1/' \
