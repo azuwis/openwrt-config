@@ -1,2 +1,23 @@
+ipv6_domains() {
+    hostfile="$1"
+    sed -e '/^[[:space:]]*$/d' \
+        -e '/^[[:space:]]*#/d' \
+        -e 's/ #.*//' \
+        -e '/^[[:digit:]]\+\./d' "$hostfile" \
+        | fromdos  | \
+        sed -e '/ localhost$/d' \
+            -e 's/^[[:digit:]].*[. ]\([0-9a-z-]\+\.ac\.jp\)$/\1/' \
+            -e 's/^[[:digit:]].*[. ]\([0-9a-z-]\+\.com\?\.[a-z]\+\)$/\1/' \
+            -e 's/^[[:digit:]].*[. ]\([0-9a-z-]\+\.[a-z]\+\)$/\1/' \
+        | sort | uniq
+}
+
+if [ ! -e files/ipv6-domains ]; then
+    if [ ! -e files/ipv6-hosts ]; then
+        curl -fsSLo files/ipv6-hosts https://github.com/lennylxx/ipv6-hosts/raw/master/hosts
+    fi
+    ipv6_domains files/ipv6-hosts > files/ipv6-domains
+fi
+
 push files/99-ipv6 /etc/hotplug.d/iface/99-ipv6
 push files/ipv6-domains /etc/ipv6-domains
