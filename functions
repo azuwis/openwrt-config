@@ -47,6 +47,20 @@ uci_add_list() {
     done
 }
 
+uci_commit() {
+    config="$1"
+    if ! uci -q get "$config" >/dev/null; then
+        return
+    fi
+    if [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]; then
+        echo "uci commit"
+        uci changes "$config"
+        uci commit
+    else
+        rm -f "/var/.uci/$config"
+    fi
+}
+
 uci_delete() {
     for config in "$@"
     do

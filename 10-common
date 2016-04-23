@@ -5,9 +5,9 @@ set system.@system[0].hostname='${system_hostname}'
 set system.@system[0].timezone='CST-8'
 set system.@system[0].zonename='Asia/Shanghai'
 EOF
-uci commit
+uci_commit system
 service reload system
 
 uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
-uci commit
+uci_commit dhcp
 service reload dnsmasq dhcp
