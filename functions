@@ -15,7 +15,10 @@ opkg_installed() {
 opkg_install() {
     for package in "$@"
     do
-        if ! opkg_installed "$package"; then
+        package_name="$(basename "$package")"
+        package_name="${package_name%.*}"
+        package_name="${package_name%_*}"
+        if ! opkg_installed "$package_name"; then
             opkg_update
             echo "install package $package"
             opkg install "$package"

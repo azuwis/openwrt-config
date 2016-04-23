@@ -1,0 +1,4 @@
+opkg_install /tmp/adblock.ipk
+if [ ! -e /var/dnsmasq.d/adb_list.adaway ]; then
+    service start adblock
+fi
