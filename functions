@@ -45,9 +45,7 @@ uci_del_list() {
     shift
     for value in "$@"
     do
-        if printf "$(uci -q -d '\n' get "$key")" | grep -qxF "$value"; then
-            uci del_list "$key=$value"
-        fi
+        uci del_list "$key='$value'"
     done
 }
 
