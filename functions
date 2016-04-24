@@ -58,7 +58,7 @@ uci_commit() {
         uci changes "$config"
         echo
         uci commit
-        md5sums="$(cd /etc/config; md5sum *)"
+        update_md5sums
     else
         rm -f "/var/.uci/$config"
     fi
@@ -108,7 +108,9 @@ hr() {
     printf '%s\n' ------------------------------------------------------------
 }
 
-md5sums="$(cd /etc/config; md5sum *)"
+update_md5sums() {
+    md5sums="$(cd /etc/config; md5sum *)"
+}
 
 md5sum_config() {
     config="$1"
@@ -124,3 +126,6 @@ config_changed() {
     config="$1"
     [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]
 }
+
+md5sums=''
+update_md5sums
