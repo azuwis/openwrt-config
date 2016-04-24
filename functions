@@ -53,7 +53,7 @@ uci_commit() {
     if ! uci -q get "$config" >/dev/null; then
         return
     fi
-    if [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]; then
+    if config_changed "$config"; then
         echo "uci changes:"
         uci changes "$config"
         echo
@@ -92,7 +92,7 @@ service() {
             if ! uci -q get "$config" >/dev/null; then
                 return
             fi
-            if [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]; then
+            if config_changed "$config"; then
                 echo "service $action $service"
                 "/etc/init.d/$service" "$action"
             fi
@@ -118,4 +118,9 @@ md5sum_config() {
 md5sum_uci() {
     config="$1"
     uci export "$config" | grep -v '^package '| md5sum | cut -d' ' -f1
+}
+
+config_changed() {
+    config="$1"
+    [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]
 }
