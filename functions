@@ -45,7 +45,7 @@ uci_del_list() {
     shift
     for value in "$@"
     do
-        uci del_list "$key='$value'"
+        uci del_list "$key=$value"
     done
 }
 
