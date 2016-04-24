@@ -74,7 +74,14 @@ generate_script() {
     cat <<EOF
 
 # ----------------------------------------------------------
-# Settings
+# Default settings
+
+EOF
+    cat default
+    cat <<EOF
+
+# ----------------------------------------------------------
+# Per device settings
 
 EOF
     if [ -f "$target" ]; then

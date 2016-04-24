@@ -1,0 +1,23 @@
+host=root@192.168.1.1
+# port=22
+
+# local_modules='00-pubkey 01-ipv6'
+# modules='10-network 20-common'
+
+system_hostname=
+
+network_wan_proto=dhcp
+network_wan_username=
+network_wan_password=
+
+wireless_iface0_ssid=
+wireless_iface0_encryption=psk2
+wireless_iface0_key=
+
+wireless_iface1_ssid=
+wireless_iface1_encryption=psk2
+wireless_iface1_key=
+
+ddns_duckdns_domain=
+ddns_duckdns_username=
+ddns_duckdns_password=
