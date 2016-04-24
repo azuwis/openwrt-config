@@ -26,18 +26,6 @@ opkg_install() {
     done
 }
 
-opkg_install_url() {
-    ipk_url="$1"
-    ipk_img="$(basename "$ipk_url")"
-    ipk_name=$(basename "$ipk_url" | awk -F_ '{print $1}')
-    if ! opkg_installed "$ipk_name"; then
-        cd /tmp/
-        wget "$ipk_url"
-        echo "install package $ipk_name"
-        opkg install "$ipk_img"
-    fi
-}
-
 uci_add_list() {
     key="$1"
     shift
@@ -92,15 +80,6 @@ uci_del_type() {
     while uci -q delete "${config}.@${type}[-1]"
     do
         deleted=$((deleted+1))
-    done
-}
-
-service_enable() {
-    for service in "$@"
-    do
-        echo "enable/restart service $service"
-        "/etc/init.d/$service" enable
-        "/etc/init.d/$service" restart
     done
 }
 
