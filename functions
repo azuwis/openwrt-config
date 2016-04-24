@@ -13,6 +13,7 @@ opkg_installed() {
 }
 
 opkg_install() {
+    local package package_name
     for package in "$@"
     do
         package_name="$(basename "$package")"
@@ -27,6 +28,7 @@ opkg_install() {
 }
 
 uci_add_list() {
+    local key value
     key="$1"
     shift
     for value in "$@"
@@ -38,6 +40,7 @@ uci_add_list() {
 }
 
 uci_del_list() {
+    local key value
     key="$1"
     shift
     for value in "$@"
@@ -49,6 +52,7 @@ uci_del_list() {
 }
 
 uci_commit() {
+    local config
     config="$1"
     if ! uci -q get "$config" >/dev/null; then
         return 2
@@ -67,6 +71,7 @@ uci_commit() {
 }
 
 uci_delete() {
+    local config
     for config in "$@"
     do
         if uci -q get "$config" >/dev/null; then
@@ -76,6 +81,7 @@ uci_delete() {
 }
 
 uci_del_type() {
+    local config type deleted
     config="$1"
     type="$2"
     deleted="0"
@@ -86,6 +92,7 @@ uci_del_type() {
 }
 
 service() {
+    local action service config
     action="$1"
     service="$2"
     config="${3:-$service}"
@@ -112,16 +119,19 @@ update_md5sums() {
 }
 
 md5sum_config() {
+    local config
     config="$1"
     echo "$md5sums" | grep -F " /etc/config/${config}" | cut -d' ' -f1
 }
 
 md5sum_uci() {
+    local config
     config="$1"
     uci export "$config" | grep -v '^package '| md5sum | cut -d' ' -f1
 }
 
 config_changed() {
+    local config
     config="$1"
     [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]
 }
