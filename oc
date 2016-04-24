@@ -17,12 +17,6 @@ else
     exit
 fi
 
-if [ -f "${target}.gpg" ]; then
-    source <(gpg --batch --no-tty -qd "${target}.gpg")
-else
-    echo "$target.gpg not exist, skip"
-fi
-
 scp="scp -pq"
 ssh="ssh"
 if [ x"$port" != x ]; then
@@ -79,6 +73,13 @@ generate_script() {
     cat functions
     cat <<EOF
 # ----------------------------------------------------------
+# Settings
+EOF
+    if [ -f "${target}.gpg" ]; then
+        gpg --batch --no-tty -qd "${target}.gpg"
+    fi
+    cat <<EOF
+# ----------------------------------------------------------
 EOF
     for module in $modules
     do
@@ -89,7 +90,7 @@ EOF
         if [ -x "$module" ]; then
             "./$module"
         else
-            envsubst < "$module"
+            cat "$module"
         fi
         cat <<EOF
 hr
