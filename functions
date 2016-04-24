@@ -130,6 +130,7 @@ add_cron() {
     user="${2:-root}"
     cron_file="/etc/crontabs/${user}"
     if [ ! -e "$cron_file" ] || ! grep -qxF "$cron" "$cron_file"; then
+        echo "cron: $cron"
         echo "$cron" >> "$cron_file"
         /etc/init.d/cron start
     fi
