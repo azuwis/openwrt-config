@@ -1,7 +1,9 @@
 opkg_install sqm-scripts
 
+set +u
 . /lib/functions/network.sh
 network_get_physdev iface_wan wan
+set -u
 
 uci batch <<EOF
 set sqm.eth1.enabled='1'
