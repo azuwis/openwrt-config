@@ -75,6 +75,9 @@ generate_script() {
 # ----------------------------------------------------------
 # Settings
 EOF
+    if [ -f "$target" ]; then
+        cat "$target"
+    fi
     if [ -f "${target}.gpg" ]; then
         gpg --batch --no-tty -qd "${target}.gpg"
     fi
