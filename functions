@@ -27,6 +27,12 @@ opkg_install() {
     done
 }
 
+uci_exists() {
+    local config
+    config="$1"
+    uci -q get "$config" >/dev/null
+}
+
 uci_add_list() {
     local key value
     key="$1"
@@ -53,7 +59,7 @@ uci_del_list() {
 uci_commit() {
     local config
     config="$1"
-    if ! uci -q get "$config" >/dev/null; then
+    if ! uci_exists "$config"; then
         return 2
     fi
     if config_changed "$config"; then
@@ -73,7 +79,7 @@ uci_delete() {
     local config
     for config in "$@"
     do
-        if uci -q get "$config" >/dev/null; then
+        if uci_exists "$config"; then
             uci delete "$config"
         fi
     done
