@@ -70,6 +70,7 @@ uci_commit() {
         uci changes "$config"
         echo
         uci commit
+        md5sums="$(cd /etc/config; md5sum *)"
     else
         rm -f "/var/.uci/$config"
     fi
