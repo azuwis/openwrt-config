@@ -1,0 +1,14 @@
+opkg_install sqm-scripts
+
+. /lib/functions/network.sh
+network_get_physdev iface_wan wan
+
+uci batch <<EOF
+set sqm.eth1.enabled='1'
+set sqm.eth1.interface='${iface_wan}'
+set sqm.eth1.download='85000'
+set sqm.eth1.upload='10000'
+EOF
+uci_commit sqm
+
+# service restart sqm
