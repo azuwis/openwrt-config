@@ -20,7 +20,7 @@ opkg_install() {
         package_name="${package_name%%_*}"
         if ! opkg_installed "$package_name"; then
             opkg_update
-            echo "install package $package"
+            echo "opkg install $package"
             opkg install "$package"
         fi
     done
