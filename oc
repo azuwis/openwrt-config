@@ -72,8 +72,10 @@ push() {
 generate_script() {
     cat functions
     cat <<EOF
+
 # ----------------------------------------------------------
 # Settings
+
 EOF
     if [ -f "$target" ]; then
         cat "$target"
@@ -82,7 +84,9 @@ EOF
         gpg --batch --no-tty -qd "${target}.gpg"
     fi
     cat <<EOF
+
 # ----------------------------------------------------------
+
 EOF
     for module in $modules
     do
@@ -97,7 +101,9 @@ EOF
         fi
         cat <<EOF
 hr
+
 # ----------------------------------------------------------
+
 EOF
     done
 }
