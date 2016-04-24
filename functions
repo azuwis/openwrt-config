@@ -96,6 +96,15 @@ uci_del_type() {
     done
 }
 
+uci_rename() {
+    local key value
+    key="$1"
+    value="$2"
+    if uci_exists "$key"; then
+        uci rename "$key=$value"
+    fi
+}
+
 service() {
     local action service config
     action="$1"
