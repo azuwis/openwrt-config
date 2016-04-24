@@ -10,6 +10,6 @@ uci batch <<EOF
 set sqm.wan.enabled='1'
 set sqm.wan.interface='${iface_wan}'
 set sqm.wan.download='100000'
-set sqm.wan.upload='4600'
+set sqm.wan.upload='4500'
 EOF
 service restart sqm
