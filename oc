@@ -140,4 +140,4 @@ do
     printf '%s\n' ------------------------------------------------------------
 done
 
-generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; sh '$DEBUG' $s; '$KEEP' $s'
+generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; chmod 400 $s; sh '$DEBUG' $s; '$KEEP' $s'
