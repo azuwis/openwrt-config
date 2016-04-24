@@ -51,7 +51,7 @@ uci_del_list() {
 uci_commit() {
     config="$1"
     if ! uci -q get "$config" >/dev/null; then
-        return
+        return 2
     fi
     if config_changed "$config"; then
         echo "uci changes:"
@@ -59,8 +59,10 @@ uci_commit() {
         echo
         uci commit
         update_md5sums
+        return 0
     else
         rm -f "/var/.uci/$config"
+        return 1
     fi
 }
 
@@ -89,10 +91,7 @@ service() {
     config="${3:-$service}"
     case "$action" in
         reload|restart)
-            if ! uci -q get "$config" >/dev/null; then
-                return
-            fi
-            if config_changed "$config"; then
+            if uci_commit "$config"; then
                 echo "service $action $service"
                 "/etc/init.d/$service" "$action"
             fi

@@ -13,6 +13,4 @@ config service 'duckdns'
     option use_https '1'
     option username '${ddns_duckdns_username}'
 EOF
-uci_commit ddns
-
 service restart ddns

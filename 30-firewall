@@ -8,6 +8,5 @@ cat ${0#?????}.conf
 
 cat <<EOF
 UCI
-uci_commit firewall
 service reload firewall 2>/dev/null
 EOF

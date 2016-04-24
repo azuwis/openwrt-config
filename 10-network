@@ -5,7 +5,6 @@ set network.wan.proto='${network_wan_proto}'
 set network.wan.username='${network_wan_username}'
 set network.wan6.proto='none'
 EOF
-uci_commit network
 service reload network
 
 if uci -q get wireless >/dev/null; then
@@ -19,6 +18,5 @@ set wireless.@wifi-iface[1].key='${wireless_iface1_key}'
 set wireless.@wifi-iface[1].ssid='${wireless_iface1_ssid}'
 set wireless.radio1.channel='165'
 EOF
-  uci_commit wireless
   service reload network wireless
 fi

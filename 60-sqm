@@ -11,6 +11,5 @@ set sqm.eth1.interface='${iface_wan}'
 set sqm.eth1.download='85000'
 set sqm.eth1.upload='10000'
 EOF
-uci_commit sqm
-
+: uci_commit sqm
 # service restart sqm
