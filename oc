@@ -8,12 +8,41 @@ KEEP='rm'
 modules="$(ls -1 [1-9][0-9]-*)"
 local_modules="$(ls -1 0[0-9]-*)"
 
+settings() {
+    target="$1"
+    cat <<EOF
+
+# ----------------------------------------------------------
+# Default settings
+
+EOF
+    cat default
+    cat <<EOF
+
+# ----------------------------------------------------------
+# Per device settings
+
+EOF
+    if [ -f "$target" ]; then
+        cat "$target"
+    fi
+    if [ -f "${target}.gpg" ]; then
+        gpg --batch --no-tty -qd "${target}.gpg"
+    fi
+    cat <<EOF
+
+# ----------------------------------------------------------
+
+EOF
+}
+
 target="$1"
-if [ -f "$target" ]; then
-    source "$target"
+target="${target%.gpg}"
+if [ -f "$target" -o -f "${target}.gpg" ]; then
+    source <(settings "$target")
     shift
 else
-    echo "$target not exists"
+    echo "$target and ${target}.gpg not exist"
     exit
 fi
 
@@ -71,30 +100,7 @@ push() {
 
 generate_script() {
     cat functions
-    cat <<EOF
-
-# ----------------------------------------------------------
-# Default settings
-
-EOF
-    cat default
-    cat <<EOF
-
-# ----------------------------------------------------------
-# Per device settings
-
-EOF
-    if [ -f "$target" ]; then
-        cat "$target"
-    fi
-    if [ -f "${target}.gpg" ]; then
-        gpg --batch --no-tty -qd "${target}.gpg"
-    fi
-    cat <<EOF
-
-# ----------------------------------------------------------
-
-EOF
+    settings "$target"
     for module in $modules
     do
         cat <<EOF
