@@ -20,7 +20,7 @@ fi
 if [ -f "${target}.gpg" ]; then
     source <(gpg --batch --no-tty -qd "${target}.gpg")
 else
-    echo "$target.gpg not exist"
+    echo "$target.gpg not exist, skip"
 fi
 
 scp="scp -pq"
