@@ -33,7 +33,8 @@ uci_add_list() {
     shift
     for value in "$@"
     do
-        if ! printf "$(uci -q -d '\n' get "$key")" | grep -qxF "$value"; then
+        if ! uci -q -d '
+' get "$key" | grep -qxF "$value"; then
             uci add_list "$key=$value"
         fi
     done
