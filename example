@@ -4,20 +4,20 @@ port=22
 # local_modules='00-pubkey 01-ipv6'
 # modules='10-network 20-common'
 
-export system_hostname=foo
+system_hostname=foo
 
-export network_wan_proto=pppoe
-export network_wan_username=foo
-export network_wan_password=foo
+network_wan_proto=pppoe
+network_wan_username=foo
+network_wan_password=foo
 
-export wireless_iface0_ssid=foo
-export wireless_iface0_encryption=psk2
-export wireless_iface0_key=foo
+wireless_iface0_ssid=foo
+wireless_iface0_encryption=psk2
+wireless_iface0_key=foo
 
-export wireless_iface1_ssid=foo-5G
-export wireless_iface1_encryption=psk2
-export wireless_iface1_key=foo
+wireless_iface1_ssid=foo-5G
+wireless_iface1_encryption=psk2
+wireless_iface1_key=foo
 
-export ddns_duckdns_domain=foo.duckdns.org
-export ddns_duckdns_username=foo
-export ddns_duckdns_password=foo
+ddns_duckdns_domain=foo.duckdns.org
+ddns_duckdns_username=foo
+ddns_duckdns_password=foo
