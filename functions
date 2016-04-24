@@ -124,6 +124,17 @@ service() {
     esac
 }
 
+add_cron() {
+    local name cron cron_file
+    cron="$1"
+    user="${2:-root}"
+    cron_file="/etc/crontabs/${user}"
+    if [ ! -e "$cron_file" ] || ! grep -qxF "$cron" "$cron_file"; then
+        echo "$cron" >> "$cron_file"
+        /etc/init.d/cron start
+    fi
+}
+
 hr() {
     printf '%s\n' ------------------------------------------------------------
 }
