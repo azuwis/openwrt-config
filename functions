@@ -108,12 +108,12 @@ hr() {
 }
 
 update_md5sums() {
-    md5sums="$(cd /etc/config; md5sum *)"
+    md5sums="$(md5sum /etc/config/*)"
 }
 
 md5sum_config() {
     config="$1"
-    echo "$md5sums" | grep -F " $config" | cut -d' ' -f1
+    echo "$md5sums" | grep -F " /etc/config/${config}" | cut -d' ' -f1
 }
 
 md5sum_uci() {
