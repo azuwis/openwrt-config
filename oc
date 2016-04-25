@@ -5,7 +5,7 @@
 DEBUG=''
 GEN_ONLY='no'
 KEEP='rm'
-modules="$(ls -1 [1-9][0-9]-*)"
+remote_modules="$(ls -1 [1-9][0-9]-*)"
 local_modules="$(ls -1 0[0-9]-*)"
 
 settings() {
@@ -59,7 +59,7 @@ do
         h) host="$OPTARG" ;;
         g) GEN_ONLY='yes' ;;
         k) KEEP='echo keep remote' ;;
-        m) modules="$OPTARG" ;;
+        m) remote_modules="$OPTARG" ;;
         l) local_modules="$OPTARG" ;;
         p) ssh="ssh -p$OPTARG" ;;
         x) DEBUG='-x' ;;
@@ -101,16 +101,16 @@ push() {
 generate_script() {
     cat functions
     settings "$target"
-    for module in $modules
+    for remote_module in $remote_modules
     do
         cat <<EOF
-echo "Begin remote $module"
+echo "Begin remote $remote_module"
 echo
 EOF
-        if [ -x "$module" ]; then
-            "./$module"
+        if [ -x "$remote_module" ]; then
+            "./$remote_module"
         else
-            cat "$module"
+            cat "$remote_module"
         fi
         cat <<EOF
 hr
