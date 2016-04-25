@@ -1,3 +1,5 @@
+opkg_install 6to4
+
 uci_delete network.globals.ula_prefix
 uci batch <<EOF
 set network.wan.ipv6='0'
