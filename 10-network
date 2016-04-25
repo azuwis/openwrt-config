@@ -11,7 +11,7 @@ set network.wan6.proto='6to4'
 EOF
 service reload network
 
-if uci -q get wireless >/dev/null; then
+if uci_exists wireless; then
   uci_delete wireless.radio0.disabled wireless.radio1.disabled
   uci batch <<EOF
 set wireless.@wifi-iface[0].encryption='${wireless_iface0_encryption}'
