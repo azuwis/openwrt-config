@@ -4,7 +4,7 @@ CONF=/tmp/dnsmasq.d/ipv6.conf
 DNS_SERVER='2001:4860:4860::8888'
 
 # When wan6 is up
-if [ "$INTERFACE" = "wan_6" ] && [ "$ACTION" = "ifup" ]; then
+if [ "$INTERFACE" = "wan6" ] && [ "$ACTION" = "ifup" ]; then
     local domain
     grep -Ev '(^#|^\s*$)' /etc/ipv6-domains | while read domain
     do
@@ -14,7 +14,7 @@ if [ "$INTERFACE" = "wan_6" ] && [ "$ACTION" = "ifup" ]; then
 fi
 
 # When wan6 is down
-if [ "$INTERFACE" = "wan_6" ] && [ "$ACTION" = "ifdown" ]; then
+if [ "$INTERFACE" = "wan6" ] && [ "$ACTION" = "ifdown" ]; then
     rm $CONF
     /etc/init.d/dnsmasq restart
 fi
