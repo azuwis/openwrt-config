@@ -1,5 +1,6 @@
 opkg_install sqm-scripts
 
+local iface_wan
 set +u
 . /lib/functions/network.sh
 network_get_device iface_wan wan
@@ -7,9 +8,8 @@ set -u
 
 uci_rename sqm.eth1 wan
 uci batch <<EOF
-set sqm.wan.enabled='1'
+set sqm.wan.enabled='0'
 set sqm.wan.interface='${iface_wan}'
-set sqm.wan.download='100000'
-set sqm.wan.upload='4500'
 EOF
+uci_batch_set "$config_sqm"
 service restart sqm

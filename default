@@ -1,23 +1,52 @@
 host=root@192.168.1.1
 # port=22
 
-# local_modules='00-pubkey 01-ipv6'
-# modules='10-network 20-common'
+# local_modules='00-pubkey 01-network6'
+# remote_modules='10-network 20-common'
 
-system_hostname=
+config_common='
+system.@system[0].hostname=OpenWrt
+'
 
-network_wan_proto=dhcp
-network_wan_username=
-network_wan_password=
+config_wireless='
+# wireless.@wifi-iface[0].ssid=
+# wireless.@wifi-iface[0].encryption=psk2
+# wireless.@wifi-iface[0].key=
+# wireless.@wifi-iface[1].ssid=
+# wireless.@wifi-iface[1].encryption=psk2
+# wireless.@wifi-iface[1].key=
+'
 
-wireless_iface0_ssid=
-wireless_iface0_encryption=psk2
-wireless_iface0_key=
+config_network='
+network.wan.proto=dhcp
+'
 
-wireless_iface1_ssid=
-wireless_iface1_encryption=psk2
-wireless_iface1_key=
+config_network6='
+network.wan6.proto=none
+'
 
-ddns_duckdns_domain=
-ddns_duckdns_username=
-ddns_duckdns_password=
+config_henet='
+# network.henet.peeraddr=
+# network.henet.ip6addr=
+# network.henet.ip6prefix=
+# network.henet.tunnelid=
+# network.henet.username=
+# network.henet.password=
+'
+
+config_redirect='
+# tcp 22
+'
+
+config_ddns='
+# ddns.duckdns.enabled=1
+# ddns.duckdns.domain=
+# ddns.duckdns.username=
+# ddns.duckdns.password=
+'
+
+config_sqm='
+# sqm.wan.enabled=1
+# sqm.wan.download=
+# sqm.wan.upload=
+'

@@ -162,5 +162,15 @@ config_changed() {
     [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]
 }
 
+strip_comment() {
+    sed -e '/^\s*$/d' -e '/^\s*#/d'
+}
+
+uci_batch_set() {
+    local config
+    config="$1"
+    echo "$config" | strip_comment | sed -e 's/^/set /' | uci batch
+}
+
 md5sums=''
 update_md5sums

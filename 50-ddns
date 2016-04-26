@@ -1,16 +1,11 @@
 opkg_install ca-certificates ddns-scripts
 
 uci_delete ddns.myddns_ipv4 ddns.myddns_ipv6 ddns.duckdns
-uci -m import ddns <<EOF
-config service 'duckdns'
-    option cacert '/etc/ssl/certs'
-    option domain '${ddns_duckdns_domain}'
-    option enabled '1'
-    option ip_interface 'pppoe-wan'
-    option ip_source 'interface'
-    option password '${ddns_duckdns_password}'
-    option update_url 'http://www.duckdns.org/update?domains=[USERNAME]&token=[PASSWORD]&ip=[IP]'
-    option use_https '1'
-    option username '${ddns_duckdns_username}'
+uci batch <<EOF
+set ddns.duckdns=service
+set ddns.duckdns.update_url='http://www.duckdns.org/update?domains=[USERNAME]&token=[PASSWORD]&ip=[IP]'
+set ddns.duckdns.use_https='1'
+set ddns.duckdns.cacert='/etc/ssl/certs'
 EOF
+uci_batch_set "$config_ddns"
 service restart ddns

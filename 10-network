@@ -1,23 +1,10 @@
 chmod 600 /etc/config/network
 
-uci batch <<EOF
-set network.wan.ipv6='0'
-set network.wan.password='${network_wan_password}'
-set network.wan.proto='${network_wan_proto}'
-set network.wan.username='${network_wan_username}'
-EOF
+uci_batch_set "$config_network"
 service reload network
 
 if uci_exists wireless; then
   uci_delete wireless.radio0.disabled wireless.radio1.disabled
-  uci batch <<EOF
-set wireless.@wifi-iface[0].encryption='${wireless_iface0_encryption}'
-set wireless.@wifi-iface[0].key='${wireless_iface0_key}'
-set wireless.@wifi-iface[0].ssid='${wireless_iface0_ssid}'
-set wireless.@wifi-iface[1].encryption='${wireless_iface1_encryption}'
-set wireless.@wifi-iface[1].key='${wireless_iface1_key}'
-set wireless.@wifi-iface[1].ssid='${wireless_iface1_ssid}'
-set wireless.radio1.channel='165'
-EOF
+  uci_batch_set "$config_wireless"
   service reload network wireless
 fi
