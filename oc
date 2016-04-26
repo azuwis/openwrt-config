@@ -105,7 +105,6 @@ generate_script() {
     do
         cat <<EOF
 echo "Begin remote $remote_module"
-echo
 EOF
         if [ -x "$remote_module" ]; then
             "./$remote_module"
@@ -129,7 +128,6 @@ fi
 for local_module in $local_modules
 do
     echo "Begin local  $local_module"
-    echo
     if [ x"$DEBUG" != x ]; then
         set -x
     fi
