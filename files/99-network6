@@ -23,36 +23,3 @@ case "$INTERFACE" in
         fi
         ;;
 esac
-
-exit
-
-# When wan/pppoe is up
-if [ "$INTERFACE" = "wan" ] && [ "$ACTION" = "ifup" ] \
-       && [ "$(uci -q get network.wan.proto)" = "pppoe" ] \
-       && [ "$(uci -q get network.wan6.proto)" = "6in4" ]; then
-
-    . /usr/lib/ddns/dynamic_dns_functions.sh
-
-    local tunnelid username password updatekey
-
-    tunnelid="$(uci -q get network.wan6.tunnelid)"
-    username="$(uci -q get network.wan6.username)"
-    password="$(uci -q get network.wan6.password)"
-    updatekey="$(uci -q get network.wan6.updatekey)"
-
-    [ -n "$tunnelid" -a -n "$username" -a \( -n "$password" -o -n "$updatekey" \) ] && {
-        [ -n "$updatekey" ] && password="$updatekey"
-
-        local url="http://ipv4.tunnelbroker.net/nic/update?username=$username&password=$password&hostname=$tunnelid"
-        local try=0
-        local max=5
-
-        while [ $((++try)) -le $max ]; do
-            ( exec wget -qO- "$url" 2>/dev/null | grep -qF "$(get_current_ip)" ) &
-            local pid=$!
-            ( sleep 10; kill $pid 2>/dev/null ) &
-            wait $pid && break
-        done
-    }
-
-fi
