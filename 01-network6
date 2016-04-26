@@ -19,5 +19,5 @@ if [ ! -e files/ipv6-domains ]; then
     ipv6_domains files/ipv6-hosts > files/ipv6-domains
 fi
 
-push files/99-ipv6 /etc/hotplug.d/iface/99-ipv6
+push files/99-network6 /etc/hotplug.d/iface/99-network6
 push files/ipv6-domains /etc/ipv6-domains
