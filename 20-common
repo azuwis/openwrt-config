@@ -7,6 +7,9 @@ set system.@system[0].zonename='Asia/Shanghai'
 EOF
 service reload system
 
+uci set system.@system[0].log_buffer_size='256'
+service reload log system
+
 uci_delete system.ntp.server
 uci_add_list system.ntp.server 0.debian.pool.ntp.org 1.debian.pool.ntp.org 2.debian.pool.ntp.org 3.debian.pool.ntp.org
 service restart sysntpd system
