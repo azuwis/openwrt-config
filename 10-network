@@ -1,3 +1,4 @@
+chmod 600 /etc/config/network
 
 uci batch <<EOF
 set network.wan.ipv6='0'
