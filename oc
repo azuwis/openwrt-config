@@ -59,12 +59,26 @@ do
         h) host="$OPTARG" ;;
         g) GEN_ONLY='yes' ;;
         k) KEEP='echo keep remote' ;;
-        m) remote_modules="$OPTARG" ;;
-        l) local_modules="$OPTARG" ;;
+        l)
+            local_modules_overrided=1
+            local_modules="$OPTARG"
+            ;;
+        m)
+            remote_modules_overrided=1
+            remote_modules="$OPTARG"
+            ;;
         p) ssh="ssh -p$OPTARG" ;;
         x) DEBUG='-x' ;;
     esac
 done
+
+if [ x"$local_modules_overrided" != x ]; then
+    if [ x"$remote_modules_overrided" = x ]; then
+        remote_modules=''
+    fi
+elif [ x"$remote_modules_overrided" != x ]; then
+    local_modules=''
+fi
 
 backup() {
     $ssh "$host" 'sysupgrade --create-backup -' | tar zxf -
