@@ -22,7 +22,7 @@ network.wan.proto=dhcp
 '
 
 config_network6='
-network.wan6.proto=none
+# network.wan6.proto=none
 '
 
 config_henet='
