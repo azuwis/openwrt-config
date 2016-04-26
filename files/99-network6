@@ -1,23 +1,30 @@
 #!/bin/sh
 
-CONF=/tmp/dnsmasq.d/ipv6.conf
+CONF=/var/dnsmasq.d/ipv6-domains.conf
 DNS_SERVER='2001:4860:4860::8888'
 
-# When wan6 is up
-if [ "$INTERFACE" = "wan6" ] && [ "$ACTION" = "ifup" ]; then
-    local domain
-    grep -Ev '(^#|^\s*$)' /etc/ipv6-domains | while read domain
-    do
-        echo "server=/$domain/${DNS_SERVER}"
-    done > $CONF
-    /etc/init.d/dnsmasq restart
-fi
+case "$INTERFACE" in
+    wan6|wan_6|henet)
+        if [ "$ACTION" = "ifup" -a ! -e "$CONF" ]; then
+            local domain
+            grep -Ev '(^#|^\s*$)' /etc/ipv6-domains | while read domain
+            do
+                echo "server=/$domain/${DNS_SERVER}"
+            done > $CONF
+            /etc/init.d/dnsmasq restart
+        elif [ "$ACTION" = "ifdown" -a -e "$CONF" ]; then
+            local iface_wan6
+            . /lib/functions/network.sh
+            network_find_wan6 iface_wan6
+            if [ x"$iface_wan6" = x ]; then
+                rm $CONF
+                /etc/init.d/dnsmasq restart
+            fi
+        fi
+        ;;
+esac
 
-# When wan6 is down
-if [ "$INTERFACE" = "wan6" ] && [ "$ACTION" = "ifdown" ]; then
-    rm $CONF
-    /etc/init.d/dnsmasq restart
-fi
+exit
 
 # When wan/pppoe is up
 if [ "$INTERFACE" = "wan" ] && [ "$ACTION" = "ifup" ] \
@@ -42,10 +49,10 @@ if [ "$INTERFACE" = "wan" ] && [ "$ACTION" = "ifup" ] \
 
         while [ $((++try)) -le $max ]; do
             ( exec wget -qO- "$url" 2>/dev/null | grep -qF "$(get_current_ip)" ) &
-		        local pid=$!
-		        ( sleep 10; kill $pid 2>/dev/null ) &
-		        wait $pid && break
-	      done
+            local pid=$!
+            ( sleep 10; kill $pid 2>/dev/null ) &
+            wait $pid && break
+        done
     }
 
 fi
