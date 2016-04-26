@@ -1,5 +1,5 @@
 #!/bin/sh
 
-date '+%b %d %H:%M:%S' >> /tmp/iface-test
+echo "---- $(date '+%b %d %H:%M:%S') ----" >> /tmp/iface-test
 env | grep -Ev '^(USER|SHLVL|HOME|LOGNAME|TERM|BOOT_IMAGE|PATH|PWD)' >> /tmp/iface-test
-echo '------------------------' >> /tmp/iface-test
+echo >> /tmp/iface-test
