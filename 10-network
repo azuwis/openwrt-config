@@ -1,13 +1,9 @@
-opkg_install 6to4
 
-uci_delete network.globals.ula_prefix
 uci batch <<EOF
 set network.wan.ipv6='0'
 set network.wan.password='${network_wan_password}'
 set network.wan.proto='${network_wan_proto}'
 set network.wan.username='${network_wan_username}'
-set network.wan6.ifname=''
-set network.wan6.proto='6to4'
 EOF
 service reload network
 
