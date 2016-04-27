@@ -122,6 +122,7 @@ service() {
             "/etc/init.d/$service" "$action"
             ;;
     esac
+    return 0
 }
 
 add_cron() {
