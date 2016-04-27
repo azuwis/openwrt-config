@@ -1,4 +1,9 @@
-opkg_install /tmp/adblock.ipk
+if [ "$(opkg info adblock | wc -l)" -gt 0 ]; then
+    opkg_install adblock
+else
+    opkg_install /tmp/adblock.ipk
+fi
+
 if [ ! -e /var/dnsmasq.d/adb_list.adaway ]; then
     service start adblock
 fi
