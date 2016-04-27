@@ -9,6 +9,7 @@ remote_modules="$(ls -1 [1-9][0-9]-*)"
 local_modules="$(ls -1 0[0-9]-*)"
 
 settings() {
+    local target
     target="$1"
     cat <<EOF
 
@@ -85,6 +86,7 @@ backup() {
 }
 
 download() {
+    local url basename file
     url="$1"
     basename="$(basename "$url")"
     file="$2"
@@ -98,6 +100,7 @@ download() {
 }
 
 push() {
+    local src dest md5sum_src md5sum_dest
     src="$1"
     dest="$2"
     if [ ! -e "$src" ]; then
@@ -113,6 +116,7 @@ push() {
 }
 
 generate_script() {
+    local remote_module
     cat functions
     settings "$target"
     for remote_module in $remote_modules
