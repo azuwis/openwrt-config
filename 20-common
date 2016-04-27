@@ -16,3 +16,9 @@ service restart sysntpd system
 
 uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
 service reload dnsmasq dhcp
+
+uci batch <<EOF
+set dropbear.@dropbear[0].PasswordAuth='off'
+set dropbear.@dropbear[0].RootPasswordAuth='off'
+EOF
+service reload dropbear
