@@ -127,12 +127,14 @@ service() {
 
 add_cron() {
     local name cron cron_file
-    cron="$1"
-    user="${2:-root}"
+    name="$1"
+    cron="$2"
+    user="${3:-root}"
     cron_file="/etc/crontabs/${user}"
     if [ ! -e "$cron_file" ] || ! grep -qxF "$cron" "$cron_file"; then
-        echo "cron: $cron"
-        echo "$cron" >> "$cron_file"
+        test -e "$cron_file" && sed -i -e "/^# ${name}\$/,+1d" "$cron_file"
+        echo "cron-${name}: $cron"
+        echo -e "# ${name}\n${cron}" >> "$cron_file"
         /etc/init.d/cron start
     fi
 }

@@ -7,4 +7,4 @@ else
     opkg_install /tmp/adblock.ipk
 fi
 
-add_cron '0 4 * * 0,3 /etc/init.d/adblock start'
+add_cron adblock '0 4 * * 0,3 /etc/init.d/adblock start'
