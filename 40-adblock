@@ -1,5 +1,6 @@
 opkg_install uhttpd
 
+opkg_update
 if [ "$(opkg info adblock | wc -l)" -gt 0 ]; then
     opkg_install adblock
 else
