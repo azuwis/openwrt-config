@@ -114,15 +114,14 @@ service() {
         reload|restart)
             if uci_commit "$config"; then
                 echo "service $action $service"
-                "/etc/init.d/$service" "$action"
+                : "/etc/init.d/$service" "$action"
             fi
             ;;
         *)
             echo "service $action $service"
-            "/etc/init.d/$service" "$action"
+            : "/etc/init.d/$service" "$action"
             ;;
     esac
-    return 0
 }
 
 add_cron() {
