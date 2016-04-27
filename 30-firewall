@@ -4,6 +4,7 @@ firewall_redirect() {
     while read proto src_dport dest_ip dest_port
     do
         uci add firewall redirect >/dev/null
+        uci set "firewall.@redirect[-1].target=DNAT"
         uci set "firewall.@redirect[-1].src=wan"
         uci set "firewall.@redirect[-1].dest=lan"
         uci set "firewall.@redirect[-1].proto=$proto"
