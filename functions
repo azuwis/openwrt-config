@@ -63,6 +63,7 @@ uci_commit() {
         return 2
     fi
     if config_changed "$config"; then
+        echo
         echo "uci changes:"
         uci changes "$config"
         echo
