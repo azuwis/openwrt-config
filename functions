@@ -115,12 +115,12 @@ service() {
         reload|restart)
             if uci_commit "$config"; then
                 echo "service $action $service"
-                : "/etc/init.d/$service" "$action"
+                "/etc/init.d/$service" "$action" || true
             fi
             ;;
         *)
             echo "service $action $service"
-            : "/etc/init.d/$service" "$action"
+            "/etc/init.d/$service" "$action" || true
             ;;
     esac
 }
