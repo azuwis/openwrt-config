@@ -33,6 +33,7 @@ uci_exists() {
     uci -q get "$config" >/dev/null
 }
 
+# XXX: not work if value contain space
 uci_add_list() {
     local key value
     key="$1"
