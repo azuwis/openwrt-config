@@ -1,0 +1,4 @@
+service disable dnsmasq
+service stop dnsmasq 2>/dev/null
+service disable firewall
+service stop firewall 2>/dev/null
