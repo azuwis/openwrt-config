@@ -156,4 +156,6 @@ do
     printf '%s\n' ------------------------------------------------------------
 done
 
-generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; chmod 400 $s; sh '$DEBUG' $s; '$KEEP' $s'
+if [ x"$remote_modules" != x ]; then
+    generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; chmod 400 $s; sh '$DEBUG' $s; '$KEEP' $s'
+fi
