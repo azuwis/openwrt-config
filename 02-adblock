@@ -1,2 +1,4 @@
-download https://downloads.openwrt.org/snapshots/trunk/ar71xx/nand/packages/packages/adblock_1.0.3-1_all.ipk files/adblock.ipk
-push files/adblock.ipk /tmp/adblock.ipk
+if ! $ssh "$host" 'opkg status adblock' | grep -q installed; then
+    download https://downloads.openwrt.org/snapshots/trunk/ar71xx/nand/packages/packages/adblock_1.0.3-1_all.ipk files/adblock.ipk
+    push files/adblock.ipk /tmp/adblock.ipk
+fi
