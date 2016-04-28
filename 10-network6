@@ -1,4 +1,6 @@
-opkg_install 6in4 6to4
+if echo "$config_network6" | grep -qxF 'network.wan6.proto=6to4'; then
+    opkg_install 6to4
+fi
 
 uci_delete network.globals.ula_prefix network.wan6 network.henet
 uci batch <<EOF
@@ -8,7 +10,8 @@ set network.wan6.metric='50'
 EOF
 uci_batch_set "$config_network6"
 
-if echo "$config_henet" | grep -q '^network\.henet';then
+if echo "$config_henet" | grep -q '^network\.henet'; then
+    opkg_install 6in4
     uci batch <<EOF
 set network.henet='interface'
 set network.henet.proto='6in4'
