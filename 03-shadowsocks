@@ -1,0 +1,19 @@
+push_shadowsocks() {
+    local version git_version ipk_version arch
+    version="2.4.6"
+    v_git="98cf545"
+    v_ipk="1"
+    arch="$($ssh "$host" '. /etc/openwrt_release; echo $DISTRIB_TARGET | cut -d/ -f1')"
+    download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/shadowsocks-libev/${version}-${v_git}/${arch}/shadowsocks-libev-spec_${version}-${v_ipk}_${arch}.ipk" /tmp/shadowsocks-libev.ipk shadowsocks-libev
+}
+push_shadowsocks
+
+push_chinadns() {
+    local version git_version ipk_version arch
+    version="1.3.2"
+    v_git="d3e75dd"
+    v_ipk="3"
+    arch="$($ssh "$host" '. /etc/openwrt_release; echo $DISTRIB_TARGET | cut -d/ -f1')"
+    download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/chinadns/${version}-${v_git}/ChinaDNS_${version}-${v_ipk}_${arch}.ipk" /tmp/chinadns.ipk ChinaDNS
+}
+push_chinadns
