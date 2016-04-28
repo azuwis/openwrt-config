@@ -115,6 +115,17 @@ push() {
     fi
 }
 
+download_push() {
+    local url dest package
+    url="$1"
+    dest="$2"
+    package="$3"
+    if [ x"$package" = x ] || ! $ssh "$host" opkg status "$package" | grep -q installed ; then
+        download "$url"
+        push "files/$(basename "$url")" "$dest"
+    fi
+}
+
 generate_script() {
     local remote_module
     cat functions
