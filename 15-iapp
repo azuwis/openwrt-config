@@ -9,5 +9,8 @@ then
     sed -i '1s#^#. /lib/config/uci.sh\n#' /lib/netifd/hostapd.sh
 fi
 
-uci_exists wireless.@wifi-iface[0] && uci set wireless.@wifi-iface[0].iapp_interface=lan
+if uci_exists wireless.@wifi-iface[0]; then
+    uci set wireless.@wifi-iface[0].iapp_interface=lan
+    uci set wireless.@wifi-iface[0].rsn_preauth=1
+fi
 service reload network wireless
