@@ -1,4 +1,4 @@
-opkg remove wpad-mini 2>/dev/null
+opkg remove wpad-mini >/dev/null
 opkg_install wpad
 
 uci_exists wireless.@wifi-iface[0] && uci set wireless.@wifi-iface[0].iapp_interface=lan
