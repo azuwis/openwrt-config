@@ -4,7 +4,7 @@ push_shadowsocks() {
     v_git="98cf545"
     v_ipk="1"
     arch="$($ssh -n "$host" '. /etc/openwrt_release; echo $DISTRIB_TARGET | cut -d/ -f1')"
-    download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/shadowsocks-libev/${version}-${v_git}/${arch}/shadowsocks-libev-spec_${version}-${v_ipk}_${arch}.ipk" /tmp/shadowsocks-libev.ipk shadowsocks-libev
+    download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/shadowsocks-libev/${version}-${v_git}/${arch}/shadowsocks-libev-spec_${version}-${v_ipk}_${arch}.ipk" /tmp/shadowsocks-libev-spec.ipk shadowsocks-libev-spec
 }
 push_shadowsocks
 
