@@ -14,6 +14,6 @@ push_chinadns() {
     v_git="d3e75dd"
     v_ipk="3"
     arch="$($ssh -n "$host" '. /etc/openwrt_release; echo $DISTRIB_TARGET | cut -d/ -f1')"
-    download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/chinadns/${version}-${v_git}/ChinaDNS_${version}-${v_ipk}_${arch}.ipk" /tmp/chinadns.ipk ChinaDNS
+    download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/chinadns/${version}-${v_git}/ChinaDNS_${version}-${v_ipk}_${arch}.ipk" /tmp/ChinaDNS.ipk ChinaDNS
 }
 push_chinadns
