@@ -4,7 +4,7 @@ DNS_SERVER='2001:4860:4860::8888'
 
 case "$INTERFACE" in
     wan6|wan_6|henet)
-        local conf=/var/dnsmasq.d/ipv6-domains.conf
+        local conf=/var/dnsmasq.d/99-ipv6-domains.conf
         if [ "$ACTION" = "ifup" -a ! -e "$conf" ]; then
             local domain
             grep -Ev '(^#|^\s*$)' /etc/ipv6-domains | while read domain
