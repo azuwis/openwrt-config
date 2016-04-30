@@ -7,4 +7,7 @@ else
     opkg_install /tmp/adblock.ipk
 fi
 
+uci set adblock.global.adb_forcedns='0'
+service restart adblock
+
 add_cron adblock '0 4 * * 0,3 /etc/init.d/adblock start'
