@@ -73,6 +73,17 @@ do
     esac
 done
 
+
+arch="$($ssh -n "$host" '. /etc/openwrt_release; echo $DISTRIB_TARGET')"
+case "$arch" in
+    x86/64)
+        arch="x86_64"
+        ;;
+    *)
+        arch="${arch%%/*}"
+        ;;
+esac
+
 if [ x"$local_modules_overrided" != x ]; then
     if [ x"$remote_modules_overrided" = x ]; then
         remote_modules=''
