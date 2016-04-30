@@ -23,6 +23,9 @@ opkg_install() {
             opkg_update
             echo "opkg install $package"
             opkg install "$package"
+            if [ x"${package::1}" = x'/' ]; then
+                rm -f "$package"
+            fi
         fi
     done
 }
