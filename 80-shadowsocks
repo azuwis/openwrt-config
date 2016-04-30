@@ -31,7 +31,7 @@ fi
 rm /tmp/pdnsd.conf
 
 opkg_install /tmp/ChinaDNS.ipk
-local_dns="$(awk '/^nameserver / {print $2}' /var/resolv.conf.auto | head -n1)"
+local_dns="$(awk '/^# Interface wan$/ {getline; print $2}' /var/resolv.conf.auto)"
 uci set chinadns.@chinadns[0].server="${local_dns},127.0.0.1:5354"
 service restart chinadns
 
