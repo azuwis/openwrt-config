@@ -73,6 +73,10 @@ do
     esac
 done
 
+if ! $ssh -n "$host" uptime >/dev/null; then
+    echo 'ssh failed'
+    exit
+fi
 
 arch="$($ssh -n "$host" '. /etc/openwrt_release; echo $DISTRIB_TARGET')"
 case "$arch" in
