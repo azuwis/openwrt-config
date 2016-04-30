@@ -117,7 +117,7 @@ service() {
     config="${3:-$service}"
     case "$action" in
         reload|restart)
-            if uci_commit "$config"; then
+            if [ x"$config" = x'-' ] || uci_commit "$config"; then
                 echo "service $action $service"
                 "/etc/init.d/$service" "$action" || true
             fi
@@ -145,6 +145,24 @@ add_cron() {
 
 hr() {
     printf '%s\n' ------------------------------------------------------------
+}
+
+md5sum_file() {
+    local file
+    file="$1"
+    md5sum "$file" | cut -d' ' -f1
+}
+
+copy() {
+    local src dest
+    src="$1"
+    dest="$2"
+    if [ x"$(md5sum_file "$src")" != x"$(md5sum_file "$dest")" ]; then
+        echo "copy: $src -> $dest"
+        cp "$src" "$dest"
+    else
+        return 1
+    fi
 }
 
 update_md5sums() {

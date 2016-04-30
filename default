@@ -51,3 +51,18 @@ config_sqm='
 # sqm.wan.download=
 # sqm.wan.upload=
 '
+
+config_shadowsocks='
+# shadowsocks.@servers[0].server=
+# shadowsocks.@servers[0].server_port=
+# shadowsocks.@servers[0].local_port=1080
+# shadowsocks.@servers[0].password=
+# shadowsocks.@servers[0].encrypt_method=
+# shadowsocks.@access_control[0].ipt_ext="-m multiport --dports 53,80,443"
+'
+
+config_pdnsd_forwarder='8.8.8.8'
+config_pdnsd_query_method='tcp_only'
+
+# config_unbound_forwarder='8.8.8.8'
+# config_unbound_tcp='yes'

@@ -1,0 +1,78 @@
+opkg_install /tmp/shadowsocks-libev-spec.ipk
+uci set shadowsocks.@global[0].global_server='@servers[0]'
+uci set shadowsocks.@access_control[0].wan_bp_list='/etc/chinadns_chnroute.txt'
+uci_batch_set "$config_shadowsocks"
+service restart shadowsocks
+
+opkg_install /tmp/pdnsd.ipk
+cat >/tmp/pdnsd.conf <<EOF
+global {
+    perm_cache = 1024;
+    cache_dir = "/var/pdnsd";
+    run_as = "nobody";
+    server_ip = 127.0.0.1;
+    server_port = 5354;
+    status_ctl = on;
+    min_ttl = 15m;
+    query_method = ${config_pdnsd_query_method};
+    timeout = 10;
+    neg_domain_pol = on;
+}
+
+server {
+    label = "server1";
+    ip = "${config_pdnsd_forwarder}";
+    timeout = 5;
+}
+EOF
+if copy /tmp/pdnsd.conf /etc/pdnsd.conf; then
+    service restart pdnsd -
+fi
+rm /tmp/pdnsd.conf
+
+opkg_install /tmp/ChinaDNS.ipk
+local_dns="$(awk '/^nameserver / {print $2}' /var/resolv.conf.auto | head -n1)"
+uci set chinadns.@chinadns[0].server="${local_dns},127.0.0.1:5354"
+service restart chinadns
+
+# opkg_install unbound
+# cat >/tmp/unbound.conf <<EOF
+# server:
+#     port: 5354
+#     cache-min-ttl: 900
+#     tcp-upstream: ${config_unbound_tcp}
+
+#     outgoing-range: 60
+#     outgoing-num-tcp: 1
+#     incoming-num-tcp: 1
+
+#     msg-buffer-size: 8192
+#     msg-cache-size: 100k
+#     msg-cache-slabs: 1
+#     num-queries-per-thread: 30
+
+#     rrset-cache-size: 100k
+#     rrset-cache-slabs: 1
+
+#     infra-cache-slabs: 1
+#     infra-cache-numhosts: 200
+
+#     username: "nobody"
+#     pidfile: "/var/run/unbound.pid"
+
+#     target-fetch-policy: "2 1 0 0 0 0"
+#     harden-short-bufsize: yes
+#     harden-large-queries: yes
+
+#     key-cache-size: 100k
+#     key-cache-slabs: 1
+#     neg-cache-size: 10k
+
+# forward-zone:
+#     name: "."
+#     forward-addr: ${config_unbound_forwarder}
+# EOF
+# if copy /tmp/unbound.conf /etc/unbound/unbound.conf; then
+#     service restart unbound -
+# fi
+# rm /tmp/unbound.conf

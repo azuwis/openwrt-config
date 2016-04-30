@@ -15,3 +15,12 @@ push_chinadns() {
     download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/chinadns/${version}-${v_git}/ChinaDNS_${version}-${v_ipk}_${arch}.ipk" /tmp/ChinaDNS.ipk ChinaDNS
 }
 push_chinadns
+
+download_push "https://downloads.openwrt.org/barrier_breaker/14.07/${arch}/generic/packages/oldpackages/pdnsd_1.2.9a-par-a8e46ccba7b0fa2230d6c42ab6dcd92926f6c21d_${arch}.ipk" /tmp/pdnsd.ipk pdnsd
+
+# push_dnsproxy() {
+#     local version
+#     version='0.4.6.1-1'
+#     download_push "https://github.com/wongsyrone/openwrt-Pcap_DNSProxy/raw/prebuilt-ipks/chaos_calmer/15.05.1/x86/generic/pcap-dnsproxy_${version}_${arch}.ipk" /tmp/pcap-dnsproxy.ipk pcap-dnsproxy
+# }
+# push_dnsproxy
