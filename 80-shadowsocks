@@ -18,6 +18,7 @@ uci_batch_set "$config_shadowsocks"
 service restart shadowsocks
 
 opkg_install /tmp/pdnsd.ipk
+service enable pdnsd
 cat >/tmp/pdnsd.conf <<EOF
 global {
     perm_cache = 1024;
