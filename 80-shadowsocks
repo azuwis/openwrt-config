@@ -1,4 +1,12 @@
 opkg_install /tmp/ChinaDNS.ipk
+if ! grep -qF 'mkdir -p /tmp/dnsmasq.d' /etc/init.d/chinadns; then
+    echo 'patch /etc/init.d/chinadns start()'
+    sed -i -e '/start_chinadns chinadns/a mkdir -p /tmp/dnsmasq.d; echo -e "no-resolv\\nserver=127.0.0.1#5353" >/tmp/dnsmasq.d/10-chinadns.conf; /etc/init.d/dnsmasq restart' /etc/init.d/chinadns
+fi
+if ! grep -qF 'rm -f /tmp/dnsmasq.d/10-chinadns.conf' /etc/init.d/chinadns; then
+    echo 'patch /etc/init.d/chinadns stop()'
+    sed -i -e '/service_stop \/usr\/bin\/chinadns/a rm -f /tmp/dnsmasq.d/10-chinadns.conf; /etc/init.d/dnsmasq restart' /etc/init.d/chinadns
+fi
 local_dns="$(awk '/^# Interface wan$/ {getline; print $2}' /var/resolv.conf.auto)"
 uci set chinadns.@chinadns[0].server="${local_dns},127.0.0.1:5354"
 service restart chinadns
