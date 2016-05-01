@@ -12,7 +12,6 @@ uci set chinadns.@chinadns[0].server="${local_dns},127.0.0.1:5354"
 service restart chinadns
 
 opkg_install /tmp/shadowsocks-libev-spec.ipk
-uci set shadowsocks.@global[0].global_server='@servers[0]'
 uci set shadowsocks.@access_control[0].wan_bp_list='/etc/chinadns_chnroute.txt'
 uci_batch_set "$config_shadowsocks"
 service restart shadowsocks
