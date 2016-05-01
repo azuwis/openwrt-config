@@ -36,7 +36,11 @@ config_henet='
 '
 
 config_redirect='
-# tcp 22
+# tcp 22220
+# tcp 22221 - 22
+# tcp 22222 192.168.1.2
+# tcp 22223 192.168.1.2 22
+# udp 22224:22229 192.168.1.2
 '
 
 config_ddns='
