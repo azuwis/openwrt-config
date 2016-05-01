@@ -37,10 +37,9 @@ server {
     timeout = 5;
 }
 EOF
-if copy /tmp/pdnsd.conf /etc/pdnsd.conf; then
+if move /tmp/pdnsd.conf /etc/pdnsd.conf; then
     service restart pdnsd -
 fi
-rm /tmp/pdnsd.conf
 
 # opkg_install unbound
 # cat >/tmp/unbound.conf <<EOF
@@ -79,7 +78,6 @@ rm /tmp/pdnsd.conf
 #     name: "."
 #     forward-addr: ${config_unbound_forwarder}
 # EOF
-# if copy /tmp/unbound.conf /etc/unbound/unbound.conf; then
+# if move /tmp/unbound.conf /etc/unbound/unbound.conf; then
 #     service restart unbound -
 # fi
-# rm /tmp/unbound.conf

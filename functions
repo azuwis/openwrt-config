@@ -153,14 +153,15 @@ md5sum_file() {
     md5sum "$file" | cut -d' ' -f1
 }
 
-copy() {
+move() {
     local src dest
     src="$1"
     dest="$2"
     if [ x"$(md5sum_file "$src")" != x"$(md5sum_file "$dest")" ]; then
-        echo "copy: $src -> $dest"
-        cp "$src" "$dest"
+        echo "move: $src -> $dest"
+        mv "$src" "$dest"
     else
+        rm "$src"
         return 1
     fi
 }
