@@ -1,5 +1,6 @@
 /*.conf
 /*.gpg
 /files/*.ipk
+/files/delegated-apnic-latest
 /files/ipv6-hosts
 /test

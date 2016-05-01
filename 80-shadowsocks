@@ -1,4 +1,5 @@
 opkg_install /tmp/ChinaDNS.ipk
+move /tmp/chinadns_chnroute.txt /etc/chinadns_chnroute.txt
 if ! grep -qF 'mkdir -p /tmp/dnsmasq.d' /etc/init.d/chinadns; then
     echo 'patch /etc/init.d/chinadns start()'
     sed -i -e '/start_chinadns chinadns/a mkdir -p /tmp/dnsmasq.d; echo -e "no-resolv\\nserver=127.0.0.1#5353" >/tmp/dnsmasq.d/10-chinadns.conf; /etc/init.d/dnsmasq restart' /etc/init.d/chinadns

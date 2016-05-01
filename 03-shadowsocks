@@ -16,6 +16,17 @@ push_chinadns() {
 }
 push_chinadns
 
+chnroute() {
+    awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }'
+}
+if [ ! -e files/chinadns_chnroute.txt ]; then
+    if [ ! -e files/delegated-apnic-latest ]; then
+        download http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
+    fi
+    chnroute < files/delegated-apnic-latest > files/chinadns_chnroute.txt
+fi
+push files/chinadns_chnroute.txt /tmp/chinadns_chnroute.txt >/dev/null
+
 download_push "https://downloads.openwrt.org/barrier_breaker/14.07/${arch}/generic/packages/oldpackages/pdnsd_1.2.9a-par-a8e46ccba7b0fa2230d6c42ab6dcd92926f6c21d_${arch}.ipk" /tmp/pdnsd.ipk pdnsd
 
 # push_dnsproxy() {
