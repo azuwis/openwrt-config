@@ -74,12 +74,21 @@ config_sqm='
 
 config_shadowsocks='
 # shadowsocks.@global[0].global_server=@servers[0]
+# shadowsocks.@access_control[0].ipt_ext="-m multiport --dports 53,80,443"
+
+# shadowsocks.@servers[0]=servers
 # shadowsocks.@servers[0].server=
 # shadowsocks.@servers[0].server_port=
 # shadowsocks.@servers[0].local_port=1080
 # shadowsocks.@servers[0].password=
 # shadowsocks.@servers[0].encrypt_method=
-# shadowsocks.@access_control[0].ipt_ext="-m multiport --dports 53,80,443"
+
+# shadowsocks.@servers[1]=servers
+# shadowsocks.@servers[1].server=
+# shadowsocks.@servers[1].server_port=
+# shadowsocks.@servers[1].local_port=1081
+# shadowsocks.@servers[1].password=
+# shadowsocks.@servers[1].encrypt_method=
 '
 
 config_pdnsd_forwarder='8.8.8.8'
