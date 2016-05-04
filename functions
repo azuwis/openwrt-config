@@ -122,6 +122,12 @@ service() {
                 "/etc/init.d/$service" "$action" || true
             fi
             ;;
+        enable)
+            if ! "/etc/init.d/$service" enabled; then
+                echo "service $action $service"
+                "/etc/init.d/$service" "$action" || true
+            fi
+            ;;
         *)
             echo "service $action $service"
             "/etc/init.d/$service" "$action" || true
