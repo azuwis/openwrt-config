@@ -5,8 +5,8 @@
 DEBUG=''
 GEN_ONLY='no'
 KEEP='rm'
-remote_modules="$(ls -1 [1-9][0-9]-*)"
-local_modules="$(ls -1 0[0-9]-*)"
+remote_modules="$(ls -1 remote-[0-9][0-9][0-9]-*)"
+local_modules="$(ls -1 local-[0-9][0-9][0-9]-*)"
 
 settings() {
     local target
@@ -148,7 +148,7 @@ generate_script() {
     for remote_module in $remote_modules
     do
         cat <<EOF
-echo "Begin remote $remote_module"
+echo "Begin $remote_module"
 EOF
         if [ -x "$remote_module" ]; then
             "./$remote_module"
@@ -171,7 +171,7 @@ fi
 
 for local_module in $local_modules
 do
-    echo "Begin local  $local_module"
+    echo "Begin $local_module"
     if [ x"$DEBUG" != x ]; then
         set -x
     fi
