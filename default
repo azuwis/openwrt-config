@@ -91,8 +91,5 @@ config_shadowsocks='
 # shadowsocks.@servers[1].encrypt_method=
 '
 
-config_pdnsd_forwarder='8.8.8.8'
-config_pdnsd_query_method='tcp_only'
-
-# config_unbound_forwarder='8.8.8.8'
-# config_unbound_tcp='yes'
+config_unbound_forwarder='8.8.8.8'
+config_unbound_tcp='yes'

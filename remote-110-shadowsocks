@@ -3,30 +3,44 @@ uci set shadowsocks.@access_control[0].wan_bp_list='/etc/chinadns_chnroute.txt'
 uci_batch_set "$config_shadowsocks"
 service restart shadowsocks
 
-opkg_install /tmp/pdnsd.ipk
-service enable pdnsd
-cat >/tmp/pdnsd.conf <<EOF
-global {
-    perm_cache = 1024;
-    cache_dir = "/var/pdnsd";
-    run_as = "nobody";
-    server_ip = 127.0.0.1;
-    server_port = 5354;
-    status_ctl = on;
-    min_ttl = 15m;
-    query_method = ${config_pdnsd_query_method};
-    timeout = 10;
-    neg_domain_pol = on;
-}
+opkg_install unbound
+cat >/tmp/unbound.conf <<EOF
+server:
+    username: "nobody"
+    pidfile: "/var/run/unbound.pid"
 
-server {
-    label = "server1";
-    ip = "${config_pdnsd_forwarder}";
-    timeout = 5;
-}
+    port: 5354
+    cache-min-ttl: 900
+    # prefetch: yes
+    tcp-upstream: ${config_unbound_tcp}
+
+    num-threads: 1
+    outgoing-num-tcp: 1
+    incoming-num-tcp: 1
+    outgoing-range: 60
+    num-queries-per-thread: 30
+
+    msg-buffer-size: 8192
+    msg-cache-size: 100k
+    msg-cache-slabs: 1
+    rrset-cache-size: 100k
+    rrset-cache-slabs: 1
+    infra-cache-slabs: 1
+    infra-cache-numhosts: 200
+    key-cache-size: 100k
+    key-cache-slabs: 1
+    neg-cache-size: 10k
+
+    target-fetch-policy: "2 1 0 0 0 0"
+    harden-short-bufsize: yes
+    harden-large-queries: yes
+
+forward-zone:
+    name: "."
+    forward-addr: ${config_unbound_forwarder}
 EOF
-if move /tmp/pdnsd.conf /etc/pdnsd.conf; then
-    service restart pdnsd -
+if move /tmp/unbound.conf /etc/unbound/unbound.conf; then
+    service restart unbound -
 fi
 
 opkg_install /tmp/ChinaDNS.ipk
@@ -40,46 +54,5 @@ if ! grep -qF 'rm -f /tmp/dnsmasq.d/10-chinadns.conf' /etc/init.d/chinadns; then
     sed -i -e '/service_stop \/usr\/bin\/chinadns/a rm -f /tmp/dnsmasq.d/10-chinadns.conf; /etc/init.d/dnsmasq restart' /etc/init.d/chinadns
 fi
 local_dns="$(awk '/^# Interface wan$/ {getline; print $2}' /var/resolv.conf.auto)"
-uci set chinadns.@chinadns[0].server="${local_dns},127.0.0.1:5354"
+uci set chinadns.@chinadns[0].server="${local_dns},127.0.0.1#5354"
 service restart chinadns
-
-# opkg_install unbound
-# cat >/tmp/unbound.conf <<EOF
-# server:
-#     port: 5354
-#     cache-min-ttl: 900
-#     tcp-upstream: ${config_unbound_tcp}
-
-#     outgoing-range: 60
-#     outgoing-num-tcp: 1
-#     incoming-num-tcp: 1
-
-#     msg-buffer-size: 8192
-#     msg-cache-size: 100k
-#     msg-cache-slabs: 1
-#     num-queries-per-thread: 30
-
-#     rrset-cache-size: 100k
-#     rrset-cache-slabs: 1
-
-#     infra-cache-slabs: 1
-#     infra-cache-numhosts: 200
-
-#     username: "nobody"
-#     pidfile: "/var/run/unbound.pid"
-
-#     target-fetch-policy: "2 1 0 0 0 0"
-#     harden-short-bufsize: yes
-#     harden-large-queries: yes
-
-#     key-cache-size: 100k
-#     key-cache-slabs: 1
-#     neg-cache-size: 10k
-
-# forward-zone:
-#     name: "."
-#     forward-addr: ${config_unbound_forwarder}
-# EOF
-# if move /tmp/unbound.conf /etc/unbound/unbound.conf; then
-#     service restart unbound -
-# fi
