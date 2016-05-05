@@ -12,3 +12,4 @@
 
 uci set dhcp.@dnsmasq[0].remote_dns="$config_dnsmasq_remote_dns"
 uci_commit dhcp || true
+INTERFACE='wan' ACTION='ifup' sh /etc/hotplug.d/iface/99-cn-domains
