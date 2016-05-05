@@ -1,0 +1,39 @@
+opkg_install unbound
+cat >/tmp/unbound.conf <<EOF
+server:
+    username: "nobody"
+    pidfile: "/var/run/unbound.pid"
+
+    port: 5354
+    cache-min-ttl: 900
+    # prefetch: yes
+    tcp-upstream: ${config_unbound_tcp}
+
+    num-threads: 1
+    outgoing-num-tcp: 1
+    incoming-num-tcp: 1
+    outgoing-range: 60
+    num-queries-per-thread: 30
+
+    msg-buffer-size: 8192
+    msg-cache-size: 100k
+    msg-cache-slabs: 1
+    rrset-cache-size: 100k
+    rrset-cache-slabs: 1
+    infra-cache-slabs: 1
+    infra-cache-numhosts: 200
+    key-cache-size: 100k
+    key-cache-slabs: 1
+    neg-cache-size: 10k
+
+    target-fetch-policy: "2 1 0 0 0 0"
+    harden-short-bufsize: yes
+    harden-large-queries: yes
+
+forward-zone:
+    name: "."
+    forward-addr: ${config_unbound_forwarder}
+EOF
+if move /tmp/unbound.conf /etc/unbound/unbound.conf; then
+    service restart unbound -
+fi
