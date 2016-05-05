@@ -1,0 +1,14 @@
+# if ! grep -qF '/etc/cn-domains' /etc/init.d/dnsmasq; then
+#     echo 'patch /etc/init.d/dnsmasq'
+#     sed -i -e '/config_foreach dhcp_cname_add cname/{
+# n
+# n
+# a \
+# 	while read domain; do echo "server=/$domain/'$config_dnsmasq_local_dns'"; done < /etc/cn-domains >> $CONFIGFILE\
+# 	echo "server=/./'$config_dnsmasq_remote_dns'" >> $CONFIGFILE\
+
+# }' /etc/init.d/dnsmasq
+# fi
+
+uci set dhcp.@dnsmasq[0].remote_dns="$config_dnsmasq_remote_dns"
+uci_commit dhcp || true

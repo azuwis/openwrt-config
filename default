@@ -93,3 +93,5 @@ config_shadowsocks='
 
 config_unbound_forwarder='8.8.8.8'
 config_unbound_tcp='yes'
+
+config_dnsmasq_remote_dns='127.0.0.1#5354'

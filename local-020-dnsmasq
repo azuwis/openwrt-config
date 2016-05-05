@@ -1,0 +1,13 @@
+cn_domains() {
+    sed -e 's!^server=/!!' -e 's!/114.114.114.114$!!'
+}
+
+if [ ! -e files/cn-domains ]; then
+    if [ ! -e files/accelerated-domains.china.conf ]; then
+        download https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
+    fi
+    cn_domains < files/accelerated-domains.china.conf > files/cn-domains
+fi
+
+push files/cn-domains /etc/cn-domains
+push files/99-cn-domains /etc/hotplug.d/iface/99-cn-domains
