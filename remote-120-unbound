@@ -6,7 +6,7 @@ server:
 
     port: 5354
     cache-min-ttl: 900
-    # prefetch: yes
+    prefetch: yes
     tcp-upstream: ${config_unbound_tcp}
 
     num-threads: 1
