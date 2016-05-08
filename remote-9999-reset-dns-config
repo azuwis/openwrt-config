@@ -13,8 +13,8 @@ opkg_remove unbound
 rm -rf /etc/unbound/
 echo
 
-# cn-domains
-echo 'clean cn-domains'
+# chn-domains
+echo 'clean chn-domains'
 remove /etc/chn-domains /etc/hotplug.d/iface/99-chn-domains /tmp/dnsmasq.d/99-chn-domains.conf
 echo
 
