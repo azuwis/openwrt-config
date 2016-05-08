@@ -3,7 +3,7 @@
 case "$INTERFACE" in
     wan)
         local conf
-        conf=/var/dnsmasq.d/99-chn-domains.conf
+        conf=/tmp/dnsmasq.d/99-chn-domains.conf
         if [ "$ACTION" = "ifup" -a ! -e "$conf" ]; then
             local local_dns="$(awk '/^# Interface wan$/ {getline; print $2}' /var/resolv.conf.auto)"
             if [ x"$local_dns" = x ]; then
