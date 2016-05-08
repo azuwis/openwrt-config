@@ -117,6 +117,7 @@ service() {
     config="${3:-$service}"
     if [ ! -e "/etc/init.d/$service" ]; then
         echo "/etc/init.d/$service not exists"
+        return 0
     fi
     case "$action" in
         reload|restart)
