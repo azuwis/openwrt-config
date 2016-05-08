@@ -1,4 +1,7 @@
 opkg_install /tmp/shadowsocks-libev-spec.ipk
 uci set shadowsocks.@access_control[0].wan_bp_list='/etc/chinadns_chnroute.txt'
 uci_batch_set "$config_shadowsocks"
+if uci_exists shadowsocks.@global[0].udp_relay_server; then
+    opkg_install kmod-ipt-tproxy iptables-mod-tproxy
+fi
 service restart shadowsocks
