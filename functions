@@ -30,6 +30,15 @@ opkg_install() {
     done
 }
 
+opkg_remove() {
+    local package
+    package="$1"
+    if opkg_installed "$package"; then
+        echo "opkg remove $package"
+        opkg --autoremove remove "$package"
+    fi
+}
+
 uci_exists() {
     local config
     config="$1"
@@ -116,7 +125,6 @@ service() {
     service="$2"
     config="${3:-$service}"
     if [ ! -e "/etc/init.d/$service" ]; then
-        echo "/etc/init.d/$service not exists"
         return 0
     fi
     case "$action" in
@@ -174,6 +182,17 @@ move() {
         rm "$src"
         return 1
     fi
+}
+
+remove (){
+    local file
+    for file in "$@"
+    do
+        if [ -f "$file" ]; then
+            echo "remove $file"
+            rm "$file"
+        fi
+    done
 }
 
 update_md5sums() {

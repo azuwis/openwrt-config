@@ -3,20 +3,19 @@ echo
 # chinadns
 echo 'clean chinadns'
 service stop chinadns || true
-opkg remove ChinaDNS
+opkg_remove ChinaDNS
 rm -f /tmp/dnsmasq.d/10-chinadns.conf
 echo
 
 # unbound
 echo 'clean unbound'
-opkg remove unbound
+opkg_remove unbound
 rm -rf /etc/unbound/
 echo
 
 # cn-domains
 echo 'clean cn-domains'
-rm -f /etc/hotplug.d/iface/99-cn-domains /tmp/dnsmasq.d/99-cn-domains.conf
+remove /etc/chn-domains /etc/hotplug.d/iface/99-chn-domains /tmp/dnsmasq.d/99-chn-domains.conf
 echo
 
-echo 'restart dnsmasq'
-/etc/init.d/dnsmasq restart
+service restart dnsmasq -
