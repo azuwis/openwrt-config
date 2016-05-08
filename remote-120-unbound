@@ -1,4 +1,4 @@
-opkg_install unbound
+opkg_install unbound >/dev/null 2>&1
 cat >/tmp/unbound.conf <<EOF
 server:
     username: "nobody"
@@ -35,5 +35,5 @@ forward-zone:
     forward-addr: ${config_unbound_forwarder}
 EOF
 if move /tmp/unbound.conf /etc/unbound/unbound.conf; then
-    service restart unbound -
+    service restart unbound - 2>/dev/null
 fi
