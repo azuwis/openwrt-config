@@ -73,12 +73,16 @@ do
     esac
 done
 
-if ! $ssh -n "$host" uptime >/dev/null; then
+remote() {
+    $ssh -n "$host" "$@"
+}
+
+if ! remote uptime >/dev/null; then
     echo 'ssh failed'
     exit
 fi
 
-arch="$($ssh -n "$host" '. /etc/openwrt_release; echo $DISTRIB_TARGET')"
+arch="$(remote '. /etc/openwrt_release; echo $DISTRIB_TARGET')"
 case "$arch" in
     x86/64)
         arch="x86_64"
@@ -97,7 +101,7 @@ elif [ x"$remote_modules_overrided" != x ]; then
 fi
 
 backup() {
-    $ssh "$host" 'sysupgrade --create-backup -' | tar zxf -
+    remote 'sysupgrade --create-backup -' | tar zxf -
 }
 
 download() {
@@ -123,7 +127,7 @@ push() {
         return
     fi
     md5sum_src=$(md5sum "$src" | cut -d' ' -f1)
-    md5sum_dest=$($ssh -n "$host" "md5sum $dest 2>/dev/null | cut -d' ' -f1")
+    md5sum_dest=$(remote "md5sum $dest 2>/dev/null | cut -d' ' -f1")
     if [ x"$md5sum_src" != x"$md5sum_dest" ]; then
         echo "push: $src -> $dest"
         $scp "$src" "${host}:${dest}"
@@ -135,7 +139,7 @@ download_push() {
     url="$1"
     dest="$2"
     package="$3"
-    if [ x"$package" = x ] || ! $ssh -n "$host" opkg status "$package" | grep -q installed ; then
+    if [ x"$package" = x ] || ! remote opkg status "$package" | grep -q installed ; then
         download "$url"
         push "files/$(basename "$url")" "$dest"
     fi
