@@ -115,6 +115,9 @@ service() {
     action="$1"
     service="$2"
     config="${3:-$service}"
+    if [ ! -e "/etc/init.d/$service" ]; then
+        echo "/etc/init.d/$service not exists"
+    fi
     case "$action" in
         reload|restart)
             if [ x"$config" = x'-' ] || uci_commit "$config"; then
