@@ -1,10 +1,10 @@
-# if ! grep -qF '/etc/cn-domains' /etc/init.d/dnsmasq; then
+# if ! grep -qF '/etc/chn-domains' /etc/init.d/dnsmasq; then
 #     echo 'patch /etc/init.d/dnsmasq'
 #     sed -i -e '/config_foreach dhcp_cname_add cname/{
 # n
 # n
 # a \
-# 	while read domain; do echo "server=/$domain/'$config_dnsmasq_local_dns'"; done < /etc/cn-domains >> $CONFIGFILE\
+# 	while read domain; do echo "server=/$domain/'$config_dnsmasq_local_dns'"; done < /etc/chn-domains >> $CONFIGFILE\
 # 	echo "server=/./'$config_dnsmasq_remote_dns'" >> $CONFIGFILE\
 
 # }' /etc/init.d/dnsmasq
@@ -12,4 +12,4 @@
 
 uci set dhcp.@dnsmasq[0].remote_dns="$config_dnsmasq_remote_dns"
 uci_commit dhcp || true
-INTERFACE='wan' ACTION='ifup' sh /etc/hotplug.d/iface/99-cn-domains
+INTERFACE='wan' ACTION='ifup' sh /etc/hotplug.d/iface/99-chn-domains

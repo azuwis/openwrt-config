@@ -1,0 +1,14 @@
+chn_domains() {
+    sed -e 's!^server=/!!' -e 's!/114.114.114.114$!!'
+}
+
+if [ ! -e files/chn-domains ]; then
+    if [ ! -e files/accelerated-domains.china.conf ]; then
+        download https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
+    fi
+    chn_domains < files/accelerated-domains.china.conf > files/chn-domains
+    echo 'ipv4.tunnelbroker.net' >> files/chn-domains
+fi
+
+push files/chn-domains /etc/chn-domains
+push files/99-chn-domains /etc/hotplug.d/iface/99-chn-domains

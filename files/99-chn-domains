@@ -3,14 +3,14 @@
 case "$INTERFACE" in
     wan)
         local conf
-        conf=/var/dnsmasq.d/99-cn-domains.conf
+        conf=/var/dnsmasq.d/99-chn-domains.conf
         if [ "$ACTION" = "ifup" -a ! -e "$conf" ]; then
             local local_dns="$(awk '/^# Interface wan$/ {getline; print $2}' /var/resolv.conf.auto)"
             if [ x"$local_dns" = x ]; then
                 exit
             fi
             local domain
-            grep -Ev '(^#|^\s*$)' /etc/cn-domains | while read domain
+            grep -Ev '(^#|^\s*$)' /etc/chn-domains | while read domain
             do
                 echo "server=/$domain/${local_dns}"
             done > $conf
