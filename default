@@ -88,7 +88,7 @@ config_shadowsocks='
 config_unbound_forwarder='8.8.8.8'
 config_unbound_tcp='yes'
 
-config_dnsmasq_remote_dns='127.0.0.1#5354'
+config_chn_domains_remote_dns='127.0.0.1#5354'
 
 config_pcap_dnsproxy_dns=''
 config_pcap_dnsproxy_protocol=''

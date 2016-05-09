@@ -5,12 +5,12 @@
 # n
 # a \
 # 	while read domain; do echo "server=/$domain/'$config_dnsmasq_local_dns'"; done < /etc/chn-domains >> $CONFIGFILE\
-# 	echo "server=/./'$config_dnsmasq_remote_dns'" >> $CONFIGFILE\
+# 	echo "server=/./'$config_chn_domains_remote_dns'" >> $CONFIGFILE\
 
 # }' /etc/init.d/dnsmasq
 # fi
 
-uci set dhcp.@dnsmasq[0].remote_dns="$config_dnsmasq_remote_dns"
+uci set dhcp.@dnsmasq[0].remote_dns="$config_chn_domains_remote_dns"
 uci_commit dhcp || true
 if [ ! -e /tmp/dnsmasq.d/99-chn-domains.conf ]; then
     echo 'run /etc/hotplug.d/iface/99-chn-domains'
