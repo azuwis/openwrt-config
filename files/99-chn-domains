@@ -15,6 +15,10 @@ case "$INTERFACE" in
             do
                 echo "server=/$domain/${local_dns}"
             done > $conf
+            grep -Ev '(^#|^\s*$)' /etc/bypass-domains | while read domain
+            do
+                echo "ipset=/$domain/ss_spec_wan_ac"
+            done >> $conf
             local remote_dns
             remote_dns="$(uci -q get dhcp.@dnsmasq[0].remote_dns)"
             printf "no-resolv\nserver=%s\n" "$remote_dns" >> $conf

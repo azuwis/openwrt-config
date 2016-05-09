@@ -7,8 +7,8 @@ if [ ! -e files/chn-domains ]; then
         download https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
     fi
     chn_domains < files/accelerated-domains.china.conf > files/chn-domains
-    echo 'ipv4.tunnelbroker.net' >> files/chn-domains
 fi
 
 push files/chn-domains /etc/chn-domains
+push files/bypass-domains /etc/bypass-domains
 push files/99-chn-domains /etc/hotplug.d/iface/99-chn-domains
