@@ -18,4 +18,11 @@ echo 'clean chn-domains'
 remove /etc/chn-domains /etc/hotplug.d/iface/99-chn-domains /tmp/dnsmasq.d/99-chn-domains.conf
 echo
 
+# pcap-dnsproxy
+echo 'clean pcap-dnsproxy'
+opkg_remove pcap-dnsproxy
+opkg_remove pcap-dnsproxy libsodium libpcap
+rm -rf /etc/pcap-dnsproxy
+echo
+
 service restart dnsmasq -

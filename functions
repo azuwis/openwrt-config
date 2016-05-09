@@ -32,11 +32,13 @@ opkg_install() {
 
 opkg_remove() {
     local package
-    package="$1"
-    if opkg_installed "$package"; then
-        echo "opkg remove $package"
-        opkg --autoremove remove "$package"
-    fi
+    for package in "$@"
+    do
+        if opkg_installed "$package"; then
+            echo "opkg remove $package"
+            opkg --autoremove remove "$package" || true
+        fi
+    done
 }
 
 uci_exists() {
