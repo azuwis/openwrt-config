@@ -1,0 +1,9 @@
+opkg_install /tmp/libsodium.ipk /tmp/libpcap.ipk /tmp/pcap-dnsproxy.ipk
+uci set pcap-dnsproxy.@pcap-dnsproxy[0].enabled='1'
+service restart pcap-dnsproxy
+sed -e 's/^Local Main = .*/Local Main = 1/' \
+    -e 's/^Local Routing = .*/Local Routing = 1/' \
+    /etc/pcap-dnsproxy/Config.conf > /tmp/pcap-dnsproxy-Config.conf
+if move /tmp/pcap-dnsproxy-Config.conf /etc/pcap-dnsproxy/Config.conf; then
+    service restart pcap-dnsproxy -
+fi

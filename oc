@@ -82,13 +82,13 @@ if ! remote uptime >/dev/null; then
     exit
 fi
 
-arch="$(remote '. /etc/openwrt_release; echo $DISTRIB_TARGET')"
-case "$arch" in
+arch_full="$(remote '. /etc/openwrt_release; echo $DISTRIB_TARGET')"
+case "$arch_full" in
     x86/64)
         arch="x86_64"
         ;;
     *)
-        arch="${arch%%/*}"
+        arch="${arch_full%%/*}"
         ;;
 esac
 
