@@ -73,25 +73,6 @@ do
     esac
 done
 
-remote() {
-    $ssh -n "$host" "$@"
-}
-
-if ! remote uptime >/dev/null; then
-    echo 'ssh failed'
-    exit
-fi
-
-arch_full="$(remote '. /etc/openwrt_release; echo $DISTRIB_TARGET')"
-case "$arch_full" in
-    x86/64)
-        arch="x86_64"
-        ;;
-    *)
-        arch="${arch_full%%/*}"
-        ;;
-esac
-
 if [ x"$local_modules_overrided" != x ]; then
     if [ x"$remote_modules_overrided" = x ]; then
         remote_modules=''
@@ -172,6 +153,25 @@ if [ "$GEN_ONLY" = 'yes' ]; then
     generate_script
     exit
 fi
+
+remote() {
+    $ssh -n "$host" "$@"
+}
+
+if ! remote uptime >/dev/null; then
+    echo 'ssh failed'
+    exit
+fi
+
+arch_full="$(remote '. /etc/openwrt_release; echo $DISTRIB_TARGET')"
+case "$arch_full" in
+    x86/64)
+        arch="x86_64"
+        ;;
+    *)
+        arch="${arch_full%%/*}"
+        ;;
+esac
 
 for local_module in $local_modules
 do
