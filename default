@@ -1,8 +1,8 @@
 host=root@192.168.1.1
 # port=22
 
-# local_modules='00-pubkey 01-network6'
-# remote_modules='10-network 20-common'
+# local_modules='local-010-pubkey'
+# remote_modules='remote-020-network remote-030-network6 remote-050-common'
 
 config_common='
 system.@system[0].hostname=OpenWrt
