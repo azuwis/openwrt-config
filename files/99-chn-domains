@@ -15,10 +15,12 @@ case "$INTERFACE" in
             do
                 echo "server=/$domain/${local_dns}"
             done > $conf
-            grep -Ev '(^#|^\s*$)' /etc/bypass-domains | while read domain
-            do
-                echo "ipset=/$domain/ss_spec_wan_ac"
-            done >> $conf
+            if [ "$(uci -q get shadowsocks.@global[0].global_server)" != 'nil' ]; then
+                grep -Ev '(^#|^\s*$)' /etc/bypass-domains | while read domain
+                do
+                    echo "ipset=/$domain/ss_spec_wan_ac"
+                done >> $conf
+            fi
             local remote_dns
             remote_dns="$(uci -q get dhcp.@dnsmasq[0].remote_dns)"
             printf "no-resolv\nserver=%s\n" "$remote_dns" >> $conf

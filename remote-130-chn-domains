@@ -10,9 +10,11 @@
 # }' /etc/init.d/dnsmasq
 # fi
 
-opkg_remove dnsmasq
-opkg_install dnsmasq-full
-remove /etc/config/dhcp-opkg
+if uci_exists shadowsocks.@global[0].global_server && [ "$(uci -q get shadowsocks.@global[0].global_server)" != 'nil' ]; then
+    opkg_remove dnsmasq
+    opkg_install dnsmasq-full
+    remove /etc/config/dhcp-opkg
+fi
 
 uci set dhcp.@dnsmasq[0].remote_dns="$config_chn_domains_remote_dns"
 uci_commit dhcp || true
