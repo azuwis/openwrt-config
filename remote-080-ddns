@@ -1,6 +1,6 @@
 opkg_install ca-certificates ddns-scripts
 
-uci_delete ddns.myddns_ipv4 ddns.myddns_ipv6 ddns.duckdns
+uci_delete ddns.myddns_ipv4 ddns.myddns_ipv6
 uci batch <<EOF
 set ddns.duckdns='service'
 set ddns.duckdns.enabled='0'
