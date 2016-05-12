@@ -10,6 +10,7 @@ system.@system[0].hostname=OpenWrt
 config_packages='ca-certificates curl ip miniupnpd wget'
 
 config_wireless='
+# wireless.@wifi-iface[0].disabled=0
 # wireless.@wifi-iface[0].ssid=
 # wireless.@wifi-iface[0].encryption=psk2
 # wireless.@wifi-iface[0].key=
@@ -17,6 +18,7 @@ config_wireless='
 # wireless.radio0.htmode=HT40-
 # wireless.radio0.noscan=1
 
+# wireless.@wifi-iface[1].disabled=0
 # wireless.@wifi-iface[1].ssid=
 # wireless.@wifi-iface[1].encryption=psk2
 # wireless.@wifi-iface[1].key=
