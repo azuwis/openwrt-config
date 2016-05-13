@@ -1,11 +1,11 @@
-push_shadowsocks() {
-    local version git_version ipk_version
-    version="2.4.6"
-    v_git="98cf545"
-    v_ipk="1"
-    download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/shadowsocks-libev/${version}-${v_git}/${arch}/shadowsocks-libev-spec_${version}-${v_ipk}_${arch}.ipk" /tmp/shadowsocks-libev-spec.ipk shadowsocks-libev-spec
-}
-push_shadowsocks
+# push_shadowsocks() {
+#     local version git_version ipk_version
+#     version="2.4.6"
+#     v_git="98cf545"
+#     v_ipk="1"
+#     download_push "http://jaist.dl.sourceforge.net/project/openwrt-dist/shadowsocks-libev/${version}-${v_git}/${arch}/shadowsocks-libev-spec_${version}-${v_ipk}_${arch}.ipk" /tmp/shadowsocks-libev-spec.ipk shadowsocks-libev-spec
+# }
+# push_shadowsocks
 
 chnroute() {
     awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }'
@@ -17,7 +17,7 @@ if [ ! -e files/chinadns_chnroute.txt ]; then
     chnroute < files/delegated-apnic-latest > files/chinadns_chnroute.txt
     echo '64.62.200.2/32' >> files/chinadns_chnroute.txt
 fi
-push files/chinadns_chnroute.txt /etc/chinadns_chnroute.txt >/dev/null
+push files/chinadns_chnroute.txt /etc/chinadns_chnroute.txt
 
 # push_dnsproxy() {
 #     local version
