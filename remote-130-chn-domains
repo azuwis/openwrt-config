@@ -10,8 +10,11 @@
 # }' /etc/init.d/dnsmasq
 # fi
 
-if uci_exists shadowsocks.@global[0].global_server && [ "$(uci -q get shadowsocks.@global[0].global_server)" != 'nil' ]; then
+if [ "$config_chn_domains_dnsmasq_full" = '1' ]; then
     opkg_remove dnsmasq
+    if [ ! -e /tmp/resolv.conf ]; then
+        cp /tmp/resolv.conf.auto /tmp/resolv.conf
+    fi
     opkg_install dnsmasq-full
     remove /etc/config/dhcp-opkg
 fi
