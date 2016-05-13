@@ -204,7 +204,7 @@ update_md5sums() {
 md5sum_config() {
     local config
     config="$1"
-    echo "$md5sums" | grep -F " /etc/config/${config}" | cut -d' ' -f1
+    echo "$md5sums" | grep " /etc/config/${config}$" | cut -d' ' -f1
 }
 
 md5sum_uci() {
