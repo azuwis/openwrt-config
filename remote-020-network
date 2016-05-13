@@ -19,3 +19,8 @@ if uci_exists wireless; then
     fi
     service reload network wireless
 fi
+
+# uci batch <<EOF
+# set dhcp.lan.dhcpv6='disabled'
+# EOF
+# service restart odhcpd dhcp
