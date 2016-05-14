@@ -1,0 +1,2 @@
+service stop uhttpd
+service disable uhttpd

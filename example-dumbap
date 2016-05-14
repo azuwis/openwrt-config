@@ -2,7 +2,7 @@ host='root@192.168.1.2'
 # port='22'
 
 local_modules='local-010-pubkey'
-remote_modules='remote-020-network remote-030-network6 remote-050-common remote-9999-dumbap'
+remote_modules='remote-020-network remote-030-network6 remote-050-common remote-910-disable-uhttpd remote-9999-dumbap'
 
 config_common='
 system.@system[0].hostname=dumbap
