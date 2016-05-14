@@ -1,6 +1,6 @@
 service disable dnsmasq
-service stop dnsmasq 2>/dev/null
+service stop dnsmasq
 service disable firewall
-service stop firewall 2>/dev/null
+service stop firewall
 service disable odhcpd
-service stop odhcpd 2>/dev/null
+service stop odhcpd

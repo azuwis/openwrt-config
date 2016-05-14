@@ -2,7 +2,7 @@ echo
 
 # chinadns
 echo 'clean chinadns'
-service stop chinadns || true
+service stop chinadns
 opkg_remove ChinaDNS
 remove /tmp/dnsmasq.d/10-chinadns.conf
 echo

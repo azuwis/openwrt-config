@@ -148,6 +148,9 @@ service() {
                 "/etc/init.d/$service" "$action" || true
             fi
             ;;
+        stop)
+            "/etc/init.d/$service" "$action" 2>/dev/null || true
+            ;;
         *)
             echo "service $action $service"
             "/etc/init.d/$service" "$action" || true
