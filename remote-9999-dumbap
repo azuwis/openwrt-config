@@ -1,6 +1,6 @@
-service disable dnsmasq
 service stop dnsmasq
-service disable firewall
+service disable dnsmasq
 service stop firewall
-service disable odhcpd
+service disable firewall
 service stop odhcpd
+service disable odhcpd
