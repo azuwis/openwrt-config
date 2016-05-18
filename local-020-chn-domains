@@ -7,7 +7,10 @@ if [ ! -e files/chn-domains ]; then
         download https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
     fi
     chn_domains < files/accelerated-domains.china.conf > files/chn-domains
-    echo 'ipv4.tunnelbroker.net' >> files/chn-domains
+    cat >> files/chn-domains <<EOF
+dl.google.com
+ipv4.tunnelbroker.net
+EOF
 fi
 
 push files/chn-domains /etc/chn-domains
