@@ -1,4 +1,10 @@
 opkg_install uhttpd adblock
+
+if ! grep -qF '\( -name "${adb_dnsprefix}*" -a ${adb_srclist} \) -print' /usr/bin/adblock-update.sh; then
+    echo 'patch /usr/bin/adblock-update.sh'
+    sed -i -e 's#${adb_srclist} \\) -print#-name "${adb_dnsprefix}*" -a ${adb_srclist} \\) -print#' /usr/bin/adblock-update.sh
+fi
+
 uci set adblock.global.adb_forcedns='0'
 service restart adblock
 
