@@ -16,6 +16,19 @@ service restart sysntpd system
 
 uci set dhcp.@dnsmasq[0].cachesize=1024
 uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
+
+uci_del_type dhcp host
+dhcp_host() {
+    local ip mac
+    while read ip mac
+    do
+        uci add dhcp host >/dev/null
+        uci set "dhcp.@host[-1].ip=${ip}"
+        uci set "dhcp.@host[-1].mac=${mac}"
+    done
+}
+echo "$config_dhcp_host" | strip_comment | dhcp_host
+
 service reload dnsmasq dhcp
 
 if [ -f /etc/dropbear/authorized_keys ]; then
