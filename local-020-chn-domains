@@ -13,6 +13,10 @@ ipv4.tunnelbroker.net
 EOF
 fi
 
-push files/chn-domains /etc/chn-domains
+if [ ! -e files/chn-domains.gz -o files/chn-domains -nt files/chn-domains.gz ]; then
+    gzip -k files/chn-domains
+fi
+
+push files/chn-domains.gz /etc/chn-domains.gz
 push files/bypass-domains /etc/bypass-domains
 push files/99-chn-domains /etc/hotplug.d/iface/99-chn-domains

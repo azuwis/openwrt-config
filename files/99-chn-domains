@@ -11,7 +11,7 @@ case "$INTERFACE" in
                 exit
             fi
             local domain
-            grep -Ev '(^#|^\s*$)' /etc/chn-domains | while read domain
+            zcat /etc/chn-domains.gz | grep -Ev '(^#|^\s*$)' | while read domain
             do
                 echo "server=/$domain/${local_dns}"
             done > $conf
