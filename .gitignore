@@ -2,6 +2,7 @@
 /*.gpg
 /files/*.ipk
 /files/accelerated-domains.china.conf
+/files/chn-domains.gz
 /files/delegated-apnic-latest
 /files/ipv6-hosts
 /test
