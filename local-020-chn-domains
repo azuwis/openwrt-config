@@ -14,7 +14,7 @@ EOF
 fi
 
 if [ ! -e files/chn-domains.gz -o files/chn-domains -nt files/chn-domains.gz ]; then
-    gzip -k files/chn-domains
+    gzip -k -n files/chn-domains
 fi
 
 push files/chn-domains.gz /etc/chn-domains.gz
