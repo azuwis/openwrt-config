@@ -15,7 +15,10 @@ if [ ! -e files/chinadns_chnroute.txt ]; then
         download http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
     fi
     chnroute < files/delegated-apnic-latest > files/chinadns_chnroute.txt
-    echo '64.62.200.2/32' >> files/chinadns_chnroute.txt
+    cat >> files/chinadns_chnroute.txt <<EOF
+64.62.200.2/32
+1.1.1.0/24
+EOF
 fi
 push files/chinadns_chnroute.txt /etc/chinadns_chnroute.txt
 
