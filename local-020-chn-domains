@@ -10,6 +10,7 @@ if [ ! -e files/chn-domains ]; then
     cat >> files/chn-domains <<EOF
 dl.google.com
 ipv4.tunnelbroker.net
+pdim.gs
 EOF
 fi
 
