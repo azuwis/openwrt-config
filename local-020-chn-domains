@@ -7,17 +7,13 @@ if [ ! -e files/chn-domains ]; then
         download https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
     fi
     chn_domains < files/accelerated-domains.china.conf > files/chn-domains
-    cat >> files/chn-domains <<EOF
-dl.google.com
-ipv4.tunnelbroker.net
-pdim.gs
-EOF
 fi
 
 if [ ! -e files/chn-domains.gz -o files/chn-domains -nt files/chn-domains.gz ]; then
-    gzip -k -n files/chn-domains
+    echo 'zipping files/chn-domains'
+    gzip -f -k -n files/chn-domains
 fi
 
 push files/chn-domains.gz /etc/chn-domains.gz
-push files/bypass-domains /etc/bypass-domains
+push files/chn-domains-extra /etc/chn-domains-extra
 push files/99-chn-domains /etc/hotplug.d/iface/99-chn-domains
