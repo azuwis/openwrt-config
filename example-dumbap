@@ -21,9 +21,9 @@ config_network='
 network.lan.ipaddr=192.168.1.2
 network.lan.gateway=192.168.1.1
 network.lan.dns=192.168.1.1
-network.wan.enabled=0
+network.wan.disabled=1
 '
 
 config_network6='
-network.wan6.enabled=0
+network.wan6.disabled=1
 '
