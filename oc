@@ -54,13 +54,6 @@ if [ x"$intra_host" != x ]; then
     fi
 fi
 
-scp="scp -pq"
-ssh="ssh"
-if [ x"$port" != x ]; then
-    scp="scp -pqP$port"
-    ssh="ssh -p$port"
-fi
-
 while getopts ":gh:kl:m:p:x" Option
 do
     case "$Option" in
@@ -75,10 +68,17 @@ do
             remote_modules_overrided=1
             remote_modules="$OPTARG"
             ;;
-        p) ssh="ssh -p$OPTARG" ;;
+        p) port="$OPTARG" ;;
         x) DEBUG='-x' ;;
     esac
 done
+
+scp="scp -pq"
+ssh="ssh"
+if [ x"$port" != x ]; then
+    scp="scp -pqP$port"
+    ssh="ssh -p$port"
+fi
 
 if [ x"$local_modules_overrided" != x ]; then
     if [ x"$remote_modules_overrided" = x ]; then
