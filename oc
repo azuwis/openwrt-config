@@ -48,7 +48,7 @@ else
 fi
 
 if [ x"$intra_host" != x ]; then
-    if [ x"$(ip route get "$(echo "$intra_host" | cut -d@ -f2)" | head -n 1 | cut -d' ' -f2)" != 'via' ]; then
+    if [ x"$(ip route get "$(echo "$intra_host" | cut -d@ -f2)" | head -n 1 | cut -d' ' -f2)" != x'via' ]; then
         host="$intra_host"
         port="$intra_port"
     fi
