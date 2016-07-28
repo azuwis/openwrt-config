@@ -1,2 +1,2 @@
-find /etc/config/ -type f -name '*-opkg' -exec echo remove '{}' ';'
-find /etc/config/ -type f -name '*-opkg' -exec rm '{}' ';'
+find /etc/config/ /etc/unbound/ -type f -name '*-opkg' -exec echo remove '{}' ';'
+find /etc/config/ /etc/unbound/ -type f -name '*-opkg' -exec rm '{}' ';'
