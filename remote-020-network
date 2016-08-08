@@ -4,6 +4,8 @@ uci_batch_set "$config_network"
 service reload network
 
 if uci_exists wireless; then
+   uci_delete wireless.radio0.disabled
+   uci_delete wireless.radio1.disabled
     uci_batch_set "$config_wireless"
     if uci -q show wireless | grep -qF 'iapp_interface'; then
         opkg_remove wpad-mini
