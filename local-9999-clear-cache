@@ -1,0 +1,5 @@
+rm \
+files/accelerated-domains.china.conf \
+files/chn-domains \
+files/delegated-apnic-latest \
+files/chinadns_chnroute.txt
