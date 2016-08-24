@@ -1,7 +1,19 @@
 opkg_install shadowsocks-libev
+
+if ! uci_exists firewall.shadowsocks_libev; then
+    uci batch <<EOF
+set firewall.shadowsocks_libev=include
+set firewall.shadowsocks_libev.type=script
+set firewall.shadowsocks_libev.path=/usr/share/shadowsocks-libev/firewall.include
+set firewall.shadowsocks_libev.reload=1
+EOF
+    service reload firewall
+fi
+
 uci set shadowsocks-libev.@shadowsocks-libev[0].ignore_list='/etc/chinadns_chnroute.txt'
 uci_batch_set "$config_shadowsocks"
 service restart shadowsocks-libev
+
 if [ /etc/chinadns_chnroute.txt -nt /var/etc/shadowsocks-libev.json ]; then
     echo 'restart shadowsocks'
     /etc/init.d/shadowsocks-libev restart || true
