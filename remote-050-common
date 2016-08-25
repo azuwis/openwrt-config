@@ -38,3 +38,6 @@ set dropbear.@dropbear[0].RootPasswordAuth='off'
 EOF
     service reload dropbear
 fi
+
+service stop telnetd
+service disable telnetd
