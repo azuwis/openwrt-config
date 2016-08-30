@@ -17,3 +17,5 @@ fi
 push files/chn-domains.gz /etc/chn-domains.gz
 push files/chn-domains-extra /etc/chn-domains-extra
 push files/99-chn-domains /etc/hotplug.d/iface/99-chn-domains
+
+push files/chn-domains.keep /lib/upgrade/keep.d/chn-domains

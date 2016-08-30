@@ -1,0 +1,3 @@
+/etc/chn-domains-extra
+/etc/chn-domains.gz
+/etc/hotplug.d/iface/99-chn-domains
