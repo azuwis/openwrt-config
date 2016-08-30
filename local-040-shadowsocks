@@ -21,6 +21,7 @@ if [ ! -e files/chn-cidr ]; then
 EOF
 fi
 push files/chn-cidr /etc/chn-cidr
+push files/shadowsocks.keep /lib/upgrade/keep.d/shadowsocks
 
 # push_dnsproxy() {
 #     local version
