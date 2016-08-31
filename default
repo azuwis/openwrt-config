@@ -101,5 +101,5 @@ config_unbound_tcp='yes'
 config_chn_domains_remote_dns='127.0.0.1#5354'
 config_chn_domains_dnsmasq_full='1'
 
-config_pcap_dnsproxy_dns=''
-config_pcap_dnsproxy_protocol=''
+# config_pcap_dnsproxy_dns=''
+# config_pcap_dnsproxy_protocol=''
