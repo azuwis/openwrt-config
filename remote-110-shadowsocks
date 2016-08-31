@@ -11,6 +11,7 @@ EOF
 fi
 
 uci set shadowsocks-libev.@shadowsocks-libev[0].ignore_list='/etc/chn-cidr'
+uci_batch_set "$config_shadowsocks_common"
 uci_batch_set "$config_shadowsocks"
 service restart shadowsocks-libev
 
