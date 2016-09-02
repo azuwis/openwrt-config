@@ -31,6 +31,13 @@ echo "$config_dhcp_host" | strip_comment | dhcp_host
 
 service reload dnsmasq dhcp
 
+if [ x"$config_root_password" != x ] && ! grep -qF "root:$config_root_password" /etc/shadow; then
+    echo "change root password"
+    awk -F":" 'BEGIN{OFS=":"}{if($1 == "root"){$2="'$config_root_password'"}; print}' /etc/shadow > /tmp/shadow
+    mv /tmp/shadow /etc/shadow
+    chmod 600 /etc/shadow
+fi
+
 if [ -f /etc/dropbear/authorized_keys ]; then
     uci batch <<EOF
 set dropbear.@dropbear[0].PasswordAuth='off'
