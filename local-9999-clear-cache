@@ -1,4 +1,4 @@
-rm \
+rm -fv \
 files/accelerated-domains.china.conf \
 files/chn-domains \
 files/delegated-apnic-latest \
