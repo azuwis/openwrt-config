@@ -1,6 +1,5 @@
 opkg_install sqm-scripts kmod-sched-cake
 
-local iface_wan
 set +u
 . /lib/functions/network.sh
 network_get_device iface_wan wan
