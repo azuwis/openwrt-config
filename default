@@ -61,6 +61,8 @@ config_henet='
 # network.henet.password=
 '
 
+config_firewall=''
+
 config_redirect='
 # tcp 22220
 # tcp 22221 - 22
