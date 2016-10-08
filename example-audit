@@ -1,0 +1,35 @@
+host='root@192.168.1.3'
+# port='22'
+# intra_host='root@192.168.1.3'
+# intra_port='22'
+
+local_modules='local-010-pubkey'
+remote_modules='remote-020-network remote-030-network6 remote-050-common remote-060-firewall remote-810-disable-uhttpd remote-9999-audit'
+
+config_common='
+system.@system[0].hostname=audit
+'
+config_packages=''
+config_root_password=''
+
+config_wireless='
+wireless.@wifi-iface[0].mode=sta
+wireless.@wifi-iface[0].network=wan
+wireless.@wifi-iface[0].ssid=
+wireless.@wifi-iface[0].encryption=psk2
+wireless.@wifi-iface[0].key=
+wireless.@wifi-iface[0].macaddr=
+'
+
+config_network='
+network.lan.ipaddr=192.168.1.3
+network.wan.ifname=wlan0
+'
+
+config_network6='
+network.wan6.disabled=1
+'
+
+config_firewall='
+firewall.@zone[1].forward='ACCEPT'
+'

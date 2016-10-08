@@ -1,0 +1,4 @@
+service stop dnsmasq
+service disable dnsmasq
+service stop odhcpd
+service disable odhcpd
