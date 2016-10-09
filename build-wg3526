@@ -1,6 +1,8 @@
 #!/bin/sh
 set -ex
 git pull --rebase
+cp feeds.conf.default feeds.conf
+echo 'src-git oldpackages https://github.com/plntyk/oldpackages.git' >> feeds.conf
 ./scripts/feeds update -a
 ./scripts/feeds install \
   tmux wget \
