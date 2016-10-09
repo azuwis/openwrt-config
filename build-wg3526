@@ -5,13 +5,14 @@ git pull --rebase
 ./scripts/feeds install \
   tmux wget \
   aircrack-ng airmon-ng procps-ng-ps \
-  dsniff
+  ettercap dsniff
 cat >.config <<EOF
 CONFIG_TARGET_ramips=y
 CONFIG_TARGET_ramips_mt7621=y
 CONFIG_TARGET_ramips_mt7621_DEVICE_zbt-wg3526=y
 
 CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_tcpdump=y
 
 CONFIG_PACKAGE_tmux=y
 CONFIG_PACKAGE_wget=y
@@ -36,6 +37,7 @@ CONFIG_PACKAGE_procps-ng-ps=y
 # CONFIG_PACKAGE_procps-ng-w is not set
 # CONFIG_PACKAGE_procps-ng-watch is not set
 
+CONFIG_PACKAGE_ettercap=y
 CONFIG_PACKAGE_dsniff=y
 EOF
 make defconfig
