@@ -31,5 +31,9 @@ network.wan6.disabled=1
 '
 
 config_firewall='
-firewall.@zone[1].forward='ACCEPT'
+# for dsniff
+# firewall.@zone[1].forward='ACCEPT'
+# for ettercap
+# firewall.@zone[1].masq=0
+# firewall.@zone[1].mtu_fix=0
 '
