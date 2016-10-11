@@ -5,7 +5,7 @@ cp feeds.conf.default feeds.conf
 echo 'src-git oldpackages https://github.com/plntyk/oldpackages.git' >> feeds.conf
 ./scripts/feeds update -a
 ./scripts/feeds install \
-  tmux wget \
+  rsync tmux wget \
   aircrack-ng airmon-ng procps-ng-ps pciutils usbutils grep \
   ettercap dsniff
 cat >.config <<EOF
@@ -17,6 +17,7 @@ CONFIG_PACKAGE_curl=y
 CONFIG_PACKAGE_kmod-tun=y
 CONFIG_PACKAGE_tcpdump=y
 
+CONFIG_PACKAGE_rsync=y
 CONFIG_PACKAGE_tmux=y
 CONFIG_PACKAGE_wget=y
 
