@@ -14,6 +14,7 @@ CONFIG_TARGET_ramips_mt7621=y
 CONFIG_TARGET_ramips_mt7621_DEVICE_zbt-wg3526=y
 
 CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_iputils-arping=y
 CONFIG_PACKAGE_kmod-tun=y
 CONFIG_PACKAGE_tcpdump=y
 
