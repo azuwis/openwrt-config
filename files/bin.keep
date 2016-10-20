@@ -1,0 +1,3 @@
+/etc/profile.d/bin
+/lib/upgrade/keep.d/bin
+/root/bin/
