@@ -1,0 +1,6 @@
+#!/bin/sh
+rm -fv \
+   files/chn-cidr \
+   files/chn-domains \
+   files/tmp/accelerated-domains.china.conf \
+   files/tmp/delegated-apnic-latest
