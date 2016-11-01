@@ -148,7 +148,7 @@ service() {
                 "/etc/init.d/$service" "$action" || true
             fi
             ;;
-        stop)
+        stop|start)
             "/etc/init.d/$service" "$action" 2>/dev/null || true
             ;;
         *)

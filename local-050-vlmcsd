@@ -1,0 +1,8 @@
+push files/vlmcsd.init /etc/init.d/vlmcsd
+push files/vlmcsd.keep /lib/upgrade/keep.d/vlmcsd
+
+case "$arch" in
+    ar71xx)
+        push files/vlmcsd-mips16-openwrt-atheros-ar7xxx-ar9xxx-musl /usr/bin/vlmcsd
+        ;;
+esac

@@ -1,0 +1,3 @@
+/etc/init.d/vlmcsd
+/lib/upgrade/keep.d/vlmcsd
+/usr/bin/vlmcsd
