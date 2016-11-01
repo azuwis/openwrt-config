@@ -23,7 +23,6 @@ fi
 push files/chn-cidr /etc/chn-cidr
 push files/shadowsocks.keep /lib/upgrade/keep.d/shadowsocks
 push files/ss /root/bin/ss
-remote chmod +x /root/bin/ss
 
 # push_dnsproxy() {
 #     local version
