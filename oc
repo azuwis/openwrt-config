@@ -98,11 +98,11 @@ download() {
     basename="$(basename "$url")"
     file="$2"
     if [ x"$file" = x ]; then
-        file="files/$basename"
+        file="files/tmp/$basename"
     fi
     if [ ! -e "$file" ]; then
         echo "download: $url -> $file"
-        curl -#fSLo "$file" "$url"
+        curl --create-dirs -#fSLo "$file" "$url"
     fi
 }
 
@@ -129,7 +129,7 @@ download_push() {
     package="$3"
     if [ x"$package" = x ] || ! remote opkg status "$package" | grep -q installed ; then
         download "$url"
-        push "files/$(basename "$url")" "$dest"
+        push "files/tmp/$(basename "$url")" "$dest"
     fi
 }
 

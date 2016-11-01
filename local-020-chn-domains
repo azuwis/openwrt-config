@@ -6,15 +6,15 @@ if [ ! -e files/chn-domains ]; then
     if [ ! -e files/accelerated-domains.china.conf ]; then
         download https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
     fi
-    chn_domains < files/accelerated-domains.china.conf > files/chn-domains
+    chn_domains < files/tmp/accelerated-domains.china.conf > files/chn-domains
 fi
 
-if [ ! -e files/chn-domains.gz -o files/chn-domains -nt files/chn-domains.gz ]; then
+if [ ! -e files/tmp/chn-domains.gz -o files/chn-domains -nt files/tmp/chn-domains.gz ]; then
     echo 'zipping files/chn-domains'
-    gzip -f -k -n files/chn-domains
+    gzip -nc files/chn-domains > files/tmp/chn-domains.gz
 fi
 
-push files/chn-domains.gz /etc/chn-domains.gz
+push files/tmp/chn-domains.gz /etc/chn-domains.gz
 push files/chn-domains-extra /etc/chn-domains-extra
 push files/99-chn-domains /etc/hotplug.d/iface/99-chn-domains
 

@@ -1,10 +1,4 @@
 /*.conf
 /*.gpg
-/files/*.ipk
-/files/*.sha256sums
-/files/accelerated-domains.china.conf
-/files/chn-domains.gz
-/files/delegated-apnic-latest
-/files/ipv6-hosts
-/files/lede-*-sysupgrade.bin
+/files/tmp/
 /test
