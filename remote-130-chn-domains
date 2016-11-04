@@ -11,11 +11,11 @@
 # fi
 
 if [ "$config_chn_domains_dnsmasq_full" = '1' ]; then
-    opkg_remove dnsmasq
+    oc_opkg_remove dnsmasq
     if [ ! -e /tmp/resolv.conf ]; then
         cp /tmp/resolv.conf.auto /tmp/resolv.conf
     fi
-    opkg_install dnsmasq-full
+    oc_opkg_install dnsmasq-full
     remove /etc/config/dhcp-opkg
 fi
 

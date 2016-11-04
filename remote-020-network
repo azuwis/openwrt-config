@@ -10,8 +10,8 @@ if uci_exists wireless; then
    uci_exists wireless.radio1 && uci set wireless.radio1.country=CN
     uci_batch_set "$config_wireless"
     if uci -q show wireless | grep -qF 'iapp_interface'; then
-        opkg_remove wpad-mini
-        opkg_install wpad
+        oc_opkg_remove wpad-mini
+        oc_opkg_install wpad
 
         # https://dev.openwrt.org/ticket/19175
         if grep -q uci_get_state /lib/netifd/hostapd.sh && \

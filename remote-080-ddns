@@ -1,4 +1,4 @@
-opkg_install ca-certificates ddns-scripts
+oc_opkg_install ca-certificates ddns-scripts
 
 uci_delete ddns.myddns_ipv4 ddns.myddns_ipv6
 uci batch <<EOF

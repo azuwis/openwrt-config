@@ -1,4 +1,4 @@
-opkg_install uhttpd adblock
+oc_opkg_install uhttpd adblock
 
 uci set adblock.global.adb_forcedns='0'
 service restart adblock

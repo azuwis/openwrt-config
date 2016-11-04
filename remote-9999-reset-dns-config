@@ -3,13 +3,13 @@ echo
 # chinadns
 echo 'clean chinadns'
 service stop chinadns
-opkg_remove ChinaDNS
+oc_opkg_remove ChinaDNS
 remove /tmp/dnsmasq.d/10-chinadns.conf
 echo
 
 # unbound
 echo 'clean unbound'
-opkg_remove unbound
+oc_opkg_remove unbound
 rm -rf /etc/unbound/
 echo
 
@@ -20,7 +20,7 @@ echo
 
 # pcap-dnsproxy
 echo 'clean pcap-dnsproxy'
-opkg_remove pcap-dnsproxy libsodium libpcap
+oc_opkg_remove pcap-dnsproxy libsodium libpcap
 remove /etc/pcap-dnsproxy
 echo
 

@@ -1,4 +1,4 @@
-opkg_install shadowsocks-libev
+oc_opkg_install shadowsocks-libev
 
 if ! uci_exists firewall.shadowsocks_libev; then
     uci batch <<EOF

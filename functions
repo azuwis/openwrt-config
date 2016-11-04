@@ -1,26 +1,26 @@
 #!/bin/sh
 set -eu
 
-opkg_update() {
+oc_opkg_update() {
     if [ "$(find /var/opkg-lists/ -type f | wc -l)" -eq 0 ]; then
         echo 'opkg update'
         opkg update
     fi
 }
 
-opkg_installed() {
+oc_opkg_installed() {
     opkg status "$1" | grep -q installed
 }
 
-opkg_install() {
+oc_opkg_install() {
     local package package_name
     for package in "$@"
     do
         package_name="$(basename "$package")"
         package_name="${package_name%.*}"
         package_name="${package_name%%_*}"
-        if ! opkg_installed "$package_name"; then
-            opkg_update
+        if ! oc_opkg_installed "$package_name"; then
+            oc_opkg_update
             echo "opkg install $package"
             opkg install "$package"
             if [ x"${package::1}" = x'/' ]; then
@@ -30,11 +30,11 @@ opkg_install() {
     done
 }
 
-opkg_remove() {
+oc_opkg_remove() {
     local package
     for package in "$@"
     do
-        if opkg_installed "$package"; then
+        if oc_opkg_installed "$package"; then
             echo "opkg remove $package"
             opkg --autoremove remove "$package" || true
         fi

@@ -1,4 +1,4 @@
-opkg_install unbound >/dev/null 2>&1
+oc_opkg_install unbound >/dev/null 2>&1
 cat >/tmp/unbound.conf <<EOF
 server:
     username: "nobody"

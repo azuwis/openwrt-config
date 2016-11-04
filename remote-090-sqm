@@ -1,4 +1,4 @@
-opkg_install sqm-scripts kmod-sched-cake
+oc_opkg_install sqm-scripts kmod-sched-cake
 
 set +u
 . /lib/functions/network.sh

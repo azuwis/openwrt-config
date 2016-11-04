@@ -1,4 +1,4 @@
-opkg_install $config_packages
+oc_opkg_install $config_packages
 
 uci batch <<EOF
 set system.@system[0].timezone='CST-8'

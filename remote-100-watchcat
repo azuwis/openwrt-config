@@ -1,4 +1,4 @@
-opkg_install watchcat
+oc_opkg_install watchcat
 
 if [ -f /etc/uci-defaults/50-watchcat ]; then
     echo 'import /etc/uci-defaults/50-watchcat'

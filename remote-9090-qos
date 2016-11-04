@@ -1,4 +1,4 @@
-opkg_install qos-scripts
+oc_opkg_install qos-scripts
 
 uci_batch_set "$config_qos"
 service restart qos

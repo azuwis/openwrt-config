@@ -1,5 +1,5 @@
 if echo "$config_network6" | grep -qxF 'network.wan6.proto=6to4'; then
-    opkg_install 6to4
+    oc_opkg_install 6to4
 fi
 
 uci_delete network.globals.ula_prefix network.wan6 network.henet
@@ -11,7 +11,7 @@ EOF
 uci_batch_set "$config_network6"
 
 if echo "$config_henet" | grep -q '^network\.henet'; then
-    opkg_install 6in4
+    oc_opkg_install 6in4
     if ! grep -q 'local max=8$' /lib/netifd/proto/6in4.sh; then
         echo 'patch /lib/netifd/proto/6in4.sh'
         sed -i -e 's/local max=.*$/local max=8/' /lib/netifd/proto/6in4.sh
