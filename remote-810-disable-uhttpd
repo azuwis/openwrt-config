@@ -1,2 +1,2 @@
-service stop uhttpd
-service disable uhttpd
+oc_service stop uhttpd
+oc_service disable uhttpd

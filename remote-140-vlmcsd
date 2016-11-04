@@ -1,5 +1,5 @@
-service enable vlmcsd
-service start vlmcsd
+oc_service enable vlmcsd
+oc_service start vlmcsd
 
 set_srvhost() {
     local hostname=$(uci -q get system.@system[0].hostname)
@@ -13,4 +13,4 @@ set_srvhost() {
     uci set "dhcp.@srvhost[0].weight=100"
 }
 set_srvhost
-service reload dnsmasq dhcp
+oc_service reload dnsmasq dhcp

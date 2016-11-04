@@ -17,4 +17,4 @@ if ! grep -q 'kill -9' /etc/init.d/watchcat; then
     sed -i 's/kill "$pid"/kill -9 "$pid"/' /etc/init.d/watchcat
 fi
 
-service restart watchcat system
+oc_service restart watchcat system

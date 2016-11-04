@@ -2,13 +2,13 @@ if echo "$config_network6" | grep -qxF 'network.wan6.proto=6to4'; then
     oc_opkg_install 6to4
 fi
 
-uci_delete network.globals.ula_prefix network.wan6 network.henet
+oc_uci_delete network.globals.ula_prefix network.wan6 network.henet
 uci batch <<EOF
 set network.wan6='interface'
 set network.wan6.proto='none'
 set network.wan6.metric='50'
 EOF
-uci_batch_set "$config_network6"
+oc_uci_batch_set "$config_network6"
 
 if echo "$config_henet" | grep -q '^network\.henet'; then
     oc_opkg_install 6in4
@@ -21,10 +21,10 @@ set network.henet='interface'
 set network.henet.proto='6in4'
 set network.henet.metric='30'
 EOF
-    uci_batch_set "$config_henet"
+    oc_uci_batch_set "$config_henet"
 
-    uci_add_list firewall.@zone[1].network henet
-    service reload firewall
+    oc_uci_add_list firewall.@zone[1].network henet
+    oc_service reload firewall
 fi
 
-service reload network 2>/dev/null
+oc_service reload network 2>/dev/null

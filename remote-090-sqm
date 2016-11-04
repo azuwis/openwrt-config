@@ -11,5 +11,5 @@ set sqm.wan.enabled='0'
 set sqm.wan.interface='${iface_wan}'
 set sqm.wan.script='piece_of_cake.qos'
 EOF
-uci_batch_set "$config_sqm"
-service restart sqm
+oc_uci_batch_set "$config_sqm"
+oc_service restart sqm

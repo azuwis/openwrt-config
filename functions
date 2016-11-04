@@ -41,14 +41,14 @@ oc_opkg_remove() {
     done
 }
 
-uci_exists() {
+oc_uci_exists() {
     local config
     config="$1"
     uci -q get "$config" >/dev/null
 }
 
 # XXX: not work if value contain space
-uci_add_list() {
+oc_uci_add_list() {
     local key value
     key="$1"
     shift
@@ -61,7 +61,7 @@ uci_add_list() {
     done
 }
 
-uci_del_list() {
+oc_uci_del_list() {
     local key value
     key="$1"
     shift
@@ -71,19 +71,19 @@ uci_del_list() {
     done
 }
 
-uci_commit() {
+oc_uci_commit() {
     local config
     config="$1"
-    if ! uci_exists "$config"; then
+    if ! oc_uci_exists "$config"; then
         return 2
     fi
-    if config_changed "$config"; then
+    if oc_config_changed "$config"; then
         echo
         echo "uci changes:"
         uci changes "$config"
         echo
         uci commit
-        update_md5sums
+        oc_update_md5sums
         return 0
     else
         rm -f "/var/.uci/$config"
@@ -91,11 +91,11 @@ uci_commit() {
     fi
 }
 
-uci_delete() {
+oc_uci_delete() {
     local config
     for config in "$@"
     do
-        if uci_exists "$config"; then
+        if oc_uci_exists "$config"; then
             uci delete "$config"
         fi
     done
@@ -116,12 +116,12 @@ uci_rename() {
     local key value
     key="$1"
     value="$2"
-    if uci_exists "$key"; then
+    if oc_uci_exists "$key"; then
         uci rename "$key=$value"
     fi
 }
 
-service() {
+oc_service() {
     local action service config
     action="$1"
     service="$2"
@@ -131,7 +131,7 @@ service() {
     fi
     case "$action" in
         reload|restart)
-            if [ x"$config" = x'-' ] || uci_commit "$config"; then
+            if [ x"$config" = x'-' ] || oc_uci_commit "$config"; then
                 echo "service $action $service"
                 "/etc/init.d/$service" "$action" || true
             fi
@@ -158,7 +158,7 @@ service() {
     esac
 }
 
-add_cron() {
+oc_add_cron() {
     local name cron cron_file
     name="$1"
     cron="$2"
@@ -172,21 +172,21 @@ add_cron() {
     fi
 }
 
-hr() {
+oc_hr() {
     printf '%s\n' ------------------------------------------------------------
 }
 
-md5sum_file() {
+oc_md5sum_file() {
     local file
     file="$1"
     md5sum "$file" | cut -d' ' -f1
 }
 
-move() {
+oc_move() {
     local src dest
     src="$1"
     dest="$2"
-    if [ x"$(md5sum_file "$src")" != x"$(md5sum_file "$dest")" ]; then
+    if [ x"$(oc_md5sum_file "$src")" != x"$(oc_md5sum_file "$dest")" ]; then
         echo "move: $src -> $dest"
         mv "$src" "$dest"
     else
@@ -195,7 +195,7 @@ move() {
     fi
 }
 
-remove (){
+oc_remove(){
     local file
     for file in "$@"
     do
@@ -206,37 +206,37 @@ remove (){
     done
 }
 
-update_md5sums() {
-    md5sums="$(md5sum /etc/config/*)"
+oc_update_md5sums() {
+    oc_md5sums="$(md5sum /etc/config/*)"
 }
 
-md5sum_config() {
+oc_md5sum_config() {
     local config
     config="$1"
-    echo "$md5sums" | grep " /etc/config/${config}$" | cut -d' ' -f1
+    echo "$oc_md5sums" | grep " /etc/config/${config}$" | cut -d' ' -f1
 }
 
-md5sum_uci() {
+oc_md5sum_uci() {
     local config
     config="$1"
     uci export "$config" | grep -v '^package '| md5sum | cut -d' ' -f1
 }
 
-config_changed() {
+oc_config_changed() {
     local config
     config="$1"
-    [ x"$(md5sum_config "$config")" != x"$(md5sum_uci "$config")" ]
+    [ x"$(oc_md5sum_config "$config")" != x"$(oc_md5sum_uci "$config")" ]
 }
 
-strip_comment() {
+oc_strip_comment() {
     sed -e '/^\s*$/d' -e '/^\s*#/d'
 }
 
-uci_batch_set() {
+oc_uci_batch_set() {
     local config
     config="$1"
-    echo "$config" | strip_comment | sed -e 's/^/set /' | uci batch
+    echo "$config" | oc_strip_comment | sed -e 's/^/set /' | uci batch
 }
 
-md5sums=''
-update_md5sums
+oc_md5sums=''
+oc_update_md5sums

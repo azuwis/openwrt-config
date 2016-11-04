@@ -34,6 +34,6 @@ forward-zone:
     name: "."
     forward-addr: ${config_unbound_forwarder}
 EOF
-if move /tmp/unbound.conf /etc/unbound/unbound.conf; then
-    service restart unbound - 2>/dev/null
+if oc_move /tmp/unbound.conf /etc/unbound/unbound.conf; then
+    oc_service restart unbound - 2>/dev/null
 fi

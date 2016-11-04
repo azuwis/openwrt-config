@@ -1,4 +1,4 @@
-uci_batch_set "$config_firewall"
+oc_uci_batch_set "$config_firewall"
 uci_del_type firewall redirect
 firewall_redirect() {
     local proto src_dport dest_ip dest_port
@@ -20,5 +20,5 @@ firewall_redirect() {
         set -u
     done
 }
-echo "$config_redirect" | strip_comment | firewall_redirect
-service reload firewall 2>/dev/null
+echo "$config_redirect" | oc_strip_comment | firewall_redirect
+oc_service reload firewall 2>/dev/null

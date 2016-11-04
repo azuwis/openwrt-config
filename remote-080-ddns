@@ -1,6 +1,6 @@
 oc_opkg_install ca-certificates ddns-scripts
 
-uci_delete ddns.myddns_ipv4 ddns.myddns_ipv6
+oc_uci_delete ddns.myddns_ipv4 ddns.myddns_ipv6
 uci batch <<EOF
 set ddns.global.use_curl='1'
 set ddns.duckdns='service'
@@ -9,5 +9,5 @@ set ddns.duckdns.update_url='http://www.duckdns.org/update?domains=[USERNAME]&to
 set ddns.duckdns.use_https='1'
 set ddns.duckdns.cacert='/etc/ssl/certs'
 EOF
-uci_batch_set "$config_ddns"
-service restart ddns
+oc_uci_batch_set "$config_ddns"
+oc_service restart ddns
