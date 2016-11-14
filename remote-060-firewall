@@ -1,5 +1,5 @@
 oc_uci_batch_set "$config_firewall"
-uci_del_type firewall redirect
+oc_uci_del_type firewall redirect
 firewall_redirect() {
     local proto src_dport dest_ip dest_port
     while read proto src_dport dest_ip dest_port

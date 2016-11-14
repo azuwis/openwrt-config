@@ -101,7 +101,7 @@ oc_uci_delete() {
     done
 }
 
-uci_del_type() {
+oc_uci_del_type() {
     local config type deleted
     config="$1"
     type="$2"
@@ -112,7 +112,7 @@ uci_del_type() {
     done
 }
 
-uci_rename() {
+oc_uci_rename() {
     local key value
     key="$1"
     value="$2"

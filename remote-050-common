@@ -17,7 +17,7 @@ oc_service restart sysntpd system
 uci set dhcp.@dnsmasq[0].cachesize=1024
 oc_uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
 
-uci_del_type dhcp host
+oc_uci_del_type dhcp host
 dhcp_host() {
     local ip mac
     while read ip mac

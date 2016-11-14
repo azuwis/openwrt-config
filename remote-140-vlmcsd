@@ -4,7 +4,7 @@ oc_service start vlmcsd
 set_srvhost() {
     local hostname=$(uci -q get system.@system[0].hostname)
     local domain=$(uci -q get dhcp.@dnsmasq[0].domain)
-    uci_del_type dhcp srvhost
+    oc_uci_del_type dhcp srvhost
     uci add dhcp srvhost >/dev/null
     uci set "dhcp.@srvhost[0].srv=_vlmcs._tcp.${domain}"
     uci set "dhcp.@srvhost[0].target=${hostname}.${domain}"

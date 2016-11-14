@@ -5,7 +5,7 @@ set +u
 network_get_device iface_wan wan
 set -u
 
-uci_rename sqm.eth1 wan
+oc_uci_rename sqm.eth1 wan
 uci batch <<EOF
 set sqm.wan.enabled='0'
 set sqm.wan.interface='${iface_wan}'
