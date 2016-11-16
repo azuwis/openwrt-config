@@ -12,6 +12,7 @@ set_srvhost() {
     uci set "dhcp.@srvhost[0].weight=100"
 }
 
+dnsmasq_vlmcsd_setted="false"
 handle_srvhost() {
     local config="$1"
     local _value
@@ -25,12 +26,13 @@ handle_srvhost() {
         uci_set dhcp "$config" port 1688
         uci_set dhcp "$config" class 0
         uci_set dhcp "$config" weight 100
+        dnsmasq_vlmcsd_setted="true"
         return 1
     fi
 }
 config_load dhcp
 config_foreach handle_srvhost srvhost
-if [ "$?" -ne 1 ]; then
+if [ x"$dnsmasq_vlmcsd_setted" = x"false" ]; then
     set_srvhost
 fi
 oc_service reload dnsmasq dhcp
