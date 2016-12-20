@@ -5,7 +5,7 @@ uci batch <<EOF
 set ddns.global.use_curl='1'
 set ddns.duckdns='service'
 set ddns.duckdns.enabled='0'
-set ddns.duckdns.update_url='http://www.duckdns.org/update?domains=[USERNAME]&token=[PASSWORD]&ip=[IP]'
+set ddns.duckdns.service_name='duckdns.org'
 set ddns.duckdns.use_https='1'
 set ddns.duckdns.cacert='/etc/ssl/certs'
 EOF
