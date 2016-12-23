@@ -1,6 +1,5 @@
-oc_opkg_install uhttpd adblock
+oc_opkg_install adblock
 
-uci set adblock.global.adb_forcedns='0'
 oc_service restart adblock
 
 oc_add_cron adblock '0 4 * * * /etc/init.d/adblock start'
