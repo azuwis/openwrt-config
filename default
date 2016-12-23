@@ -72,7 +72,11 @@ config_redirect='
 '
 
 config_ddns='
+# ddns.duckdns=service
 # ddns.duckdns.enabled=1
+# ddns.duckdns.service_name=duckdns.org
+# ddns.duckdns.use_https=1
+# ddns.duckdns.cacert=/etc/ssl/certs
 # ddns.duckdns.domain=
 # ddns.duckdns.username=
 # ddns.duckdns.password=
