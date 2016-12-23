@@ -86,6 +86,8 @@ config_sqm='
 # sqm.wan.upload=
 '
 
+config_watchcat_pinghosts='www.baidu.com'
+
 config_shadowsocks_common='
 # shadowsocks-libev.@shadowsocks-libev[0].local_port=1080
 # shadowsocks-libev.@shadowsocks-libev[0].ipt_ext="-m multiport --dports 53,80,443"
