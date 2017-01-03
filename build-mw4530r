@@ -1,7 +1,12 @@
 #!/bin/sh
 set -ex
-git pull --rebase
-./scripts/feeds update -a
+
+if [ x"$1" = x"-u" ]; then
+    git pull --rebase
+    cp feeds.conf.default feeds.conf
+    ./scripts/feeds update -a
+fi
+
 ./scripts/feeds install \
   adblock ddns-scripts miniupnpd shadowsocks-libev sqm-scripts unbound watchcat \
   mac-telnet-client rsync tmux wget
