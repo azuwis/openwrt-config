@@ -3,6 +3,9 @@ push files/vlmcsd.keep /lib/upgrade/keep.d/vlmcsd
 
 case "$arch" in
     ar71xx)
-        push files/vlmcsd-mips16-openwrt-atheros-ar7xxx-ar9xxx-musl /usr/bin/vlmcsd
+        if ! push files/vlmcsd-mips16-openwrt-atheros-ar7xxx-ar9xxx-musl /usr/bin/vlmcsd; then
+           remote /etc/init.d/vlmcsd stop
+           push files/vlmcsd-mips16-openwrt-atheros-ar7xxx-ar9xxx-musl /usr/bin/vlmcsd
+        fi
         ;;
 esac
