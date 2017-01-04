@@ -11,9 +11,7 @@ chn_cidr() {
     awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }'
 }
 if [ ! -e files/chn-cidr ]; then
-    if [ ! -e files/delegated-apnic-latest ]; then
-        download http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
-    fi
+    download http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
     chn_cidr < files/tmp/delegated-apnic-latest > files/chn-cidr
     cat >> files/chn-cidr <<EOF
 64.62.200.2/32

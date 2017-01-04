@@ -3,9 +3,7 @@ chn_domains() {
 }
 
 if [ ! -e files/chn-domains ]; then
-    if [ ! -e files/accelerated-domains.china.conf ]; then
-        download https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
-    fi
+    download https://github.com/felixonmars/dnsmasq-china-list/raw/master/accelerated-domains.china.conf
     chn_domains < files/tmp/accelerated-domains.china.conf > files/chn-domains
 fi
 
