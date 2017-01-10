@@ -9,11 +9,12 @@ update_dnsmasq() {
         if [ x"$local_dns" = x ]; then
             exit
         fi
+        touch "$conf"
         local domain
         (zcat /etc/chn-domains.gz; cat /etc/chn-domains-extra) | grep -Ev '(^#|^\s*$)' | while read domain
         do
             echo "server=/$domain/${local_dns}"
-        done > $conf
+        done >> $conf
         if [ "$(uci -q get shadowsocks.@global[0].global_server)" != 'nil' ]; then
             grep -Ev '(^#|^\s*$)' /etc/chn-domains-extra | while read domain
             do
