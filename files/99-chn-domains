@@ -3,7 +3,7 @@
 update_dnsmasq() {
     local conf
     conf=/tmp/dnsmasq.d/99-chn-domains.conf
-    if [ "$ACTION" = "ifup" -a ! -e "$conf" ]; then
+    if [ "$ACTION" = "ifup" ] && [ ! -e "$conf" ]; then
         local local_dns
         local_dns="$(awk '/^# Interface wan$/ {getline; print $2}' /var/resolv.conf.auto)"
         if [ x"$local_dns" = x ]; then
@@ -11,7 +11,7 @@ update_dnsmasq() {
         fi
         touch "$conf"
         local domain
-        (zcat /etc/chn-domains.gz; cat /etc/chn-domains-extra) | grep -Ev '(^#|^\s*$)' | while read domain
+        (zcat /etc/chn-domains.gz; cat /etc/chn-domains-extra) | grep -Ev '(^#|^\s*$)' | while read -r domain
         do
             echo "server=/$domain/${local_dns}"
         done >> $conf
@@ -25,8 +25,8 @@ update_dnsmasq() {
         remote_dns="$(uci -q get dhcp.@dnsmasq[0].remote_dns)"
         printf "no-resolv\nserver=%s\n" "$remote_dns" >> $conf
         /etc/init.d/dnsmasq restart
-    elif [ "$ACTION" = "ifdown" -a -e "$conf" ]; then
-        rm $conf
+    elif [ "$ACTION" = "ifdown" ] && [ -e "$conf" ]; then
+        rm "$conf"
         /etc/init.d/dnsmasq restart
     fi
 }
