@@ -9,7 +9,7 @@ fi
 
 ./scripts/feeds install \
   adblock ddns-scripts mwan3 miniupnpd shadowsocks-libev sqm-scripts unbound watchcat wget \
-  mac-telnet-client
+  mac-telnet-client mac-telnet-discover
 cat >.config <<EOF
 CONFIG_TARGET_ar71xx=y
 CONFIG_TARGET_ar71xx_generic=y
@@ -39,6 +39,7 @@ CONFIG_PACKAGE_watchcat=y
 CONFIG_PACKAGE_wget=y
 
 CONFIG_PACKAGE_mac-telnet-client=y
+CONFIG_PACKAGE_mac-telnet-discover=y
 EOF
 make defconfig
 ./scripts/diffconfig.sh
