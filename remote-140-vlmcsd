@@ -1,38 +1,13 @@
 oc_service enable vlmcsd
 oc_service start vlmcsd
 
-set_srvhost() {
-    local hostname=$(uci -q get system.@system[0].hostname)
-    local domain=$(uci -q get dhcp.@dnsmasq[0].domain)
-    uci add dhcp srvhost >/dev/null
-    uci set "dhcp.@srvhost[0].srv=_vlmcs._tcp.${domain}"
-    uci set "dhcp.@srvhost[0].target=${hostname}.${domain}"
-    uci set "dhcp.@srvhost[0].port=1688"
-    uci set "dhcp.@srvhost[0].class=0"
-    uci set "dhcp.@srvhost[0].weight=100"
-}
+uci -m import dhcp <<EOF
+config srvhost 'vlmcsd'
+	option srv '_vlmcs._tcp.lan'
+	option target '$(uci -q get system.@system[0].hostname).$(uci -q get dhcp.@dnsmasq[0].domain)'
+	option port '1688'
+	option class '0'
+	option weight '100'
+EOF
 
-dnsmasq_vlmcsd_setted="false"
-handle_srvhost() {
-    local config="$1"
-    local _value
-
-    config_get _value "$config" srv
-
-    local domain="$(uci -q get dhcp.@dnsmasq[0].domain)"
-    if [ "$_value" = "_vlmcs._tcp.${domain}" ]; then
-        local hostname="$(uci -q get system.@system[0].hostname)"
-        uci_set dhcp "$config" target "${hostname}.${domain}"
-        uci_set dhcp "$config" port 1688
-        uci_set dhcp "$config" class 0
-        uci_set dhcp "$config" weight 100
-        dnsmasq_vlmcsd_setted="true"
-        return 1
-    fi
-}
-config_load dhcp
-config_foreach handle_srvhost srvhost
-if [ x"$dnsmasq_vlmcsd_setted" = x"false" ]; then
-    set_srvhost
-fi
 oc_service reload dnsmasq dhcp
