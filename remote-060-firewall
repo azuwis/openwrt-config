@@ -1,21 +1,21 @@
 oc_uci_batch_set "$config_firewall"
-oc_uci_del_type firewall redirect
+# oc_uci_del_type firewall redirect
 firewall_redirect() {
     local proto src_dport dest_ip dest_port
     while read proto src_dport dest_ip dest_port
     do
-        uci add firewall redirect >/dev/null
-        uci set "firewall.@redirect[-1].target=DNAT"
-        uci set "firewall.@redirect[-1].src=wan"
-        uci set "firewall.@redirect[-1].dest=lan"
-        uci set "firewall.@redirect[-1].proto=$proto"
-        uci set "firewall.@redirect[-1].src_dport=$src_dport"
-        set +u
+        local name="${proto}__${src_dport//:/_}__${dest_ip//./_}__${dest_port//:/_}"
+        uci set "firewall.${name}=redirect"
+        uci set "firewall.${name}.target=DNAT"
+        uci set "firewall.${name}.src=wan"
+        uci set "firewall.${name}.dest=lan"
+        uci set "firewall.${name}.proto=$proto"
+        uci set "firewall.${name}.src_dport=$src_dport"
         if [ x"$dest_ip" != x'-' -a x"$dest_ip" != x ]; then
-            uci set "firewall.@redirect[-1].dest_ip=$dest_ip"
+            uci set "firewall.${name}.dest_ip=$dest_ip"
         fi
         if [ x"$dest_port" != x ]; then
-            uci set "firewall.@redirect[-1].dest_port=$dest_port"
+            uci set "firewall.${name}.dest_port=$dest_port"
         fi
     done
 }
