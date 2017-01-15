@@ -114,3 +114,5 @@ config_chn_domains_dnsmasq_full='1'
 
 # config_pcap_dnsproxy_dns=''
 # config_pcap_dnsproxy_protocol=''
+
+config_mwan=0
