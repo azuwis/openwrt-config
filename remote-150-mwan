@@ -1,5 +1,7 @@
 setup_mwan() {
     # network
+    oc_opkg_install kmod-macvlan
+
     uci set network.wan.metric=10
     for i in $(seq 2 "$((config_mwan + 1))")
     do
@@ -27,7 +29,7 @@ EOF
     oc_service reload firewall 2>/dev/null
 
     # mwan3
-    oc_opkg_install kmod-macvlan mwan3
+    oc_opkg_install mwan3
 
     (
         cat <<EOF
