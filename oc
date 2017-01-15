@@ -142,11 +142,7 @@ generate_script() {
         cat <<EOF
 echo "Begin $remote_module"
 EOF
-        if [ -x "$remote_module" ]; then
-            "./$remote_module"
-        else
-            cat "$remote_module"
-        fi
+        cat "$remote_module"
         cat <<EOF
 oc_hr
 
