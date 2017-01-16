@@ -28,6 +28,15 @@ EOF
     done
     oc_service reload firewall 2>/dev/null
 
+    # sqm
+    if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
+        for i in $(seq 2 "$((config_mwan + 1))")
+        do
+            uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.wan${i}/" -e "s/pppoe-wan/pppoe-wan${i}/" -e 's/^/set /' | uci batch
+        done
+    fi
+    oc_service restart sqm
+
     # mwan3
     oc_opkg_install mwan3
 
