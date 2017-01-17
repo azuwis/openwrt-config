@@ -3,36 +3,36 @@ setup_mwan() {
     oc_opkg_install kmod-macvlan
 
     uci set network.wan.metric=10
-    for i in $(seq 2 "$((config_mwan + 1))")
+    for i in $(seq 1 "$config_mwan")
     do
         uci batch <<EOF
-set network.macvlan_wan${i}=device
-set network.macvlan_wan${i}.name=macvlan-wan${i}
-set network.macvlan_wan${i}.type=macvlan
-set network.macvlan_wan${i}.ifname=$(uci -q get network.wan.ifname)
-set network.wan${i}=interface
-set network.wan${i}.ifname=macvlan-wan${i}
-set network.wan${i}.proto=pppoe
-set network.wan${i}.username=$(uci -q get network.wan.username)
-set network.wan${i}.password=$(uci -q get network.wan.password)
-set network.wan${i}.ipv6=0
-set network.wan${i}.metric=${i}0
+set network.macvlan_mwan${i}=device
+set network.macvlan_mwan${i}.name=macvlan-mwan${i}
+set network.macvlan_mwan${i}.type=macvlan
+set network.macvlan_mwan${i}.ifname=$(uci -q get network.wan.ifname)
+set network.mwan${i}=interface
+set network.mwan${i}.ifname=macvlan-mwan${i}
+set network.mwan${i}.proto=pppoe
+set network.mwan${i}.username=$(uci -q get network.wan.username)
+set network.mwan${i}.password=$(uci -q get network.wan.password)
+set network.mwan${i}.ipv6=0
+set network.mwan${i}.metric=${i}0
 EOF
     done
     oc_service reload network
 
     # firewall
-    for i in $(seq 2 "$((config_mwan + 1))")
+    for i in $(seq 1 "$config_mwan")
     do
-        oc_uci_add_list 'firewall.@zone[1].network' "wan${i}"
+        oc_uci_add_list 'firewall.@zone[1].network' "mwan${i}"
     done
     oc_service reload firewall 2>/dev/null
 
     # sqm
     if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
-        for i in $(seq 2 "$((config_mwan + 1))")
+        for i in $(seq 1 "$config_mwan")
         do
-            uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.wan${i}/" -e "s/pppoe-wan/pppoe-wan${i}/" -e 's/^/set /' | uci batch
+            uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.mwan${i}/" -e "s/pppoe-wan/pppoe-mwan${i}/" -e 's/^/set /' | uci batch
         done
     fi
     oc_service restart sqm
@@ -45,10 +45,10 @@ EOF
 config interface 'wan'
 	option enabled '1'
 EOF
-        for i in $(seq 2 "$((config_mwan + 1))")
+        for i in $(seq 1 "$config_mwan")
         do
             cat <<EOF
-config interface 'wan${i}'
+config interface 'mwan${i}'
 	option enabled '1'
 EOF
         done
