@@ -5,6 +5,12 @@ if [ x"$1" = x"-u" ]; then
     git pull --rebase
     cp feeds.conf.default feeds.conf
     ./scripts/feeds update -a
+    for dir in $(awk '/^src-git / {print $2}' feeds.conf)
+    do
+        cd "feeds/$dir"
+        git rebase origin/master
+        cd ../../
+    done
 fi
 
 ./scripts/feeds install \
