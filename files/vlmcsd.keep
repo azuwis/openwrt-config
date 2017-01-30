@@ -1,3 +1,4 @@
 /etc/init.d/vlmcsd
+/etc/rc.d/S93vlmcsd
 /lib/upgrade/keep.d/vlmcsd
 /usr/bin/vlmcsd
