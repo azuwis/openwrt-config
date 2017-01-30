@@ -5,6 +5,7 @@ firewall_redirect() {
     while read proto src_dport dest_ip dest_port
     do
         local name="${proto}__${src_dport//:/_}__${dest_ip//./_}__${dest_port//:/_}"
+        oc_uci_reset_section firewall "$name"
         uci set "firewall.${name}=redirect"
         uci set "firewall.${name}.target=DNAT"
         uci set "firewall.${name}.src=wan"

@@ -23,6 +23,7 @@ dhcp_host() {
     while read ip mac
     do
         local name="${ip//./_}"
+        oc_uci_reset_section dhcp "$name"
         uci set "dhcp.${name}=host"
         uci set "dhcp.${name}.ip=${ip}"
         uci set "dhcp.${name}.mac=${mac}"
