@@ -81,7 +81,11 @@ oc_uci_commit() {
     if oc_config_changed "$config"; then
         echo
         echo "uci changes:"
-        uci changes "$config"
+        if which diff >/dev/null; then
+            uci export "$config" | grep -v '^package ' | diff -u "/etc/config/$config" -
+        else
+            uci changes "$config"
+        fi
         echo
         uci commit
         oc_update_md5sums
