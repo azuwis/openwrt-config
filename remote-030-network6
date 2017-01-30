@@ -2,7 +2,9 @@ if echo "$config_network6" | grep -qxF 'network.wan6.proto=6to4'; then
     oc_opkg_install 6to4
 fi
 
-oc_uci_delete network.globals.ula_prefix network.wan6 network.henet
+oc_uci_delete network.globals.ula_prefix
+oc_uci_reset_section network wan6
+oc_uci_reset_section network henet
 uci batch <<EOF
 set network.wan6='interface'
 set network.wan6.proto='none'
