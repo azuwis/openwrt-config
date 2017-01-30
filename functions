@@ -113,6 +113,26 @@ oc_uci_del_type() {
     done
 }
 
+oc_uci_reset_section() {
+    local config="$1"
+    local section="$2"
+    config_cb() {
+        local type="$1"
+        local name="$2"
+        if [ "$name" = "$section" ]; then
+            option_cb() {
+                local option="$1"
+                local value="$2"
+                uci delete "$config.$section.$option"
+            }
+        else
+            option_cb() { return 0; }
+        fi
+    }
+    config_load "$config"
+    reset_cb
+}
+
 oc_uci_rename() {
     local key value
     key="$1"
