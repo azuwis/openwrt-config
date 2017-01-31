@@ -137,6 +137,26 @@ oc_uci_reset_section() {
     reset_cb
 }
 
+oc_uci_del_sections() {
+    local config="$1"
+    local type="$2"
+    local sections=" $3 "
+    if [ "$sections" = '  ' ]; then
+        return
+    fi
+    config_cb() {
+        local _type="$1"
+        local name="$2"
+        if [ "$type" = "$_type" ]; then
+            if ! oc_contains "$sections" "$name"; then
+                uci delete "$config.$name"
+            fi
+        fi
+    }
+    config_load "$config"
+    reset_cb
+}
+
 oc_uci_rename() {
     local key value
     key="$1"
@@ -261,6 +281,16 @@ oc_uci_batch_set() {
     local config
     config="$1"
     echo "$config" | oc_strip_comment | sed -e 's/^/set /' | uci batch
+}
+
+oc_contains() {
+    string="$1"
+    substring="$2"
+    if [ "${string#* $substring }" != "$string" ]; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 oc_md5sums=''
