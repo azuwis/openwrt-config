@@ -82,7 +82,7 @@ oc_uci_commit() {
         echo
         echo "uci changes:"
         if which diff >/dev/null; then
-            uci export "$config" | grep -v '^package ' | diff -u "/etc/config/$config" -
+            uci export "$config" | grep -v '^package ' | diff -pu "/etc/config/$config" -
         else
             uci changes "$config"
         fi
