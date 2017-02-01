@@ -1,0 +1,2 @@
+/etc/uci-defaults/99-dumbap
+/lib/upgrade/keep.d/dumbap

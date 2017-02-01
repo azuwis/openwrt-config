@@ -3,7 +3,7 @@ host='root@192.168.1.2'
 # intra_host='root@192.168.1.2'
 # intra_port='22'
 
-local_modules='local-010-pubkey local-050-bin'
+local_modules='local-010-pubkey local-050-bin local-9999-dumbap'
 remote_modules='remote-020-network remote-030-network6 remote-050-common remote-810-disable-uhttpd remote-9999-dumbap'
 
 config_common='
