@@ -1,0 +1,4 @@
+** Disabe airtime fairness at runtime
+
+echo 0 > /sys/kernel/debug/ieee80211/phy0/ath9k/airtime_flags
+echo 0 > /sys/kernel/debug/ieee80211/phy1/ath9k/airtime_flags
