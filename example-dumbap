@@ -9,7 +9,7 @@ remote_modules='remote-020-network remote-030-network6 remote-050-common remote-
 config_common='
 system.@system[0].hostname=dumbap
 '
-config_packages=''
+config_packages='diffutils'
 config_root_password=''
 
 config_wireless='
