@@ -22,18 +22,20 @@ config_wireless='
 # wireless.@wifi-iface[0].ssid=
 # wireless.@wifi-iface[0].encryption=psk2
 # wireless.@wifi-iface[0].key=
-# wireless.@wifi-iface[1].iapp_interface=lan
-# wireless.radio0.channel=11
-# wireless.radio0.htmode=HT40-
+# wireless.@wifi-iface[0].ieee80211w=1
+# wireless.@wifi-iface[0].iapp_interface=lan
+# wireless.radio0.channel=13
+# wireless.radio0.htmode=HT20-
 # wireless.radio0.noscan=1
 
 # wireless.@wifi-iface[1].disabled=0
 # wireless.@wifi-iface[1].ssid=
 # wireless.@wifi-iface[1].encryption=psk2
 # wireless.@wifi-iface[1].key=
+# wireless.@wifi-iface[1].ieee80211w=1
 # wireless.@wifi-iface[1].iapp_interface=lan
-# wireless.radio1.channel=165
-# wireless.radio1.htmode=HT40-
+# wireless.radio1.channel=149
+# wireless.radio1.htmode=HT40
 # wireless.radio1.noscan=1
 '
 
