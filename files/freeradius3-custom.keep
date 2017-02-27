@@ -1,0 +1,3 @@
+/etc/freeradius3/clients.conf
+/etc/freeradius3/mods-config/files/authorize
+/lib/upgrade/keep.d/freeradius3-custom
