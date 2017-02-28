@@ -9,7 +9,9 @@ if oc_uci_exists wireless; then
     oc_uci_exists wireless.radio0 && uci set wireless.radio0.country=CN
     oc_uci_exists wireless.radio1 && uci set wireless.radio1.country=CN
     oc_uci_batch_set "$config_wireless"
+    wifi_need_restart=0
     if uci -q show wireless | grep -qE 'iapp_interface|ieee80211w'; then
+        wifi_need_restart=1
         oc_opkg_remove wpad-mini
         oc_opkg_install wpad
 
@@ -22,6 +24,9 @@ if oc_uci_exists wireless; then
         fi
     fi
     oc_service reload network wireless
+    if [ "$wifi_need_restart" -eq 1 ]; then
+       wifi
+    fi
 fi
 
 # uci batch <<EOF
