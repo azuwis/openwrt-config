@@ -30,7 +30,7 @@ if oc_uci_exists wireless; then
     done
     wifi_need_restart=0
     if uci -q show wireless | grep -qE 'iapp_interface|ieee80211w|ieee80211r'; then
-        wifi_need_restart=1
+        oc_opkg_installed wpad-mini && wifi_need_restart=1
         oc_opkg_remove wpad-mini
         oc_opkg_install wpad
 
