@@ -9,24 +9,27 @@ if oc_uci_exists wireless; then
     oc_uci_exists wireless.radio0 && uci set wireless.radio0.country=CN
     oc_uci_exists wireless.radio1 && uci set wireless.radio1.country=CN
     oc_uci_batch_set "$config_wireless"
-    for i in $config_ieee80211r_ifaces
-    do
-        iface="@wifi-iface[$i]"
-        bssid="$config_ieee80211r_bssid"
-        nasid="$(echo $bssid | tr -d :)"
-        uci set "wireless.${iface}.ieee80211r=1"
-        uci set "wireless.${iface}.pmk_r1_push=1"
-        uci set "wireless.${iface}.auth_cache=1"
-        uci set "wireless.${iface}.rsn_preauth=1"
-        uci set "wireless.${iface}.mobility_domain=5d73"
-        uci set "wireless.${iface}.nasid=${nasid}"
-        uci set "wireless.${iface}.r1_key_holder=${nasid}"
-        for j in $config_ieee80211r_macs
+    if [ "$config_ieee80211r_enabled" -eq 1 ]
+    then
+        for i in $config_ieee80211r_ifaces
         do
-            oc_uci_add_list "wireless.${iface}.r0kh" "${j},$(echo $j | tr -d :),$config_ieee80211r_key"
-            oc_uci_add_list "wireless.${iface}.r1kh" "${j},${j},$config_ieee80211r_key"
+            iface="@wifi-iface[$i]"
+            bssid="$config_ieee80211r_bssid"
+            nasid="$(echo $bssid | tr -d :)"
+            uci set "wireless.${iface}.ieee80211r=1"
+            uci set "wireless.${iface}.pmk_r1_push=1"
+            uci set "wireless.${iface}.auth_cache=1"
+            uci set "wireless.${iface}.rsn_preauth=1"
+            uci set "wireless.${iface}.mobility_domain=5d73"
+            uci set "wireless.${iface}.nasid=${nasid}"
+            uci set "wireless.${iface}.r1_key_holder=${nasid}"
+            for j in $config_ieee80211r_macs
+            do
+                oc_uci_add_list "wireless.${iface}.r0kh" "${j},$(echo $j | tr -d :),$config_ieee80211r_key"
+                oc_uci_add_list "wireless.${iface}.r1kh" "${j},${j},$config_ieee80211r_key"
+            done
         done
-    done
+    fi
     wifi_need_restart=0
     if uci -q show wireless | grep -qE 'iapp_interface|ieee80211w|ieee80211r'; then
         oc_opkg_installed wpad-mini && wifi_need_restart=1
