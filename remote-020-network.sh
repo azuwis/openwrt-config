@@ -18,7 +18,6 @@ if oc_uci_exists wireless; then
         uci set "wireless.${iface}.pmk_r1_push=1"
         uci set "wireless.${iface}.auth_cache=1"
         uci set "wireless.${iface}.rsn_preauth=1"
-        uci set "wireless.${iface}.disassoc_low_ack="
         uci set "wireless.${iface}.mobility_domain=5d73"
         uci set "wireless.${iface}.nasid=${nasid}"
         uci set "wireless.${iface}.r1_key_holder=${nasid}"
