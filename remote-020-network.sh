@@ -43,7 +43,7 @@ if oc_uci_exists wireless; then
     fi
     oc_service reload network wireless
     if [ "$wifi_need_restart" -eq 1 ]; then
-       wifi
+        wifi
     fi
 fi
 
