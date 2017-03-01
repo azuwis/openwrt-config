@@ -3,8 +3,8 @@ host=root@192.168.1.1
 # intra_host='root@192.168.1.1'
 # intra_port='22'
 
-# local_modules='local-010-pubkey'
-# remote_modules='remote-020-network remote-030-network6 remote-050-common'
+# local_modules='local-010-pubkey.sh'
+# remote_modules='remote-020-network.sh remote-030-network6.sh remote-050-common.sh'
 
 config_common='
 system.@system[0].hostname=OpenWrt

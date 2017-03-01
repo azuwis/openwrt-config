@@ -3,8 +3,8 @@ host='root@192.168.1.2'
 # intra_host='root@192.168.1.2'
 # intra_port='22'
 
-local_modules='local-010-pubkey local-030-bin local-9999-dumbap'
-remote_modules='remote-020-network remote-030-network6 remote-050-common remote-810-disable-uhttpd remote-9999-dumbap'
+local_modules='local-010-pubkey.sh local-030-bin.sh local-9999-dumbap.sh'
+remote_modules='remote-020-network.sh remote-030-network6.sh remote-050-common.sh remote-810-disable-uhttpd.sh remote-9999-dumbap.sh'
 
 config_common='
 system.@system[0].hostname=dumbap
