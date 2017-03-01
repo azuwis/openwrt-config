@@ -54,7 +54,7 @@ if [ x"$intra_host" != x ]; then
     fi
 fi
 
-while getopts ":gh:kl:m:p:x" Option
+while getopts ":gh:kl:r:p:x" Option
 do
     case "$Option" in
         h) host="$OPTARG" ;;
@@ -64,7 +64,7 @@ do
             local_modules_overrided=1
             local_modules="$OPTARG"
             ;;
-        m)
+        r)
             remote_modules_overrided=1
             remote_modules="$OPTARG"
             ;;
