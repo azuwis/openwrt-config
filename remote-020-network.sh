@@ -1,4 +1,4 @@
-chmod 600 /etc/config/network
+chmod 600 /etc/config/network /etc/config/wireless
 
 oc_uci_batch_set "$config_network"
 oc_service reload network
