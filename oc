@@ -139,16 +139,19 @@ generate_script() {
     settings "$target"
     for remote_module in $remote_modules
     do
-        cat <<EOF
+        if [[ "$remote_module" == remote-* ]]
+        then
+            cat <<EOF
 echo "Begin $remote_module"
 EOF
-        cat "$remote_module"
-        cat <<EOF
+            cat "$remote_module"
+            cat <<EOF
 oc_hr
 
 # ----------------------------------------------------------
 
 EOF
+        fi
     done
 }
 
@@ -178,15 +181,18 @@ esac
 
 for local_module in $local_modules
 do
-    echo "Begin $local_module"
-    if [ x"$DEBUG" != x ]; then
-        set -x
+    if [[ "$local_module" == local-* ]]
+    then
+        echo "Begin $local_module"
+        if [ x"$DEBUG" != x ]; then
+            set -x
+        fi
+        source "$local_module"
+        if [ x"$DEBUG" != x ]; then
+            set +x
+        fi
+        printf '%s\n' ------------------------------------------------------------
     fi
-    source "$local_module"
-    if [ x"$DEBUG" != x ]; then
-        set +x
-    fi
-    printf '%s\n' ------------------------------------------------------------
 done
 
 if [ x"$remote_modules" != x ]; then
