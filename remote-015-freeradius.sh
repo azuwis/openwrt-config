@@ -1,8 +1,8 @@
 freeradius_packages() {
+    oc_opkg_remove wpad-mini
+    oc_opkg_install wpad
     if ! pgrep -x /usr/sbin/radiusd >/dev/null
     then
-        oc_opkg_remove wpad-mini
-        oc_opkg_install wpad
         oc_opkg_install freeradius3 freeradius3-democerts freeradius3-mod-always freeradius3-mod-attr-filter freeradius3-mod-chap freeradius3-mod-detail freeradius3-mod-digest freeradius3-mod-eap-gtc freeradius3-mod-eap-leap freeradius3-mod-eap-md5 freeradius3-mod-eap-mschapv2 freeradius3-mod-eap-peap freeradius3-mod-eap-tls freeradius3-mod-exec freeradius3-mod-expiration freeradius3-mod-expr freeradius3-mod-files freeradius3-mod-logintime freeradius3-mod-mschap freeradius3-mod-pap freeradius3-mod-preprocess freeradius3-mod-radutmp freeradius3-mod-realm freeradius3-mod-unix
         oc_opkg_installed freeradius3-mod-eap-ttls || opkg install --force-overwrite freeradius3-mod-eap-ttls
     fi
