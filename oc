@@ -2,6 +2,7 @@
 # PRE:
 # 1) telnet  2) passwd 3) reboot
 
+TIME=''
 DEBUG=''
 GEN_ONLY='no'
 KEEP='rm'
@@ -54,7 +55,7 @@ if [ x"$intra_host" != x ]; then
     fi
 fi
 
-while getopts ":gh:kl:r:p:x" Option
+while getopts ":gh:kl:r:tp:x" Option
 do
     case "$Option" in
         h) host="$OPTARG" ;;
@@ -68,6 +69,7 @@ do
             remote_modules_overrided=1
             remote_modules="$OPTARG"
             ;;
+        t) TIME='time' ;;
         p) port="$OPTARG" ;;
         x) DEBUG='-x' ;;
     esac
@@ -196,5 +198,5 @@ do
 done
 
 if [ x"$remote_modules" != x ]; then
-    generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; chmod 400 $s; sh '$DEBUG' $s; '$KEEP' $s'
+    generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; chmod 400 $s; '$TIME' sh '$DEBUG' $s; '$KEEP' $s'
 fi
