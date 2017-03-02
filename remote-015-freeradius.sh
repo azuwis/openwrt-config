@@ -9,19 +9,20 @@ freeradius_packages() {
 }
 
 freeradius_clients() {
+    local client
     cat >/tmp/freeradius-clients.conf <<EOF
 client localhost {
   ipaddr = 127.0.0.1
   secret = ${config_freeradius_secret}
 }
 EOF
-
-    for i in $config_freeradius_clients
+    chmod 640 /tmp/freeradius-clients.conf
+    for client in $config_freeradius_clients
     do
         cat >>/tmp/freeradius-clients.conf <<EOF
 
 client localhost {
-  ipaddr = ${i}
+  ipaddr = ${client}
   secret = ${config_freeradius_secret}
 }
 EOF
@@ -31,6 +32,7 @@ EOF
 freeradius_users() {
     local user pass
     >/tmp/freeradius-authorize
+    chmod 640 /tmp/freeradius-authorize
     while read user pass
     do
         cat >>/tmp/freeradius-authorize <<EOF
@@ -42,19 +44,10 @@ EOF
 freeradius_service() {
     local radiusd_need_restart
     radiusd_need_restart=0
-    if oc_move /tmp/freeradius-clients.conf /etc/freeradius3/clients.conf
-    then
-        radiusd_need_restart=1
-    fi
-    if oc_move /tmp/freeradius-authorize /etc/freeradius3/mods-config/files/authorize
-    then
-        radiusd_need_restart=1
-    fi
+    oc_move /tmp/freeradius-clients.conf /etc/freeradius3/clients.conf && radiusd_need_restart=1
+    oc_move /tmp/freeradius-authorize /etc/freeradius3/mods-config/files/authorize && radiusd_need_restart=1
     chmod 640 /etc/freeradius3/clients.conf /etc/freeradius3/mods-config/files/authorize
-    if [ "$radiusd_need_restart" -eq 1 ]
-    then
-        oc_service restart radiusd -
-    fi
+    [ "$radiusd_need_restart" -eq 1 ] && oc_service restart radiusd -
 }
 
 freeradius_packages
