@@ -14,7 +14,7 @@ if oc_uci_exists wireless; then
         for i in $config_ieee80211r_ifaces
         do
             iface="@wifi-iface[$i]"
-            bssid="$config_ieee80211r_bssid"
+            eval bssid="\$config_ieee80211r_bssid$i"
             nasid="$(echo $bssid | tr -d :)"
             uci set "wireless.${iface}.ieee80211r=1"
             uci set "wireless.${iface}.pmk_r1_push=1"
