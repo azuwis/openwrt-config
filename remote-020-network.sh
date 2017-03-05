@@ -17,6 +17,8 @@ if oc_uci_exists wireless; then
         do
             iface="iface$i"
             eval bssid="\$config_ieee80211r_bssid$i"
+            eval key="\$config_ieee80211r_key$i"
+            eval macs="\$config_ieee80211r_macs$i"
             nasid="$(echo $bssid | tr -d :)"
             uci set "wireless.${iface}.ieee80211r=1"
             uci set "wireless.${iface}.pmk_r1_push=1"
@@ -27,10 +29,10 @@ if oc_uci_exists wireless; then
             uci set "wireless.${iface}.r1_key_holder=${nasid}"
             list_r0kh=''
             list_r1kh=''
-            for j in $config_ieee80211r_macs
+            for j in $macs
             do
-                list_r0kh="$list_r0kh ${j},$(echo $j | tr -d :),$config_ieee80211r_key"
-                list_r1kh="$list_r1kh ${j},${j},$config_ieee80211r_key"
+                list_r0kh="$list_r0kh ${j},$(echo $j | tr -d :),$key"
+                list_r1kh="$list_r1kh ${j},${j},$key"
             done
             oc_uci_set_list wireless "$iface" r0kh $list_r0kh
             oc_uci_set_list wireless "$iface" r1kh $list_r1kh

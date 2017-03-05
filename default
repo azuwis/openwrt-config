@@ -51,10 +51,12 @@ config_wireless='
 # config_ieee80211r_enabled='1'
 # config_ieee80211r_ifaces='0 1'
 # config_ieee80211r_bssid0='11:11:11:11:11:11'
-# config_ieee80211r_bssid1='22:22:22:22:22:22'
-# config_ieee80211r_macs='11:11:11:11:11:11 22:22:22:22:22:22 33:33:33:33:33:33 44:44:44:44:44:44'
+# config_ieee80211r_bssid1='33:33:33:33:33:33'
+# config_ieee80211r_macs0='11:11:11:11:11:11 22:22:22:22:22:22'
+# config_ieee80211r_macs1='33:33:33:33:33:33 44:44:44:44:44:44'
 ## use `openssl rand -hex 16` to generate
-# config_ieee80211r_key='00000000000000000000000000000000'
+# config_ieee80211r_key0='00000000000000000000000000000000'
+# config_ieee80211r_key1='00000000000000000000000000000001'
 
 config_network='
 network.wan.proto=dhcp
