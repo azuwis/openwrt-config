@@ -13,9 +13,9 @@ config_packages='diffutils'
 config_root_password=''
 
 config_wireless='
-wireless.@wifi-iface[0].ssid=dumbap
-wireless.@wifi-iface[0].encryption=psk2
-wireless.@wifi-iface[0].key=
+wireless.iface0.ssid=dumbap
+wireless.iface0.encryption=psk2
+wireless.iface0.key=
 wireless.radio0.channel=6
 '
 
