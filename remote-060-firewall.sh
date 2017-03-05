@@ -21,7 +21,7 @@ firewall_redirect() {
             uci set "firewall.${name}.dest_port=$dest_port"
         fi
     done
-    oc_uci_del_sections firewall redirect "$all_names"
+    oc_uci_keep_sections firewall redirect "$all_names"
 }
 echo "$config_redirect" | oc_strip_comment | firewall_redirect
 oc_service reload firewall 2>/dev/null

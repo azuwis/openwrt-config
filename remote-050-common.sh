@@ -30,7 +30,7 @@ dhcp_host() {
         uci set "dhcp.${name}.ip=${ip}"
         uci set "dhcp.${name}.mac=${mac}"
     done
-    oc_uci_del_sections dhcp host "$all_names"
+    oc_uci_keep_sections dhcp host "$all_names"
 }
 echo "$config_dhcp_host" | oc_strip_comment | dhcp_host
 
