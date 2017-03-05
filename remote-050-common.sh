@@ -10,8 +10,7 @@ oc_service reload system
 uci set system.@system[0].log_buffer_size='256'
 oc_service reload log system
 
-oc_uci_delete system.ntp.server
-oc_uci_add_list system.ntp.server 0.debian.pool.ntp.org 1.debian.pool.ntp.org 2.debian.pool.ntp.org 3.debian.pool.ntp.org
+oc_uci_set_list system ntp server 0.debian.pool.ntp.org 1.debian.pool.ntp.org 2.debian.pool.ntp.org 3.debian.pool.ntp.org
 oc_service restart sysntpd system
 
 uci set dhcp.@dnsmasq[0].cachesize=1024
