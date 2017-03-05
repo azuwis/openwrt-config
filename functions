@@ -72,6 +72,39 @@ oc_uci_del_list() {
     done
 }
 
+oc_uci_set_list() {
+    local config section_name list_name value
+    config="$1"
+    shift
+    section_name="$1"
+    shift
+    list_name="$1"
+    shift
+    list_keep="$@"
+    oc_uci_add_list "$config.$section_name.$list_name" "$@"
+    config_cb() {
+        local _type="$1"
+        local _name="$2"
+        if [ "$_name" = "$section_name" ]
+        then
+            list_cb() {
+                local __name="$1"
+                local __value="$2"
+                if [ "$__name" = "$list_name" ]; then
+                    if ! list_contains list_keep "$__value"; then
+                        uci del_list "$config.$section_name.$list_name=$__value"
+                    fi
+                fi
+            }
+        else {
+            list_cb() { return; }
+        }
+        fi
+    }
+    config_load "$config"
+    reset_cb
+}
+
 oc_uci_commit() {
     local config
     config="$1"
