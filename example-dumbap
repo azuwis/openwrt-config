@@ -1,16 +1,17 @@
+# -*- mode: sh; -*-
+
 host='root@192.168.1.2'
 # port='22'
 # intra_host='root@192.168.1.2'
 # intra_port='22'
 
-local_modules='local-010-pubkey.sh local-030-bin.sh local-9999-dumbap.sh'
-remote_modules='remote-020-network.sh remote-030-network6.sh remote-050-common.sh remote-810-disable-uhttpd.sh remote-9999-dumbap.sh'
-
-config_common='
-system.@system[0].hostname=dumbap
+##### network #####
+config_network='
+network.lan.ipaddr=192.168.1.2
+network.lan.gateway=192.168.1.1
+network.lan.dns=192.168.1.1
+network.wan.disabled=1
 '
-config_packages='diffutils'
-config_root_password=''
 
 config_wireless='
 wireless.iface0.ssid=dumbap
@@ -19,13 +20,17 @@ wireless.iface0.key=
 wireless.radio0.channel=6
 '
 
-config_network='
-network.lan.ipaddr=192.168.1.2
-network.lan.gateway=192.168.1.1
-network.lan.dns=192.168.1.1
-network.wan.disabled=1
-'
-
+##### network6 #####
 config_network6='
 network.wan6.disabled=1
 '
+
+##### common #####
+config_common='
+system.@system[0].hostname=dumbap
+'
+config_packages='diffutils'
+config_root_password=''
+
+##### dumbap #####
+config_dumbap_enabled=1

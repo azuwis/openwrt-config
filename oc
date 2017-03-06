@@ -136,12 +136,21 @@ download_push() {
 }
 
 generate_script() {
-    local remote_module
+    local remote_module config_module
     cat functions
     settings "$target"
     for remote_module in $remote_modules
     do
-        if [[ "$remote_module" == remote-* ]]
+        config_module_enabled="${remote_module#remote-[0-9][0-9][0-9]-}"
+        config_module_enabled="${config_module_enabled%.sh}"
+        config_module_enabled="config_${config_module_enabled}_enabled"
+        if [[ "$config_module_enabled" =~ ^[0-9a-z_]+$ ]]
+        then
+            config_module_enabled="${!config_module_enabled}"
+        else
+            config_module_enabled=0
+        fi
+        if [[ "$remote_module" == remote-* ]] && [ "$config_module_enabled" = 1 ]
         then
             cat <<EOF
 echo "Begin $remote_module"
@@ -183,7 +192,16 @@ esac
 
 for local_module in $local_modules
 do
-    if [[ "$local_module" == local-* ]]
+    config_module_enabled="${local_module#local-[0-9][0-9][0-9]-}"
+    config_module_enabled="${config_module_enabled%.sh}"
+    config_module_enabled="config_${config_module_enabled}_enabled"
+    if [[ "$config_module_enabled" =~ ^[0-9a-z_]+$ ]]
+    then
+        config_module_enabled="${!config_module_enabled}"
+    else
+        config_module_enabled=0
+    fi
+    if [[ "$local_module" == local-* ]] && [ "$config_module_enabled" = 1 ]
     then
         echo "Begin $local_module"
         if [ x"$DEBUG" != x ]; then

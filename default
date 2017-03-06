@@ -1,28 +1,39 @@
+# -*- mode: sh; -*-
+
 host=root@192.168.1.1
 # port=22
 # intra_host='root@192.168.1.1'
 # intra_port='22'
 
-# local_modules='local-010-pubkey.sh'
-# remote_modules='remote-020-network.sh remote-030-network6.sh remote-050-common.sh'
+##### opkg #####
+config_opkg_enabled=1
 
-config_common='
-system.@system[0].hostname=OpenWrt
-'
-config_packages='ca-bundle diffutils miniupnpd'
-config_root_password=''
+##### pubkey #####
+config_pubkey_enabled=1
 
-config_dhcp_host='
-# 192.168.1.100 11:11:11:11:11:11
-# 192.168.1.101 22:22:22:22:22:22 33:33:33:33:33:33
-'
+##### bin #####
+config_bin_enabled=1
 
+##### freeradius #####
 config_freeradius_enabled=0
 config_freeradius_clients=''
 config_freeradius_secret=''
 config_freeradius_users='
 # user1 pass1
 # user2 pass2
+'
+
+##### network #####
+config_network_enabled=1
+config_network='
+## example for dhcp on wan
+# network.wan.proto=dhcp
+
+## example for pppoe on wan
+# network.wan.proto=pppoe
+# network.wan.username=
+# network.wan.password=
+# network.wan.ipv6=1
 '
 
 config_wireless='
@@ -48,7 +59,7 @@ config_wireless='
 # wireless.radio1.noscan=1
 '
 
-# config_ieee80211r_enabled='1'
+config_ieee80211r_enabled='0'
 # config_ieee80211r_ifaces='0 1'
 # config_ieee80211r_bssid0='11:11:11:11:11:11'
 # config_ieee80211r_bssid1='33:33:33:33:33:33'
@@ -58,15 +69,8 @@ config_wireless='
 # config_ieee80211r_key0='00000000000000000000000000000000'
 # config_ieee80211r_key1='00000000000000000000000000000001'
 
-config_network='
-network.wan.proto=dhcp
-
-# network.wan.proto=pppoe
-# network.wan.username=
-# network.wan.password=
-# network.wan.ipv6=1
-'
-
+##### network6 #####
+config_network6_enabled=1
 config_network6='
 # network.wan6.proto=none
 
@@ -82,6 +86,24 @@ config_henet='
 # network.henet.password=
 '
 
+##### common #####
+config_common_enabled=1
+config_common='
+system.@system[0].hostname=OpenWrt
+'
+config_packages='ca-bundle diffutils miniupnpd'
+config_root_password=''
+
+config_dhcp_host='
+# 192.168.1.100 11:11:11:11:11:11
+# 192.168.1.101 22:22:22:22:22:22 33:33:33:33:33:33
+'
+
+##### adblock #####
+config_adblock_enabled=0
+
+##### firewall #####
+config_firewall_enabled=0
 config_firewall=''
 
 config_redirect='
@@ -92,6 +114,8 @@ config_redirect='
 # udp 22224:22229 192.168.1.2
 '
 
+##### ddns #####
+config_ddns_enabled=0
 config_ddns='
 # ddns.duckdns=service
 # ddns.duckdns.enabled=1
@@ -105,14 +129,20 @@ config_ddns='
 # ddns.duckdns.ip_interface=pppoe-wan
 '
 
+##### sqm #####
+config_sqm_enabled=0
 config_sqm='
 # sqm.wan.enabled=1
 # sqm.wan.download=
 # sqm.wan.upload=
 '
 
+##### watchcat #####
+config_watchcat_enabled=0
 config_watchcat_pinghosts='www.baidu.com'
 
+##### shadowsocks #####
+config_shadowsocks_enabled=0
 config_shadowsocks_common='
 # shadowsocks-libev.@shadowsocks-libev[0].local_port=1080
 # shadowsocks-libev.@shadowsocks-libev[0].ipt_ext="-m multiport --dports 53,80,443"
@@ -127,13 +157,29 @@ config_shadowsocks='
 # shadowsocks-libev.@shadowsocks-libev[0].encrypt_method=
 '
 
+##### unbound #####
+config_unbound_enabled=0
 config_unbound_forwarder='8.8.8.8'
 config_unbound_tcp='yes'
 
+##### chn_domains #####
+config_chn_domains_enabled=0
 config_chn_domains_remote_dns='127.0.0.1#5354'
 config_chn_domains_dnsmasq_full='1'
 
+##### vlmcsd #####
+config_vlmcsd_enabled=0
+
+##### mwan #####
+config_mwan_enabled=0
+config_mwan=0
+
+##### disable_uhttpd #####
+config_disable_uhttpd_enabled=1
+
+##### clean_conffiles #####
+config_clean_conffiles_enabled=1
+
+##### pcap_dnsproxy #####
 # config_pcap_dnsproxy_dns=''
 # config_pcap_dnsproxy_protocol=''
-
-config_mwan=0
