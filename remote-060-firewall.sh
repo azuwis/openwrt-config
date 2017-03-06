@@ -1,11 +1,11 @@
 oc_uci_batch_set "$config_firewall"
 # oc_uci_del_type firewall redirect
 firewall_redirect() {
-    local proto src_dport dest_ip dest_port
+    local all_names proto src_dport dest_ip dest_port name
     all_names=''
     while read proto src_dport dest_ip dest_port
     do
-        local name="${proto}__${src_dport//:/_}__${dest_ip//./_}__${dest_port//:/_}"
+        name="${proto}__${src_dport//:/_}__${dest_ip//./_}__${dest_port//:/_}"
         all_names="$all_names $name"
         oc_uci_reset_section firewall "$name"
         uci set "firewall.${name}=redirect"
