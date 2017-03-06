@@ -1,5 +1,6 @@
-setup_mwan() {
+mwan_network() {
     # network
+    local i
     oc_opkg_install kmod-macvlan
 
     uci set network.wan.metric=10
@@ -20,15 +21,21 @@ set network.mwan${i}.metric=${i}0
 EOF
     done
     oc_service reload network
+}
 
+mwan_firewall() {
     # firewall
+    local i
     for i in $(seq 1 "$config_mwan")
     do
         oc_uci_add_list 'firewall.@zone[1].network' "mwan${i}"
     done
     oc_service reload firewall 2>/dev/null
+}
 
+mwan_sqm() {
     # sqm
+    local i
     if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
         for i in $(seq 1 "$config_mwan")
         do
@@ -36,58 +43,61 @@ EOF
         done
     fi
     oc_service restart sqm
+}
 
+mwan_mwan3() {
     # mwan3
+    local i
     oc_opkg_install mwan3
 
     (
         cat <<EOF
 config interface 'wan'
-	option enabled '1'
+  option enabled '1'
 EOF
         for i in $(seq 1 "$config_mwan")
         do
             cat <<EOF
 config interface 'mwan${i}'
-	option enabled '1'
+  option enabled '1'
 EOF
         done
         cat <<EOF
 config member 'wan_m1_w3'
-	option interface 'wan'
-	option metric '1'
-	option weight '3'
+  option interface 'wan'
+  option metric '1'
+  option weight '3'
 EOF
         for i in $(seq 1 "$config_mwan")
         do
             cat <<EOF
 config member 'mwan${i}_m1_w3'
-	option interface 'mwan${i}'
-	option metric '1'
-	option weight '3'
+  option interface 'mwan${i}'
+  option metric '1'
+  option weight '3'
 EOF
         done
         cat <<EOF
 config policy 'wan_only'
-	list use_member 'wan_m1_w3'
+  list use_member 'wan_m1_w3'
 
 config policy 'balanced'
-	list use_member 'wan_m1_w3'
+  list use_member 'wan_m1_w3'
 EOF
         for i in $(seq 1 "$config_mwan")
         do
             cat <<EOF
-	list use_member 'mwan${i}_m1_w3'
+  list use_member 'mwan${i}_m1_w3'
 EOF
-            done
+        done
         cat <<EOF
 config rule 'arukas'
-	option dest_ip '153.125.235.0/24'
-	option use_policy 'balanced'
+  option dest_ip '153.125.235.0/24'
+  option use_policy 'balanced'
 
 config rule 'default_rule'
-	option dest_ip '0.0.0.0/0'
-	option use_policy 'wan_only'
+  option dest_ip '0.0.0.0/0'
+  option use_policy 'wan_only'
 EOF
     ) | uci import mwan3
 
@@ -98,5 +108,8 @@ EOF
 }
 
 if [ "$config_mwan" -gt 0 ]; then
-    setup_mwan
+    mwan_network
+    mwan_firewall
+    mwan_sqm
+    mwan_mwan3
 fi
