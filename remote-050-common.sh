@@ -18,11 +18,11 @@ oc_uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
 
 # oc_uci_del_type dhcp host
 dhcp_host() {
-    local ip mac
+    local ip mac all_names name
     all_names=''
     while read ip mac
     do
-        local name="${ip//./_}"
+        name="${ip//./_}"
         all_names="$all_names $name"
         oc_uci_reset_section dhcp "$name"
         uci set "dhcp.${name}=host"
