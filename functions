@@ -160,7 +160,7 @@ oc_uci_reset_section() {
             option_cb() {
                 local option="$1"
                 local value="$2"
-                uci delete "$config.$section.$option"
+                oc_uci_delete "$config.$section.$option"
             }
         else
             option_cb() { return 0; }
