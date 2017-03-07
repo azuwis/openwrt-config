@@ -141,27 +141,30 @@ generate_script() {
     settings "$target"
     for remote_module in $remote_modules
     do
-        config_module_enabled="${remote_module#remote-[0-9][0-9][0-9]-}"
-        config_module_enabled="${config_module_enabled%.sh}"
-        config_module_enabled="config_${config_module_enabled}_enabled"
-        if [[ "$config_module_enabled" =~ ^[0-9a-z_]+$ ]]
+        if [[ "$remote_module" == remote-* ]]
         then
-            config_module_enabled="${!config_module_enabled}"
-        else
-            config_module_enabled=0
-        fi
-        if [[ "$remote_module" == remote-* ]] && [ "$config_module_enabled" = 1 ]
-        then
-            cat <<EOF
+            config_module_enabled="${remote_module#remote-[0-9][0-9][0-9]-}"
+            config_module_enabled="${config_module_enabled%.sh}"
+            config_module_enabled="config_${config_module_enabled}_enabled"
+            if [[ "$config_module_enabled" =~ ^[0-9a-z_]+$ ]]
+            then
+                config_module_enabled="${!config_module_enabled}"
+            else
+                config_module_enabled=0
+            fi
+            if [[ "$remote_modules_overrided" = 1 ]] || [ "$config_module_enabled" = 1 ]
+            then
+                cat <<EOF
 echo "Begin $remote_module"
 EOF
-            cat "$remote_module"
-            cat <<EOF
+                cat "$remote_module"
+                cat <<EOF
 oc_hr
 
 # ----------------------------------------------------------
 
 EOF
+            fi
         fi
     done
 }
@@ -192,26 +195,29 @@ esac
 
 for local_module in $local_modules
 do
-    config_module_enabled="${local_module#local-[0-9][0-9][0-9]-}"
-    config_module_enabled="${config_module_enabled%.sh}"
-    config_module_enabled="config_${config_module_enabled}_enabled"
-    if [[ "$config_module_enabled" =~ ^[0-9a-z_]+$ ]]
+    if [[ "$local_module" == local-* ]]
     then
-        config_module_enabled="${!config_module_enabled}"
-    else
-        config_module_enabled=0
-    fi
-    if [[ "$local_module" == local-* ]] && [ "$config_module_enabled" = 1 ]
-    then
-        echo "Begin $local_module"
-        if [ x"$DEBUG" != x ]; then
-            set -x
+        config_module_enabled="${local_module#local-[0-9][0-9][0-9]-}"
+        config_module_enabled="${config_module_enabled%.sh}"
+        config_module_enabled="config_${config_module_enabled}_enabled"
+        if [[ "$config_module_enabled" =~ ^[0-9a-z_]+$ ]]
+        then
+            config_module_enabled="${!config_module_enabled}"
+        else
+            config_module_enabled=0
         fi
-        source "$local_module"
-        if [ x"$DEBUG" != x ]; then
-            set +x
+        if [[ "$local_modules_overrided" = 1 ]] || [ "$config_module_enabled" = 1 ]
+        then
+            echo "Begin $local_module"
+            if [ x"$DEBUG" != x ]; then
+                set -x
+            fi
+            source "$local_module"
+            if [ x"$DEBUG" != x ]; then
+                set +x
+            fi
+            printf '%s\n' ------------------------------------------------------------
         fi
-        printf '%s\n' ------------------------------------------------------------
     fi
 done
 
