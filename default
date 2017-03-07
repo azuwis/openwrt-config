@@ -137,6 +137,9 @@ config_sqm='
 # sqm.wan.upload=
 '
 
+##### guest #####
+config_guest_enabled=0
+
 ##### watchcat #####
 config_watchcat_enabled=0
 config_watchcat_pinghosts='www.baidu.com'
