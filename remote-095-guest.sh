@@ -1,4 +1,4 @@
-oc_uci_reset_section network guest
+# oc_uci_reset_section network guest
 uci batch <<EOF
 set network.guest='interface'
 set network.guest.proto='static'
@@ -7,7 +7,7 @@ set network.guest.netmask='255.255.255.0'
 EOF
 oc_service reload network
 
-oc_uci_reset_section dhcp guest
+# oc_uci_reset_section dhcp guest
 uci batch <<EOF
 set dhcp.guest='dhcp'
 set dhcp.guest.interface='guest'
@@ -17,10 +17,10 @@ set dhcp.guest.leasetime='1h'
 EOF
 oc_service reload dnsmasq dhcp
 
-oc_uci_reset_section firewall guest_zone
-oc_uci_reset_section firewall guest_forwarding
-oc_uci_reset_section firewall guest_rule_dns
-oc_uci_reset_section firewall guest_rule_dhcp
+# oc_uci_reset_section firewall guest_zone
+# oc_uci_reset_section firewall guest_forwarding
+# oc_uci_reset_section firewall guest_rule_dns
+# oc_uci_reset_section firewall guest_rule_dhcp
 uci batch <<EOF
 set firewall.guest_zone='zone'
 set firewall.guest_zone.name='guest'
