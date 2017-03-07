@@ -181,8 +181,15 @@ oc_uci_keep_sections() {
         local _type="$1"
         local name="$2"
         if [ "$type" = "$_type" ]; then
-            if ! list_contains sections_keep "$name"; then
+            if list_contains sections_keep "$name"; then
+                option_cb() {
+                    local option="$1"
+                    local value="$2"
+                    oc_uci_delete "$config.$name.$option"
+                }
+            else
                 uci delete "$config.$name"
+                option_cb() { return 0; }
             fi
         fi
     }

@@ -17,21 +17,28 @@ uci set dhcp.@dnsmasq[0].cachesize=1024
 oc_uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
 
 # oc_uci_del_type dhcp host
-dhcp_host() {
+dhcp_host_clean() {
     local ip mac all_names name
     all_names=''
     while read ip mac
     do
         name="${ip//./_}"
         all_names="$all_names $name"
-        oc_uci_reset_section dhcp "$name"
+    done
+    oc_uci_keep_sections dhcp host "$all_names"
+}
+dhcp_host_apply() {
+    local ip mac name
+    while read ip mac
+    do
+        name="${ip//./_}"
         uci set "dhcp.${name}=host"
         uci set "dhcp.${name}.ip=${ip}"
         uci set "dhcp.${name}.mac=${mac}"
     done
-    oc_uci_keep_sections dhcp host "$all_names"
 }
-echo "$config_dhcp_host" | oc_strip_comment | dhcp_host
+echo "$config_dhcp_host" | oc_strip_comment | dhcp_host_clean
+echo "$config_dhcp_host" | oc_strip_comment | dhcp_host_apply
 
 oc_service reload dnsmasq dhcp
 
