@@ -139,6 +139,10 @@ config_sqm='
 
 ##### guest #####
 config_guest_enabled=0
+# config_guest_wireless='iface0'
+# config_guest_sqm='wlan0'
+# config_guest_download='8000'
+# config_guest_upload='800'
 
 ##### watchcat #####
 config_watchcat_enabled=0

@@ -4,6 +4,7 @@ set network.guest='interface'
 set network.guest.proto='static'
 set network.guest.ipaddr='192.168.10.1'
 set network.guest.netmask='255.255.255.0'
+set wireless.${config_guest_wireless}.network=guest
 EOF
 oc_service reload network
 
@@ -45,3 +46,12 @@ set firewall.guest_rule_dhcp.target='ACCEPT'
 set firewall.guest_rule_dhcp.family='ipv4'
 EOF
 oc_service reload firewall 2>/dev/null
+
+if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
+    uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.guest/" -e "s/pppoe-wan/$config_guest_sqm/" -e 's/^/set /' | uci batch
+    uci batch <<EOF
+set sqm.guest.download=$config_guest_download
+set sqm.guest.upload=$config_guest_upload
+EOF
+fi
+oc_service restart sqm
