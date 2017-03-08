@@ -10,4 +10,4 @@ set sqm.wan.interface='${iface_wan}'
 set sqm.wan.script='piece_of_cake.qos'
 EOF
 oc_uci_batch_set "$config_sqm"
-oc_service restart sqm
+oc_uci_commit sqm && /usr/lib/sqm/run.sh start "$iface_wan"

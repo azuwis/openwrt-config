@@ -41,8 +41,14 @@ mwan_sqm() {
         do
             uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.mwan${i}/" -e "s/pppoe-wan/pppoe-mwan${i}/" -e 's/^/set /' | uci batch
         done
+        if oc_uci_commit sqm
+        then
+            for i in $(seq 1 "$config_mwan")
+            do
+                /usr/lib/sqm/run.sh start "pppoe-mwan${i}"
+            done
+        fi
     fi
-    oc_service restart sqm
 }
 
 mwan_mwan3() {

@@ -54,4 +54,4 @@ set sqm.guest.download=$config_guest_download
 set sqm.guest.upload=$config_guest_upload
 EOF
 fi
-oc_service restart sqm
+oc_uci_commit sqm && /usr/lib/sqm/run.sh start "$config_guest_sqm"
