@@ -7,3 +7,5 @@ echo 0 > /sys/kernel/debug/ieee80211/phy1/ath9k/airtime_flags
 CONFIG_WPA_MSG_MIN_PRIORITY=1
 wireless.radio0.log_level=1
 wireless.radio1.log_level=1
+
+* IEEE80211w may decrease throughput, at least on mt76 and ath9k
