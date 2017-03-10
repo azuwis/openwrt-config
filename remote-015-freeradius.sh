@@ -123,7 +123,7 @@ EOF
 }
 
 freeradius_service() {
-    [ "$radiusd_need_restart" -eq 1 ] && oc_service restart radiusd -
+    [ "$radiusd_need_restart" = 1 ] && oc_service restart radiusd -
 }
 
 radiusd_need_restart=0

@@ -8,7 +8,7 @@ network_wireless() {
         oc_uci_rename wireless.@wifi-iface[0] iface0
         oc_uci_rename wireless.@wifi-iface[1] iface1
         oc_uci_batch_set "$config_wireless"
-        if [ "$config_ieee80211r_enabled" -eq 1 ]
+        if [ "$config_ieee80211r_enabled" = 1 ]
         then
             for i in $config_ieee80211r_ifaces
             do
@@ -50,7 +50,7 @@ network_wireless() {
             fi
         fi
         oc_service reload network wireless
-        if [ "$wifi_need_restart" -eq 1 ]; then
+        if [ "$wifi_need_restart" = 1 ]; then
             wifi
         fi
     fi
