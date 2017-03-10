@@ -56,6 +56,7 @@ freeradius_certs() {
 }
 
 freeradius_users() {
+    local rc=1
     if oc_opkg_installed freeradius3-mod-files
     then
         local user pass
@@ -67,9 +68,10 @@ freeradius_users() {
 ${user} Cleartext-Password := "${pass}"
 EOF
         done
-        oc_move /tmp/freeradius-authorize /etc/freeradius3/mods-config/files/authorize && radiusd_need_restart=1
+        oc_move /tmp/freeradius-authorize /etc/freeradius3/mods-config/files/authorize && rc=0
         chmod 640 /etc/freeradius3/mods-config/files/authorize
     fi
+    return $rc
 }
 
 freeradius_service() {
@@ -80,5 +82,5 @@ radiusd_need_restart=0
 freeradius_packages
 freeradius_clients
 freeradius_certs
-echo "$config_freeradius_users" | oc_strip_comment | freeradius_users
+echo "$config_freeradius_users" | oc_strip_comment | freeradius_users && radiusd_need_restart=1
 freeradius_service
