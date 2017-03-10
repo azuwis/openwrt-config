@@ -18,6 +18,9 @@ config_bin_enabled=1
 config_freeradius_enabled=0
 config_freeradius_clients=''
 config_freeradius_secret=''
+config_freeradius_ca=''
+config_freeradius_cert=''
+config_freeradius_dh=''
 config_freeradius_users='
 # user1 pass1
 # user2 pass2

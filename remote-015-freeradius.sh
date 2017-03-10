@@ -31,6 +31,28 @@ EOF
     chmod 640 /etc/freeradius3/clients.conf
 }
 
+freeradius_certs() {
+    if [ -n "$config_freeradius_ca" ]
+    then
+        echo -n "$config_freeradius_ca" | tail -n +2 >/tmp/freeradius-ca.pem
+        chmod 640 /tmp/freeradius-ca.pem
+        oc_move /tmp/freeradius-ca.pem /etc/freeradius3/certs/ca.pem && radiusd_need_restart=1
+    fi
+    if [ -n "$config_freeradius_cert" ]
+    then
+        echo -n "$config_freeradius_cert" | tail -n +2 >/tmp/freeradius-cert.pem
+        chmod 640 /tmp/freeradius-cert.pem
+        oc_move /tmp/freeradius-cert.pem /etc/freeradius3/certs/server.pem && radiusd_need_restart=1
+    fi
+    if [ -n "$config_freeradius_dh" ]
+    then
+        echo -n "$config_freeradius_dh" | tail -n +2 >/tmp/freeradius-dh.pem
+        chmod 640 /tmp/freeradius-dh.pem
+        oc_move /tmp/freeradius-dh.pem /etc/freeradius3/certs/dh && radiusd_need_restart=1
+    fi
+    chmod 640 /etc/freeradius3/certs/*
+}
+
 freeradius_users() {
     if oc_opkg_installed freeradius3-mod-files
     then
@@ -55,5 +77,6 @@ freeradius_service() {
 radiusd_need_restart=0
 freeradius_packages
 freeradius_clients
+freeradius_certs
 echo "$config_freeradius_users" | oc_strip_comment | freeradius_users
 freeradius_service
