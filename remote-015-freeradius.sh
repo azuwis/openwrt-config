@@ -27,29 +27,32 @@ client localhost {
 }
 EOF
     done
+    oc_move /tmp/freeradius-clients.conf /etc/freeradius3/clients.conf && radiusd_need_restart=1
+    chmod 640 /etc/freeradius3/clients.conf
 }
 
 freeradius_users() {
-    local user pass
-    >/tmp/freeradius-authorize
-    chmod 640 /tmp/freeradius-authorize
-    while read user pass
-    do
-        cat >>/tmp/freeradius-authorize <<EOF
+    if oc_opkg_installed freeradius3-mod-files
+    then
+        local user pass
+        >/tmp/freeradius-authorize
+        chmod 640 /tmp/freeradius-authorize
+        while read user pass
+        do
+            cat >>/tmp/freeradius-authorize <<EOF
 ${user} Cleartext-Password := "${pass}"
 EOF
-    done
+        done
+        oc_move /tmp/freeradius-authorize /etc/freeradius3/mods-config/files/authorize && radiusd_need_restart=1
+        chmod 640 /etc/freeradius3/mods-config/files/authorize
+    fi
 }
 
 freeradius_service() {
-    local radiusd_need_restart
-    radiusd_need_restart=0
-    oc_move /tmp/freeradius-clients.conf /etc/freeradius3/clients.conf && radiusd_need_restart=1
-    oc_move /tmp/freeradius-authorize /etc/freeradius3/mods-config/files/authorize && radiusd_need_restart=1
-    chmod 640 /etc/freeradius3/clients.conf /etc/freeradius3/mods-config/files/authorize
     [ "$radiusd_need_restart" -eq 1 ] && oc_service restart radiusd -
 }
 
+radiusd_need_restart=0
 freeradius_packages
 freeradius_clients
 echo "$config_freeradius_users" | oc_strip_comment | freeradius_users
