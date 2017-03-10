@@ -271,6 +271,10 @@ oc_move() {
     local src dest
     src="$1"
     dest="$2"
+    if [ ! -e "$src" ]
+    then
+        return 1
+    fi
     if [ x"$(oc_md5sum_file "$src")" != x"$(oc_md5sum_file "$dest")" ]; then
         echo "move: $src -> $dest"
         mv "$src" "$dest"
