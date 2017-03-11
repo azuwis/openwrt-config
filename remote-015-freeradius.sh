@@ -55,6 +55,70 @@ freeradius_certs() {
     chmod 640 /etc/freeradius3/certs/*
 }
 
+freeradius_radiusd() {
+    cat > /tmp/freeradius-radiusd.conf <<'EOF'
+prefix = /usr
+exec_prefix = /usr
+sysconfdir = /etc
+localstatedir = /var
+sbindir = /usr/sbin
+logdir = /var/log
+raddbdir = /etc/freeradius3
+radacctdir = /var/db/radacct
+name = radiusd
+confdir = ${raddbdir}
+modconfdir = ${confdir}/mods-config
+certdir = ${confdir}/certs
+cadir   = ${confdir}/certs
+run_dir = ${localstatedir}/run/${name}
+db_dir = ${raddbdir}
+libdir = /usr/lib/freeradius3
+pidfile = ${run_dir}/${name}.pid
+correct_escapes = true
+max_request_time = 30
+cleanup_delay = 5
+max_requests = 16384
+hostname_lookups = no
+log {
+  destination = syslog
+  colourise = yes
+  file = ${logdir}/radius.log
+  syslog_facility = daemon
+  stripped_names = no
+  auth = no
+  auth_badpass = no
+  auth_goodpass = no
+  msg_denied = "You are already logged in - access denied"
+}
+checkrad = ${sbindir}/checkrad
+security {
+  allow_core_dumps = no
+  max_attributes = 200
+  reject_delay = 1
+  status_server = yes
+}
+$INCLUDE clients.conf
+thread pool {
+  start_servers = 5
+  max_servers = 32
+  min_spare_servers = 3
+  max_spare_servers = 10
+  max_requests_per_server = 0
+  auto_limit_acct = no
+}
+modules {
+  $INCLUDE mods-enabled/
+}
+instantiate {
+}
+policy {
+  $INCLUDE policy.d/
+}
+$INCLUDE sites-enabled/
+EOF
+    oc_move /tmp/freeradius-radiusd.conf /etc/freeradius3/radiusd.conf && radiusd_need_restart=1
+}
+
 freeradius_site() {
     cat >/tmp/freeradius-site <<EOF
 server default {
@@ -196,6 +260,7 @@ radiusd_need_restart=0
 freeradius_packages
 freeradius_clients
 freeradius_certs
+freeradius_radiusd
 freeradius_site
 freeradius_eap
 echo "$config_freeradius_users" | oc_strip_comment | freeradius_users && radiusd_need_restart=1
