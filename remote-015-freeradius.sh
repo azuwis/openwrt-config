@@ -4,7 +4,7 @@ freeradius_packages() {
     if ! pgrep -x /usr/sbin/radiusd >/dev/null
     then
         [ -z "$config_freeradius_ca" ] && oc_opkg_install freeradius3-democerts
-        oc_opkg_install freeradius3 freeradius3-mod-always freeradius3-mod-attr-filter freeradius3-mod-chap freeradius3-mod-detail freeradius3-mod-digest freeradius3-mod-eap-tls freeradius3-mod-exec freeradius3-mod-expiration freeradius3-mod-expr freeradius3-mod-files freeradius3-mod-logintime freeradius3-mod-mschap freeradius3-mod-pap freeradius3-mod-realm
+        oc_opkg_install freeradius3 freeradius3-mod-always freeradius3-mod-attr-filter freeradius3-mod-eap-tls freeradius3-mod-exec freeradius3-mod-expiration freeradius3-mod-expr freeradius3-mod-files freeradius3-mod-logintime freeradius3-mod-mschap freeradius3-mod-realm
         [ "$config_freeradius_eap_peap_enabled" = 1 ] && oc_opkg_install freeradius3-mod-eap-mschapv2 freeradius3-mod-eap-peap
     fi
 }
@@ -134,9 +134,6 @@ listen {
 }
 authorize {
   filter_username
-  chap
-  mschap
-  digest
   suffix
   eap {
     ok = return
@@ -146,19 +143,11 @@ authorize {
   -ldap
   expiration
   logintime
-  pap
 }
 authenticate {
-  Auth-Type PAP {
-    pap
-  }
-  Auth-Type CHAP {
-    chap
-  }
   Auth-Type MS-CHAP {
     mschap
   }
-  digest
   eap
 }
 post-auth {
@@ -190,8 +179,6 @@ listen {
 }
 authorize {
   filter_username
-  chap
-  mschap
   suffix
   update control {
     &Proxy-To-Realm := LOCAL
@@ -204,21 +191,12 @@ authorize {
   -ldap
   expiration
   logintime
-  pap
 }
 authenticate {
-  Auth-Type PAP {
-    pap
-  }
-  Auth-Type CHAP {
-    chap
-  }
   Auth-Type MS-CHAP {
     mschap
   }
   eap
-}
-session {
 }
 post-auth {
   -sql
@@ -229,11 +207,6 @@ post-auth {
       &Module-Failure-Message := &request:Module-Failure-Message
     }
   }
-}
-pre-proxy {
-}
-post-proxy {
-  eap
 }
 }
 EOF
