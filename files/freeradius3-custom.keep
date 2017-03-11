@@ -1,3 +1,8 @@
+/etc/freeradius3/certs/
 /etc/freeradius3/clients.conf
+/etc/freeradius3/mods-available/eap
 /etc/freeradius3/mods-config/files/authorize
+/etc/freeradius3/radiusd.conf
+/etc/freeradius3/sites-available/default
+/etc/freeradius3/sites-available/inner-tunnel
 /lib/upgrade/keep.d/freeradius3-custom
