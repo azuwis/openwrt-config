@@ -120,7 +120,7 @@ EOF
 }
 
 freeradius_site() {
-    cat >/tmp/freeradius-site <<EOF
+    cat >/tmp/freeradius-site <<'EOF'
 server default {
 listen {
   type = auth
@@ -186,20 +186,20 @@ EOF
 }
 
 freeradius_eap() {
-    cat >/tmp/freeradius-eap.conf <<EOF
+    cat >/tmp/freeradius-eap.conf <<'EOF'
 eap {
   default_eap_type = tls
   timer_expire = 60
   ignore_unknown_eap_types = no
   cisco_accounting_username_bug = no
-  max_sessions = \${max_requests}
+  max_sessions = ${max_requests}
   tls-config tls-common {
     private_key_password =
-    private_key_file = \${certdir}/server.pem
-    certificate_file = \${certdir}/server.pem
-    ca_file = \${cadir}/ca.pem
-    dh_file = \${certdir}/dh
-    ca_path = \${cadir}
+    private_key_file = ${certdir}/server.pem
+    certificate_file = ${certdir}/server.pem
+    ca_file = ${cadir}/ca.pem
+    dh_file = ${certdir}/dh
+    ca_path = ${cadir}
     check_cert_cn = %{User-Name}
     cipher_list = "HIGH"
     ecdh_curve = "secp384r1"
@@ -215,7 +215,7 @@ eap {
 EOF
     if [ "$config_freeradius_eap_peap_enabled" = 1 ]
     then
-        cat >>/tmp/freeradius-eap.conf <<EOF
+        cat >>/tmp/freeradius-eap.conf <<'EOF'
   peap {
     tls = tls-common
     default_eap_type = mschapv2
