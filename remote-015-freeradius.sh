@@ -4,7 +4,7 @@ freeradius_packages() {
     if ! pgrep -x /usr/sbin/radiusd >/dev/null
     then
         [ -z "$config_freeradius_ca" ] && oc_opkg_install freeradius3-democerts
-        oc_opkg_install freeradius3 freeradius3-mod-always freeradius3-mod-attr-filter freeradius3-mod-chap freeradius3-mod-detail freeradius3-mod-digest freeradius3-mod-eap-tls freeradius3-mod-exec freeradius3-mod-expiration freeradius3-mod-expr freeradius3-mod-files freeradius3-mod-logintime freeradius3-mod-mschap freeradius3-mod-pap freeradius3-mod-preprocess freeradius3-mod-radutmp freeradius3-mod-realm freeradius3-mod-unix
+        oc_opkg_install freeradius3 freeradius3-mod-always freeradius3-mod-attr-filter freeradius3-mod-chap freeradius3-mod-detail freeradius3-mod-digest freeradius3-mod-eap-tls freeradius3-mod-exec freeradius3-mod-expiration freeradius3-mod-expr freeradius3-mod-files freeradius3-mod-logintime freeradius3-mod-mschap freeradius3-mod-pap freeradius3-mod-realm
         [ "$config_freeradius_eap_peap_enabled" = 1 ] && oc_opkg_install freeradius3-mod-eap-mschapv2 freeradius3-mod-eap-peap
     fi
 }
@@ -22,7 +22,7 @@ EOF
     do
         cat >>/tmp/freeradius-clients.conf <<EOF
 
-client localhost {
+client ${client} {
   ipaddr = ${client}
   secret = ${config_freeradius_secret}
 }
@@ -53,6 +53,72 @@ freeradius_certs() {
         oc_move /tmp/freeradius-dh.pem /etc/freeradius3/certs/dh && radiusd_need_restart=1
     fi
     chmod 640 /etc/freeradius3/certs/*
+}
+
+freeradius_site() {
+    cat >/tmp/freeradius-site <<EOF
+server default {
+listen {
+  type = auth
+  ipaddr = *
+  port = 0
+  limit {
+        max_connections = 16
+        lifetime = 0
+        idle_timeout = 30
+  }
+}
+authorize {
+  filter_username
+  chap
+  mschap
+  digest
+  suffix
+  eap {
+    ok = return
+  }
+  files
+  -sql
+  -ldap
+  expiration
+  logintime
+  pap
+}
+authenticate {
+  Auth-Type PAP {
+    pap
+  }
+  Auth-Type CHAP {
+    chap
+  }
+  Auth-Type MS-CHAP {
+    mschap
+  }
+  digest
+  eap
+}
+post-auth {
+  update {
+    &reply: += &session-state:
+  }
+  -sql
+  exec
+  remove_reply_message_if_eap
+  Post-Auth-Type REJECT {
+    -sql
+    attr_filter.access_reject
+    eap
+    remove_reply_message_if_eap
+  }
+}
+pre-proxy {
+}
+post-proxy {
+  eap
+}
+}
+EOF
+    oc_move /tmp/freeradius-site /etc/freeradius3/sites-available/default && radiusd_need_restart=1
 }
 
 freeradius_eap() {
@@ -130,6 +196,7 @@ radiusd_need_restart=0
 freeradius_packages
 freeradius_clients
 freeradius_certs
+freeradius_site
 freeradius_eap
 echo "$config_freeradius_users" | oc_strip_comment | freeradius_users && radiusd_need_restart=1
 freeradius_service
