@@ -275,7 +275,7 @@ oc_move() {
     then
         return 1
     fi
-    if [ x"$(oc_md5sum_file "$src")" != x"$(oc_md5sum_file "$dest")" ]; then
+    if [ ! -e "$dest" ] || [ x"$(oc_md5sum_file "$src")" != x"$(oc_md5sum_file "$dest")" ]; then
         echo "move: $src -> $dest"
         mv "$src" "$dest"
     else
