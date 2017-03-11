@@ -1,0 +1,5 @@
+#!/bin/sh
+
+chgrp -R radius /etc/freeradius3
+
+exit 1

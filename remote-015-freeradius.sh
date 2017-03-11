@@ -92,6 +92,8 @@ log {
 }
 checkrad = ${sbindir}/checkrad
 security {
+  user = radius
+  group = radius
   allow_core_dumps = no
   max_attributes = 200
   reject_delay = 1
@@ -274,6 +276,8 @@ EOF
 }
 
 freeradius_service() {
+    oc_adduser radius 601
+    chgrp -R radius /etc/freeradius3
     [ "$radiusd_need_restart" = 1 ] && oc_service restart radiusd -
 }
 
