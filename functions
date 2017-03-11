@@ -257,6 +257,27 @@ oc_add_cron() {
     fi
 }
 
+oc_adduser() {
+    local name id
+    name="$1"
+    id="$2"
+    if ! grep -q "^${name}:" /etc/passwd
+    then
+        echo "Add user: $name"
+        echo "${name}:x:${id}:${id}:${name}:/var/run/${name}:/bin/false" >> /etc/passwd
+    fi
+    if ! grep -q "^${name}:" /etc/shadow
+    then
+        echo "Add user shadow: $name"
+        echo "${name}:x:0:0:99999:7:::" >> /etc/shadow
+    fi
+    if ! grep -q "^${name}:" /etc/group
+    then
+        echo "Add group: $name"
+        echo "${name}:x:${id}:${name}" >> /etc/group
+    fi
+}
+
 oc_hr() {
     printf '%s\n' ------------------------------------------------------------
 }
