@@ -119,8 +119,8 @@ EOF
     oc_move /tmp/freeradius-radiusd.conf /etc/freeradius3/radiusd.conf && radiusd_need_restart=1
 }
 
-freeradius_site() {
-    cat >/tmp/freeradius-site <<'EOF'
+freeradius_site_default() {
+    cat >/tmp/freeradius-site-default <<'EOF'
 server default {
 listen {
   type = auth
@@ -175,6 +175,61 @@ post-auth {
     remove_reply_message_if_eap
   }
 }
+}
+EOF
+    oc_move /tmp/freeradius-site-default /etc/freeradius3/sites-available/default && radiusd_need_restart=1
+}
+
+freeradius_site_inner() {
+    cat >/tmp/freeradius-site-inner <<'EOF'
+server inner-tunnel {
+listen {
+       ipaddr = 127.0.0.1
+       port = 18120
+       type = auth
+}
+authorize {
+  filter_username
+  chap
+  mschap
+  suffix
+  update control {
+    &Proxy-To-Realm := LOCAL
+  }
+  eap {
+    ok = return
+  }
+  files
+  -sql
+  -ldap
+  expiration
+  logintime
+  pap
+}
+authenticate {
+  Auth-Type PAP {
+    pap
+  }
+  Auth-Type CHAP {
+    chap
+  }
+  Auth-Type MS-CHAP {
+    mschap
+  }
+  eap
+}
+session {
+}
+post-auth {
+  -sql
+  Post-Auth-Type REJECT {
+    -sql
+    attr_filter.access_reject
+    update outer.session-state {
+      &Module-Failure-Message := &request:Module-Failure-Message
+    }
+  }
+}
 pre-proxy {
 }
 post-proxy {
@@ -182,7 +237,7 @@ post-proxy {
 }
 }
 EOF
-    oc_move /tmp/freeradius-site /etc/freeradius3/sites-available/default && radiusd_need_restart=1
+    oc_move /tmp/freeradius-site-inner /etc/freeradius3/sites-available/inner-tunnel && radiusd_need_restart=1
 }
 
 freeradius_eap() {
@@ -261,7 +316,8 @@ freeradius_packages
 freeradius_clients
 freeradius_certs
 freeradius_radiusd
-freeradius_site
+freeradius_site_default
+freeradius_site_inner
 freeradius_eap
 echo "$config_freeradius_users" | oc_strip_comment | freeradius_users && radiusd_need_restart=1
 freeradius_service
