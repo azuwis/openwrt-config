@@ -268,7 +268,7 @@ oc_adduser() {
     fi
     if ! grep -q "^${name}:" /etc/shadow
     then
-        echo "Add user shadow: $name"
+        echo "Add shadow: $name"
         echo "${name}:x:0:0:99999:7:::" >> /etc/shadow
     fi
     if ! grep -q "^${name}:" /etc/group
