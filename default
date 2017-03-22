@@ -94,7 +94,8 @@ config_common_enabled=1
 config_common='
 system.@system[0].hostname=OpenWrt
 '
-config_packages='ca-bundle diffutils miniupnpd'
+config_packages_common='diffutils'
+config_packages=''
 config_root_password=''
 
 config_dhcp_host='

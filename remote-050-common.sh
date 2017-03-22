@@ -1,3 +1,4 @@
+oc_opkg_install $config_packages_common
 oc_opkg_install $config_packages
 
 uci batch <<EOF
