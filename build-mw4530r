@@ -2,7 +2,7 @@
 set -ex
 
 if [ x"$1" = x"-u" ]; then
-    git pull --rebase
+    git pull --rebase origin master
     cp feeds.conf.default feeds.conf
     echo 'src-git nlbwmon https://github.com/jow-/nlbwmon.git' >> feeds.conf
     ./scripts/feeds update -a
