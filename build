@@ -2,9 +2,9 @@
 set -e
 
 # profiles
-wg3625='wg3626 diffutils wpad'
-wg3625_audit='wg3626 aircrack arp-scan diffutils dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
-wg3625_debug='wg3626 diffutils ethtool kallsyms kmod-sched-cake wpad'
+wg3526='wg3526 diffutils wpad'
+wg3526_audit='wg3526 aircrack arp-scan diffutils dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
+wg3526_debug='wg3526 diffutils ethtool kallsyms kmod-sched-cake wpad'
 mw4530r='mw4530r adblock ddns diffutils dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon shadowsocks sqm tcpdump watchcat wpad'
 
 # targets
@@ -117,10 +117,11 @@ CONFIG_WPA_MSG_MIN_PRIORITY=1
 CONFIG_WPA_SUPPLICANT_OPENSSL=y
 '
 
-gen_config() {
-    local target="$1"
+generate_config() {
+    local target="$@"
+
     local module
-    for module in ${!target}
+    for module in $target
     do
         config="config_$module"
         config="${!config}"
@@ -134,11 +135,13 @@ gen_config() {
 }
 
 update_source() {
-    local target="$1"
+    local target="$@"
+
     git pull --rebase origin master
     cp feeds.conf.default feeds.conf
+
     local module
-    for module in ${!target}
+    for module in $target
     do
         feed="feed_$module"
         feed="${!feed}"
@@ -148,31 +151,47 @@ update_source() {
         fi
     done
     ./scripts/feeds update -a
+
     for dir in $(awk '/^src-git / {print $2}' feeds.conf)
     do
         cd "feeds/$dir"
         git rebase origin/master
         cd ../../
     done
+
     ./scripts/feeds install -a
 }
 
-if [ "$1" = "-u" ]; then
-    shift
-    update_source="yes"
-fi
+while getopts ":gu" option
+do
+    case "$option" in
+        g) generate_only="yes" ;;
+        u) update_source="yes" ;;
+    esac
+done
+shift "$((OPTIND-1))"
 
 targets="$@"
 
 for target in $targets
 do
+    target="${!target}"
+    if [ -z "$target" ]
+    then
+        echo "No target found."
+        exit 1
+    fi
+
     if [ "$update_source" = "yes" ]; then
         update_source "$target"
     fi
 
-    gen_config "$target" > .config
-
+    generate_config "$target" > .config
     make defconfig
     ./scripts/diffconfig.sh
-    make -j12
+
+    if [ "$generate_only" != "yes" ]
+    then
+        make -j12
+    fi
 done
