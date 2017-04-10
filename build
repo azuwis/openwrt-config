@@ -2,6 +2,7 @@
 set -e
 
 # profiles
+profiles=(mw4530r wg3526 wg3526_audit wg3526_debug)
 wg3526='wg3526 diffutils wpad'
 wg3526_audit='wg3526 aircrack arp-scan diffutils dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
 wg3526_debug='wg3526 diffutils ethtool kallsyms kmod-sched-cake wpad'
@@ -172,6 +173,26 @@ done
 shift "$((OPTIND-1))"
 
 targets="$@"
+if [ -z "$targets" ]
+then
+    for i in "${!profiles[@]}"
+    do
+        printf "%s %s\n" "[$((i+1))]" "${profiles[$i]}"
+    done
+    while read i
+    do
+        if [ "$i" = '' ]
+        then
+            break
+        fi
+        targets="${profiles[$((i-1))]} $targets"
+        echo -en "\033[1A\033[2Ktargets: ${targets}\b, add:"
+    done
+    if [ -z "$targets" ]
+    then
+        targets="${profiles[0]}"
+    fi
+fi
 
 for target in $targets
 do
