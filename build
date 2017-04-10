@@ -197,23 +197,29 @@ fi
 
 for target in $targets
 do
-    target="${!target}"
-    if [ -z "$target" ]
+    modules="${!target}"
+    if [ -z "$modules" ]
     then
-        echo "No target found."
+        echo "No target found: $target"
         exit 1
     fi
 
     if [ "$update_source" = "yes" ]; then
-        update_source "$target"
+        update_source "$modules"
     fi
 
-    generate_config "$target" > .config
+    generate_config "$modules" > .config
     make defconfig
     ./scripts/diffconfig.sh
 
     if [ "$generate_only" != "yes" ]
     then
-        make -j12
+        extra_image_name="${target#*_}"
+        if [ "$extra_image_name" == "$target" ]
+        then
+            make -j12
+        else
+            make -j12 EXTRA_IMAGE_NAME="$extra_image_name"
+        fi
     fi
 done
