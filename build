@@ -179,7 +179,7 @@ then
     do
         printf "%s %s\n" "[$((i+1))]" "${profiles[$i]}"
     done
-    echo -n "add: "
+    echo -en "\ntargets:\033[1A\radd: "
     while read i
     do
         if [ "$i" = '' ]
@@ -187,12 +187,13 @@ then
             break
         fi
         targets="${profiles[$((i-1))]} $targets"
-        echo -en "\033[1A\033[2Ktargets: ${targets}\b, add: "
+        echo -en "targets: ${targets}\033[1A\033[2K\radd: "
     done
     if [ -z "$targets" ]
     then
         targets="${profiles[0]}"
     fi
+    echo
 fi
 
 for target in $targets
