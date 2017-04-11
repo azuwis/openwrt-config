@@ -24,6 +24,7 @@ network_wireless() {
                 uci set "wireless.${iface}.mobility_domain=5d73"
                 uci set "wireless.${iface}.nasid=${nasid}"
                 uci set "wireless.${iface}.r1_key_holder=${nasid}"
+                uci set "wireless.${iface}.iapp_interface=lan"
                 list_r0kh=''
                 list_r1kh=''
                 for j in $macs
