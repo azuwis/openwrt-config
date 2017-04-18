@@ -61,12 +61,15 @@ mwan_allwan() {
 
 mwan_mwan3() {
     # mwan3
-    local i
+    local i port
     oc_opkg_install mwan3
 
     (
         for i in $(mwan_allwan)
         do
+            port="${i/mwan/}"
+            port="${port/wan/}"
+            port="$((port+63000))"
             cat <<EOF
 config interface '$i'
   option enabled '1'
@@ -76,6 +79,11 @@ config member 'm_$i'
 
 config policy 'p_$i'
   list use_member 'm_$i'
+
+config rule 'r_udp_$port'
+  option proto 'udp'
+  option dest_port '$port'
+  option use_policy 'p_$i'
 EOF
         done
         cat <<EOF
