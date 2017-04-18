@@ -51,58 +51,40 @@ mwan_sqm() {
     fi
 }
 
+mwan_allwan() {
+    echo wan
+    for i in $(seq 1 "$config_mwan")
+    do
+        echo "mwan${i}"
+    done
+}
+
 mwan_mwan3() {
     # mwan3
     local i
     oc_opkg_install mwan3
 
     (
-        cat <<EOF
-config interface 'wan'
+        for i in $(mwan_allwan)
+        do
+            cat <<EOF
+config interface '$i'
   option enabled '1'
-EOF
-        for i in $(seq 1 "$config_mwan")
-        do
-            cat <<EOF
-config interface 'mwan${i}'
-  option enabled '1'
-EOF
-        done
-        cat <<EOF
-config member 'wan_m1_w3'
-  option interface 'wan'
-  option metric '1'
-  option weight '3'
-EOF
-        for i in $(seq 1 "$config_mwan")
-        do
-            cat <<EOF
-config member 'mwan${i}_m1_w3'
-  option interface 'mwan${i}'
-  option metric '1'
-  option weight '3'
-EOF
-        done
-        cat <<EOF
-config policy 'wan_only'
-  list use_member 'wan_m1_w3'
-EOF
-        for i in $(seq 1 "$config_mwan")
-        do
-            cat <<EOF
-config policy 'mwan${i}_only'
-  list use_member 'mwan${i}_m1_w3'
-  option last_resort 'default'
+
+config member 'm_$i'
+  option interface '$i'
+
+config policy 'p_$i'
+  list use_member 'm_$i'
 EOF
         done
         cat <<EOF
 config policy 'balanced'
-  list use_member 'wan_m1_w3'
 EOF
-        for i in $(seq 1 "$config_mwan")
+        for i in $(mwan_allwan)
         do
             cat <<EOF
-  list use_member 'mwan${i}_m1_w3'
+  list use_member 'm_$i'
 EOF
         done
         cat <<EOF
@@ -112,7 +94,7 @@ config rule 'arukas'
 
 config rule 'default_rule'
   option dest_ip '0.0.0.0/0'
-  option use_policy 'wan_only'
+  option use_policy 'p_wan'
 EOF
     ) | uci import mwan3
 
