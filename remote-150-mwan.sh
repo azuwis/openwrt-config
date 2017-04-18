@@ -17,7 +17,7 @@ set network.mwan${i}.proto=pppoe
 set network.mwan${i}.username=$(uci -q get network.wan.username)
 set network.mwan${i}.password=$(uci -q get network.wan.password)
 set network.mwan${i}.ipv6=0
-set network.mwan${i}.metric=${i}0
+set network.mwan${i}.metric=$((i+1))0
 EOF
     done
     oc_service reload network
