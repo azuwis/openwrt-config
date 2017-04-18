@@ -86,7 +86,16 @@ EOF
         cat <<EOF
 config policy 'wan_only'
   list use_member 'wan_m1_w3'
-
+EOF
+        for i in $(seq 1 "$config_mwan")
+        do
+            cat <<EOF
+config policy 'mwan${i}_only'
+  list use_member 'mwan${i}_m1_w3'
+  option last_resort 'default'
+EOF
+        done
+        cat <<EOF
 config policy 'balanced'
   list use_member 'wan_m1_w3'
 EOF
