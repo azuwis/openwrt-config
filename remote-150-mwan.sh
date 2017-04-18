@@ -88,10 +88,6 @@ EOF
 EOF
         done
         cat <<EOF
-config rule 'arukas'
-  option dest_ip '153.125.235.0/24'
-  option use_policy 'balanced'
-
 config rule 'default_rule'
   option dest_ip '0.0.0.0/0'
   option use_policy 'p_wan'
