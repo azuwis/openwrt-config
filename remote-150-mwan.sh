@@ -68,8 +68,11 @@ mwan_mwan3() {
         for i in $(mwan_allwan)
         do
             port="${i/mwan/}"
-            port="${port/wan/}"
-            port="$((port+63000))"
+            if [ "$port" = 'wan' ]
+            then
+                port=0
+            fi
+            port="$((port*10+63000))"
             cat <<EOF
 config interface '$i'
   option enabled '1'
@@ -82,7 +85,7 @@ config policy 'p_$i'
 
 config rule 'r_udp_$port'
   option proto 'udp'
-  option dest_port '$port'
+  option dest_port '$port:$((port+9))'
   option use_policy 'p_$i'
 EOF
         done
