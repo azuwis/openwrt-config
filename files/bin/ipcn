@@ -1,0 +1,2 @@
+#!/bin/sh
+uclient-fetch -q -U curl/7.52.1 -O- http://ip.cn
