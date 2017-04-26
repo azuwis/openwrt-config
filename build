@@ -151,6 +151,7 @@ update_source() {
     local module
     for module in $target
     do
+        local feed
         feed="feed_$module"
         feed="${!feed}"
         if [ -n "$feed" ]
@@ -160,6 +161,7 @@ update_source() {
     done
     ./scripts/feeds update -a
 
+    local dir
     for dir in $(awk '/^src-git / {print $2}' feeds.conf)
     do
         cd "feeds/$dir"
