@@ -12,6 +12,9 @@ if [ ! -e files/tmp/chn-domains.gz -o files/chn_domains/chn-domains -nt files/tm
     gzip -nc files/chn_domains/chn-domains > files/tmp/chn-domains.gz
 fi
 
+remote uci set dhcp.@dnsmasq[0].remote_dns="$config_chn_domains_remote_dns"
+remote uci commit
+
 push files/tmp/chn-domains.gz /etc/chn-domains.gz
 push files/chn_domains/chn-domains-extra /etc/chn-domains-extra
 push files/chn_domains/hotplug /etc/hotplug.d/iface/99-chn-domains

@@ -19,8 +19,6 @@ if [ "$config_chn_domains_dnsmasq_full" = '1' ]; then
     oc_remove /etc/config/dhcp-opkg
 fi
 
-uci set dhcp.@dnsmasq[0].remote_dns="$config_chn_domains_remote_dns"
-oc_uci_commit dhcp || true
 if [ ! -e /tmp/dnsmasq.d/99-chn-domains.conf ]; then
     echo 'run /etc/hotplug.d/iface/99-chn-domains'
     INTERFACE='wan' ACTION='ifup' sh /etc/hotplug.d/iface/99-chn-domains
