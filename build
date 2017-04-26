@@ -7,7 +7,7 @@ wg3526='wg3526 diffutils wpad'
 wg3526_audit='wg3526 aircrack arp-scan diffutils dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
 wg3526_debug='wg3526 diffutils ethtool kallsyms kmod-sched-cake wpad'
 wg3526_luci='wg3526 diffutils luci wpad'
-mw4530r='mw4530r adblock ddns diffutils dnsmasq freeradius mactelnet miniupnpd mlvpn mwan nlbwmon shadowsocks sqm tcpdump watchcat wpad'
+mw4530r='mw4530r adblock ddns diffutils dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon shadowsocks sqm tcpdump watchcat wpad'
 
 # targets
 config_mw4530r='
