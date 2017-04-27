@@ -5,8 +5,10 @@ set network.guest.proto='static'
 set network.guest.ipaddr='192.168.10.1'
 set network.guest.netmask='255.255.255.0'
 set wireless.${config_guest_wireless}.network=guest
+set wireless.${config_guest_wireless}.isolate=1
 EOF
 oc_service reload network
+oc_service reload network wireless
 
 # oc_uci_reset_section dhcp guest
 uci batch <<EOF
