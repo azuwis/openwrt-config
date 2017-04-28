@@ -23,6 +23,7 @@ CONFIG_TARGET_ramips_mt7621_DEVICE_zbt-wg3526=y
 '
 
 # custom feeds
+custom_source='azuwis master https://github.com/azuwis/lede-source.git'
 custom_packages='azuwis master https://github.com/azuwis/openwrt-packages.git'
 
 # modules
@@ -150,10 +151,34 @@ hr() {
     echo '------------------------------------------------------------'
 }
 
+custom_source() {
+    local dir config
+    dir="$1"
+    config="$2"
+
+    pushd "$dir" >/dev/null
+    local remote branch url
+    read -r remote branch url <<<"$config"
+    if ! git remote | grep -qFx "$remote"
+    then
+        git remote add "$remote" "$url"
+    fi
+    git pull "$remote" "$branch"
+    git rebase origin/master
+    if [ "$push_custom" = "yes" ]; then
+        git push --force "$remote" "$branch"
+    fi
+    popd >/dev/null
+}
+
 update_source() {
     local target="$@"
 
     git pull --rebase origin master
+    hr
+    echo "Custom: source"
+    custom_source . "$custom_source"
+
     cp feeds.conf.default feeds.conf
 
     local module
@@ -169,29 +194,17 @@ update_source() {
     done
     ./scripts/feeds update -a
 
-    local dir
-    for dir in $(awk '/^src-git / {print $2}' feeds.conf)
+    local feed
+    for feed in $(awk '/^src-git / {print $2}' feeds.conf)
     do
         local custom
-        custom="custom_$dir"
+        custom="custom_$feed"
         custom="${!custom}"
         if [ -n "$custom" ]
         then
             hr
-            echo "Custom: $dir"
-            cd "feeds/$dir"
-            local remote branch url
-            read -r remote branch url <<<"$custom"
-            if ! git remote | grep -qFx "$remote"
-            then
-                git remote add "$remote" "$url"
-            fi
-            git pull "$remote" "$branch"
-            git rebase origin/master
-            if [ "$push_custom" = "yes" ]; then
-                git push --force "$remote" "$branch"
-            fi
-            cd ../../
+            echo "Custom: $feed"
+            custom_source "feeds/$feed" "$custom"
         fi
     done
 
