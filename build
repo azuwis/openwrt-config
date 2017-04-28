@@ -214,15 +214,16 @@ then
     do
         if [ "$i" = '' ]
         then
+            if [ -z "$targets" ]
+            then
+                targets="${profiles[0]}"
+                echo -e "targets: ${targets}\033[1A\033[2K\radd: "
+            fi
             break
         fi
         targets="${profiles[$((i-1))]} $targets"
         echo -en "targets: ${targets}\033[1A\033[2K\radd: "
     done
-    if [ -z "$targets" ]
-    then
-        targets="${profiles[0]}"
-    fi
     echo
 fi
 
