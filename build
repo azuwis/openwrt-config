@@ -22,6 +22,9 @@ CONFIG_TARGET_ramips_mt7621=y
 CONFIG_TARGET_ramips_mt7621_DEVICE_zbt-wg3526=y
 '
 
+# custom feeds
+custom_packages='azuwis master https://github.com/azuwis/openwrt-packages.git'
+
 # modules
 config_adblock='
 CONFIG_PACKAGE_adblock=y
@@ -71,6 +74,7 @@ CONFIG_PACKAGE_dnsmasq_full_ipset=y
 '
 
 feed_ettercap='src-git oldpackages https://github.com/plntyk/oldpackages.git'
+custom_oldpackages='azuwis master https://github.com/azuwis/openwrt-oldpackages.git'
 
 config_freeradius='
 CONFIG_PACKAGE_freeradius3=y
@@ -164,18 +168,35 @@ update_source() {
     local dir
     for dir in $(awk '/^src-git / {print $2}' feeds.conf)
     do
-        cd "feeds/$dir"
-        git rebase origin/master
-        cd ../../
+        local custom
+        custom="custom_$dir"
+        custom="${!custom}"
+        if [ -n "$custom" ]
+        then
+            cd "feeds/$dir"
+            local remote branch url
+            read -r remote branch url <<<"$custom"
+            if ! git remote | grep -qFx "$remote"
+            then
+                git remote add "$remote" "$url"
+            fi
+            git pull "$remote" "$branch"
+            git rebase origin/master
+            if [ "$push_custom" = "yes" ]; then
+                git push --force "$remote" "$branch"
+            fi
+            cd ../../
+        fi
     done
 
     ./scripts/feeds install -a
 }
 
-while getopts ":gu" option
+while getopts ":gpu" option
 do
     case "$option" in
         g) generate_only="yes" ;;
+        p) push_custom="yes" ;;
         u) update_source="yes" ;;
     esac
 done
