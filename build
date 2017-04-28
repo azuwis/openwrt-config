@@ -177,6 +177,8 @@ update_source() {
         custom="${!custom}"
         if [ -n "$custom" ]
         then
+            hr
+            echo "Custom: $dir"
             cd "feeds/$dir"
             local remote branch url
             read -r remote branch url <<<"$custom"
@@ -242,12 +244,12 @@ do
 
     if [ "$update_source" = "yes" ]; then
         hr
-        echo "Update $target"
+        echo "Update: $target"
         update_source "$modules"
     fi
 
     hr
-    echo "Config $target"
+    echo "Config: $target"
     generate_config "$modules" > .config
     make defconfig
     ./scripts/diffconfig.sh
@@ -255,7 +257,7 @@ do
     if [ "$generate_only" != "yes" ]
     then
         hr
-        echo "Build $target"
+        echo "Build: $target"
         extra_image_name="${target#*_}"
         if [ "$extra_image_name" == "$target" ]
         then
