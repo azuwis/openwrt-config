@@ -146,6 +146,10 @@ generate_config() {
     done
 }
 
+hr() {
+    echo '------------------------------------------------------------'
+}
+
 update_source() {
     local target="$@"
 
@@ -237,15 +241,21 @@ do
     fi
 
     if [ "$update_source" = "yes" ]; then
+        hr
+        echo "Update $target"
         update_source "$modules"
     fi
 
+    hr
+    echo "Config $target"
     generate_config "$modules" > .config
     make defconfig
     ./scripts/diffconfig.sh
 
     if [ "$generate_only" != "yes" ]
     then
+        hr
+        echo "Build $target"
         extra_image_name="${target#*_}"
         if [ "$extra_image_name" == "$target" ]
         then
