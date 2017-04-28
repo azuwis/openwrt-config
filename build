@@ -178,6 +178,7 @@ update_source() {
     hr
     echo "Custom: source"
     custom_source . "$custom_source"
+    hr
 
     cp feeds.conf.default feeds.conf
 
@@ -205,6 +206,7 @@ update_source() {
             hr
             echo "Custom: $feed"
             custom_source "feeds/$feed" "$custom"
+            hr
         fi
     done
 
