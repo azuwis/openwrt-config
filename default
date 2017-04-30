@@ -6,7 +6,7 @@ host=root@192.168.1.1
 # intra_port='22'
 
 ##### opkg #####
-config_opkg_enabled=1
+config_opkg_enabled=0
 
 ##### pubkey #####
 config_pubkey_enabled=1
