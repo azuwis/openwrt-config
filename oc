@@ -6,6 +6,7 @@ TIME=''
 DEBUG=''
 GEN_ONLY='no'
 KEEP='rm'
+PROXY=''
 remote_modules="$(ls -1 remote-[0-9][0-9][0-9]-*)"
 local_modules="$(ls -1 local-[0-9][0-9][0-9]-*)"
 
@@ -55,7 +56,7 @@ if [ x"$intra_host" != x ]; then
     fi
 fi
 
-while getopts ":gh:kl:r:tp:x" Option
+while getopts ":gh:kl:r:tp:xy" Option
 do
     case "$Option" in
         h) host="$OPTARG" ;;
@@ -72,6 +73,7 @@ do
         t) TIME='time' ;;
         p) port="$OPTARG" ;;
         x) DEBUG='-x' ;;
+        y) PROXY='-R8123:127.0.0.1:8123' ;;
     esac
 done
 
@@ -137,6 +139,12 @@ download_push() {
 
 generate_script() {
     local remote_module config_module
+    if [ -n "$PROXY" ]
+    then
+        echo 'PROXY=http://127.0.0.1:8123'
+    else
+        echo 'PROXY='
+    fi
     cat functions
     settings "$target"
     for remote_module in $remote_modules
@@ -222,5 +230,5 @@ do
 done
 
 if [ x"$remote_modules" != x ]; then
-    generate_script | $ssh "$host" 's=/tmp/openwrt-config; cat > $s; chmod 400 $s; '$TIME' sh '$DEBUG' $s; '$KEEP' $s'
+    generate_script | $ssh "$host" "$PROXY" 's=/tmp/openwrt-config; cat > $s; chmod 400 $s; '$TIME' sh '$DEBUG' $s; '$KEEP' $s'
 fi
