@@ -1,5 +1,3 @@
-#!/bin/sh
-
 . /lib/functions.sh
 
 oc_opkg_update() {

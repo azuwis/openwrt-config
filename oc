@@ -145,7 +145,7 @@ generate_script() {
     else
         echo 'PROXY='
     fi
-    cat functions
+    cat functions.sh
     settings "$target"
     for remote_module in $remote_modules
     do
