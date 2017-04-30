@@ -1,6 +1,6 @@
 #!/bin/bash
 # PRE:
-# 1) telnet  2) passwd 3) reboot
+# 1) telnet 2) passwd 3) reboot
 
 TIME=''
 DEBUG=''
