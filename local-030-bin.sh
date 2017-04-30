@@ -6,3 +6,4 @@ push files/bin/profile.sh /etc/profile.d/bin.sh
 
 push files/bin/ipcn /root/bin/ipcn
 push files/bin/ipinfo /root/bin/ipinfo
+push files/bin/lrcc /root/bin/lrcc

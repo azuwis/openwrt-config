@@ -1,0 +1,22 @@
+#!/bin/sh
+opkg list-changed-conffiles | while read file
+do
+  md5="$(md5sum "$file" | cut -d ' ' -f 1)"
+  md5_rom="$(md5sum "/rom/$file" | cut -d ' ' -f 1)"
+  if [ "$md5" != "$md5_rom" ]
+  then
+    echo "diff: $file"
+    if [ "$1" = '-d' ]
+    then
+        config="${file#/etc/config/}"
+        if [ "$file" != "$config" ]
+        then
+            uci -c /rom/etc/config export "$config" | grep -v '^package ' | diff -pu - "$file"
+        else
+            grep -Ev '^(\s*#|$)' "/rom/$file" | diff -puwB - "$file"
+        fi
+    fi
+  else
+    echo "same: $file"
+  fi
+done
