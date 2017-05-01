@@ -82,6 +82,7 @@ config member 'm_$i'
 
 config policy 'p_$i'
   list use_member 'm_$i'
+  # option last_resort 'default'
 
 config rule 'r_udp_$port'
   option proto 'udp'
