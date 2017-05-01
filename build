@@ -3,7 +3,7 @@ set -e
 
 # profiles
 profiles=(mw4530r wg3526 wg3526_audit wg3526_debug wg3526_luci)
-wg3526='wg3526 wpad'
+wg3526='wg3526 irqbalance wpad'
 wg3526_audit='wg3526 aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
 wg3526_debug='wg3526 ethtool kallsyms kmod-sched-cake wpad'
 wg3526_luci='wg3526 luci wpad'
