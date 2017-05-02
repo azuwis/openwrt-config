@@ -194,3 +194,6 @@ config_clean_conffiles_enabled=1
 ##### pcap_dnsproxy #####
 # config_pcap_dnsproxy_dns=''
 # config_pcap_dnsproxy_protocol=''
+
+##### tether #####
+config_tether_enabled=0
