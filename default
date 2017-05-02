@@ -197,3 +197,5 @@ config_clean_conffiles_enabled=1
 
 ##### tether #####
 config_tether_enabled=0
+# config_tether_rndis=usb0
+# config_tether_wlan=iface0
