@@ -125,6 +125,7 @@ config_noipv6='
 # CONFIG_IPV6 is not set
 # CONFIG_KERNEL_IPV6 is not set
 # CONFIG_PACKAGE_libip6tc is not set
+# CONFIG_PACKAGE_odhcpd is not set
 '
 
 config_shadowsocks='
