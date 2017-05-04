@@ -3,7 +3,12 @@
 oc_opkg_update() {
     if [ "$(find /var/opkg-lists/ -type f | wc -l)" -eq 0 ]; then
         echo 'opkg update'
-        http_proxy="$PROXY" opkg update
+        if [ -n "$PROXY" ]
+        then
+            http_proxy="$PROXY" opkg update
+        else
+            opkg update
+        fi
     fi
 }
 
@@ -21,7 +26,12 @@ oc_opkg_install() {
         if ! oc_opkg_installed "$package_name"; then
             oc_opkg_update
             echo "opkg install $package"
-            http_proxy="$PROXY" opkg install "$package"
+            if [ -n "$PROXY" ]
+            then
+                http_proxy="$PROXY" opkg install "$package"
+            else
+                opkg install "$package"
+            fi
             if [ x"${package::1}" = x'/' ]; then
                 rm -f "$package"
             fi
