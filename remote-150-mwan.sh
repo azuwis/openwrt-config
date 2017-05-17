@@ -1,3 +1,18 @@
+mwan_cron() {
+    cat >/tmp/mwan_ping <<EOF
+#!/bin/sh
+ip="\$(awk '/^# Interface wan$/ {getline; print \$2}' /var/resolv.conf.auto)"
+for i in \$(seq 1 $config_mwan)
+do
+    ping -q -c 3 -I "pppoe-mwan\${i}" "\$ip" >/dev/null
+done
+EOF
+    mkdir -p ~/bin/
+    oc_move /tmp/mwan_ping ~/bin/mwan_ping
+    chmod 0755 ~/bin/mwan_ping
+    oc_add_cron mwan '17 * * * * ~/bin/mwan_ping'
+}
+
 mwan_network() {
     # network
     local i
@@ -117,4 +132,5 @@ if [ "$config_mwan" -gt 0 ]; then
     mwan_firewall
     mwan_sqm
     mwan_mwan3
+    mwan_cron
 fi
