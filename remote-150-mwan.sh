@@ -1,5 +1,5 @@
 mwan_cron() {
-    cat >/tmp/mwan_ping <<EOF
+    cat >/tmp/mwan_cron <<EOF
 #!/bin/sh
 ip="\$(awk '/^# Interface wan$/ {getline; print \$2}' /var/resolv.conf.auto)"
 for i in \$(seq 1 $config_mwan)
@@ -8,9 +8,9 @@ do
 done
 EOF
     mkdir -p ~/bin/
-    oc_move /tmp/mwan_ping ~/bin/mwan_ping
-    chmod 0755 ~/bin/mwan_ping
-    oc_add_cron mwan '17 * * * * ~/bin/mwan_ping'
+    oc_move /tmp/mwan_cron ~/bin/mwan_cron
+    chmod 0755 ~/bin/mwan_cron
+    oc_add_cron mwan '17 * * * * ~/bin/mwan_cron'
 }
 
 mwan_network() {
