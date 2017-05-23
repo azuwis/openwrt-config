@@ -185,6 +185,9 @@ config_vlmcsd_enabled=0
 config_mwan_enabled=0
 config_mwan=0
 
+##### miniupnpd #####
+config_miniupnpd_enabled=0
+
 ##### disable_uhttpd #####
 config_disable_uhttpd_enabled=1
 
