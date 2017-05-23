@@ -1,10 +1,15 @@
 mwan_cron() {
+    oc_opkg_install curl
     cat >/tmp/mwan_cron <<EOF
 #!/bin/sh
-ip="\$(awk '/^# Interface wan$/ {getline; print \$2}' /var/resolv.conf.auto)"
-for i in \$(seq 1 $config_mwan)
+config_mwan="$config_mwan"
+config_mwan_cron_url="$config_mwan_cron_url"
+EOF
+    cat >>/tmp/mwan_cron <<'EOF'
+for i in $(seq 1 $config_mwan)
 do
-    ping -q -c 3 -I "pppoe-mwan\${i}" "\$ip" >/dev/null
+    sleep "$((0x$(hexdump -n 1 -ve '"%x"' /dev/urandom) % 100))"
+    curl --silent --location --user-agent 'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko' --output /dev/null --interface "pppoe-mwan${i}" "$config_mwan_cron_url"
 done
 EOF
     mkdir -p ~/bin/

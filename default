@@ -184,6 +184,7 @@ config_vlmcsd_enabled=0
 ##### mwan #####
 config_mwan_enabled=0
 config_mwan=0
+config_mwan_cron_url=http://www.189.cn
 
 ##### miniupnpd #####
 config_miniupnpd_enabled=0
