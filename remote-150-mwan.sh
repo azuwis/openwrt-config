@@ -15,7 +15,7 @@ EOF
     mkdir -p ~/bin/
     oc_move /tmp/mwan_cron ~/bin/mwan_cron
     chmod 0755 ~/bin/mwan_cron
-    oc_add_cron mwan '17 * * * * ~/bin/mwan_cron'
+    oc_add_cron mwan '17,47 * * * * ~/bin/mwan_cron'
 }
 
 mwan_network() {
