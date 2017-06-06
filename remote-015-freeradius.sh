@@ -227,7 +227,7 @@ eap {
     cipher_list = "HIGH"
     ecdh_curve = "secp384r1"
     cache {
-      enable = yes
+      enable = no
       lifetime = 24 # hours
       max_entries = 255
     }
