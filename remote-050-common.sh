@@ -11,6 +11,14 @@ oc_service reload system
 uci set system.@system[0].log_buffer_size='256'
 oc_service reload log system
 
+cat >/tmp/sysctl-local.conf <<EOF
+net.netfilter.nf_conntrack_max=32768
+EOF
+if oc_move /tmp/sysctl-local.conf /etc/sysctl.d/local.conf
+then
+    oc_service restart sysctl - 2>/dev/null
+fi
+
 oc_uci_set_list system ntp server 0.debian.pool.ntp.org 1.debian.pool.ntp.org 2.debian.pool.ntp.org 3.debian.pool.ntp.org
 oc_service restart sysntpd system
 
