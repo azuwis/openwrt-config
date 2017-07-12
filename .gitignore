@@ -1,4 +1,5 @@
 /*.conf
 /*.gpg
 /files/tmp/
+/remote-999-test.sh
 /test
