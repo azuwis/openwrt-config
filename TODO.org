@@ -1,0 +1,14 @@
+* DONE Add function to delete uci config.section.*
+  CLOSED: [2017-01-31 Tue 00:19]
+
+* DONE Fix config_redirect config_dhcp_host when delete settings
+  CLOSED: [2017-02-01 Wed 08:14]
+
+* DONE Use config_* to determine enabled modules
+  CLOSED: [2017-03-07 Tue 16:29]
+
+* DONE Guest network
+  CLOSED: [2017-03-08 Wed 14:36]
+
+* DONE Combine build-* into one script
+  CLOSED: [2017-04-15 Sat 10:21]
