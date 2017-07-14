@@ -155,17 +155,21 @@ config_watchcat_pinghosts='www.baidu.com'
 ##### shadowsocks #####
 config_shadowsocks_enabled=0
 config_shadowsocks_common='
-# shadowsocks-libev.@shadowsocks-libev[0].local_port=1080
-# shadowsocks-libev.@shadowsocks-libev[0].ipt_ext="-m multiport --dports 53,80,443"
-# shadowsocks-libev.@shadowsocks-libev[0].tunnel_enable=0
-# shadowsocks-libev.@shadowsocks-libev[0].udp_mode=0
+# shadowsocks-libev.hi.disabled=0
+# shadowsocks-libev.ss_rules.disabled=0
+# shadowsocks-libev.ss_rules.dst_ips_forward=
+# shadowsocks-libev.ss_rules.dst_ips_bypass_file=/etc/chn-cidr
+# shadowsocks-libev.ss_rules.ipt_args="-m multiport --dports 22,53,80,8000,3000,443,587,993,5222,5228"
+# shadowsocks-libev.ss_rules.src_default=checkdst
+# shadowsocks-libev.ss_rules.src_ips_forward=
 '
 
 config_shadowsocks='
-# shadowsocks-libev.@shadowsocks-libev[0].server=
-# shadowsocks-libev.@shadowsocks-libev[0].server_port=
-# shadowsocks-libev.@shadowsocks-libev[0].password=
-# shadowsocks-libev.@shadowsocks-libev[0].encrypt_method=
+# shadowsocks-libev.sss0.disabled=0
+# shadowsocks-libev.sss0.method=
+# shadowsocks-libev.sss0.password=
+# shadowsocks-libev.sss0.server=
+# shadowsocks-libev.sss0.server_port=
 '
 
 ##### unbound #####
