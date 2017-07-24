@@ -3,11 +3,11 @@ set -e
 
 # profiles
 profiles=(mw4530r wg3526 wg3526_audit wg3526_debug wg3526_luci x86)
-wg3526='wg3526 irqbalance wpad'
+wg3526='wg3526 irqbalance sfe wpad'
 wg3526_audit='wg3526 aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
 wg3526_debug='wg3526 ethtool kallsyms kmod-sched-cake wpad'
 wg3526_luci='wg3526 luci wpad'
-mw4530r='mw4530r adblock curl ddns dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon shadowsocks sqm tcpdump watchcat wpad'
+mw4530r='mw4530r adblock curl ddns dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon sfe shadowsocks sqm tcpdump watchcat wpad'
 x86='luci2 x86'
 
 # common
@@ -134,6 +134,11 @@ config_noipv6='
 # CONFIG_KERNEL_IPV6 is not set
 # CONFIG_PACKAGE_libip6tc is not set
 # CONFIG_PACKAGE_odhcpd is not set
+'
+
+config_sfe='
+CONFIG_PACKAGE_kmod-fast-classifier=y
+CONFIG_PACKAGE_kmod-shortcut-fe=y
 '
 
 config_shadowsocks='
