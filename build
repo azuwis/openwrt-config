@@ -3,7 +3,7 @@ set -e
 
 # profiles
 profiles=(mw4530r wg3526 wg3526_audit wg3526_debug wg3526_luci x86)
-wg3526='wg3526 irqbalance sfe wpad'
+wg3526='wg3526 irqbalance sfe wpad xkcptun'
 wg3526_audit='wg3526 aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
 wg3526_debug='wg3526 ethtool kallsyms kmod-sched-cake wpad'
 wg3526_luci='wg3526 luci wpad'
@@ -159,6 +159,8 @@ CONFIG_PACKAGE_wpad=y
 CONFIG_WPA_MSG_MIN_PRIORITY=1
 CONFIG_WPA_SUPPLICANT_OPENSSL=y
 '
+
+feed_xkcptun='src-git xkcptun https://github.com/gigibox/openwrt-xkcptun.git'
 
 generate_config() {
     local target="$@"
