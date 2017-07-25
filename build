@@ -12,6 +12,7 @@ x86='luci2 x86'
 
 # common
 config_common='
+CONFIG_CCACHE=y
 CONFIG_KERNEL_BUILD_DOMAIN="builds"
 CONFIG_KERNEL_BUILD_USER="buildbot"
 CONFIG_PACKAGE_diffutils=y
