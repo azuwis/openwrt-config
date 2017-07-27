@@ -41,7 +41,7 @@ EOF
 
 target="$1"
 target="${target%.gpg}"
-if [ -f "$target" -o -f "${target}.gpg" ]; then
+if [ -f "$target" ] || [ -f "${target}.gpg" ]; then
     source <(settings "$target")
     shift
 else
@@ -138,7 +138,7 @@ download_push() {
 }
 
 generate_script() {
-    local remote_module config_module
+    local remote_module config_module_enabled
     if [ -n "$PROXY" ]
     then
         echo 'PROXY=http://127.0.0.1:8123'
