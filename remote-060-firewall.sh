@@ -14,7 +14,7 @@ firewall_redirect_apply() {
     local proto src_dport dest_ip dest_port name
     while read proto src_dport dest_ip dest_port
     do
-        name="${proto}__${src_dport//:/_}__${dest_ip//./_}__${dest_port//:/_}"
+        name="${proto}__${src_dport//:/_}"
         uci set "firewall.${name}=redirect"
         uci set "firewall.${name}.target=DNAT"
         uci set "firewall.${name}.src=wan"
