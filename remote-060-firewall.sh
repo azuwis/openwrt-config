@@ -3,7 +3,7 @@ oc_uci_batch_set "$config_firewall"
 firewall_redirect_clean() {
     local all_names proto src_dport dest_ip dest_port name
     all_names=''
-    while read proto src_dport dest_ip dest_port
+    while read -r proto src_dport dest_ip dest_port
     do
         name="${proto}__${src_dport//:/_}__${dest_ip//./_}__${dest_port//:/_}"
         all_names="$all_names $name"
@@ -11,8 +11,8 @@ firewall_redirect_clean() {
     oc_uci_keep_sections firewall redirect "$all_names"
 }
 firewall_redirect_apply() {
-    local proto src_dport dest_ip dest_port name
-    while read proto src_dport dest_ip dest_port
+    local proto src_dport dest_ip dest_port name src_ip
+    while read -r proto src_dport dest_ip dest_port src_ip
     do
         name="${proto}__${src_dport//:/_}"
         uci set "firewall.${name}=redirect"
@@ -21,11 +21,17 @@ firewall_redirect_apply() {
         uci set "firewall.${name}.dest=lan"
         uci set "firewall.${name}.proto=$proto"
         uci set "firewall.${name}.src_dport=$src_dport"
-        if [ x"$dest_ip" != x'-' -a x"$dest_ip" != x ]; then
+        if [ -n "$dest_ip" ] && [ "$dest_ip" != '-' ]
+        then
             uci set "firewall.${name}.dest_ip=$dest_ip"
         fi
-        if [ x"$dest_port" != x ]; then
+        if [ -n "$dest_port" ] && [ "$dest_port" != '-' ]
+        then
             uci set "firewall.${name}.dest_port=$dest_port"
+        fi
+        if [ -n "$src_ip" ] && [ "$src_ip" != '-' ]
+        then
+            uci set "firewall.${name}.src_ip=$src_ip"
         fi
     done
 }
