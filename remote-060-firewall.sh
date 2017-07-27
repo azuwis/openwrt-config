@@ -5,7 +5,7 @@ firewall_redirect_clean() {
     all_names=''
     while read -r proto src_dport dest_ip dest_port
     do
-        name="${proto}__${src_dport//:/_}__${dest_ip//./_}__${dest_port//:/_}"
+        name="${proto}__${src_dport//:/_}"
         all_names="$all_names $name"
     done
     oc_uci_keep_sections firewall redirect "$all_names"
