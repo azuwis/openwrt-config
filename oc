@@ -2,6 +2,7 @@
 # PRE:
 # 1) telnet 2) passwd 3) reboot
 
+CLEANUP=''
 TIME=''
 DEBUG=''
 GEN_ONLY='no'
@@ -56,9 +57,10 @@ if [ x"$intra_host" != x ]; then
     fi
 fi
 
-while getopts ":gh:kl:r:tp:xy" Option
+while getopts ":cgh:kl:r:tp:xy" Option
 do
     case "$Option" in
+        c) CLEANUP='1' ;;
         h) host="$OPTARG" ;;
         g) GEN_ONLY='yes' ;;
         k) KEEP='echo keep remote' ;;
@@ -139,6 +141,10 @@ download_push() {
 
 generate_script() {
     local remote_module config_module_enabled
+    if [ -n "$CLEANUP" ]
+    then
+        echo 'CLEANUP=1'
+    fi
     if [ -n "$PROXY" ]
     then
         echo 'PROXY=http://127.0.0.1:8123'

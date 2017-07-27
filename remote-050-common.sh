@@ -46,7 +46,10 @@ dhcp_host_apply() {
         uci set "dhcp.${name}.mac=${mac}"
     done
 }
-echo "$config_dhcp_host" | oc_strip_comment | dhcp_host_clean
+if [ -n "$CLEANUP" ]
+then
+    echo "$config_dhcp_host" | oc_strip_comment | dhcp_host_clean
+fi
 echo "$config_dhcp_host" | oc_strip_comment | dhcp_host_apply
 
 oc_service reload dnsmasq dhcp

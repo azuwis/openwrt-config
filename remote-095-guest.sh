@@ -1,4 +1,7 @@
-# oc_uci_reset_section network guest
+if [ -n "$CLEANUP" ]
+then
+    oc_uci_reset_section network guest
+fi
 uci batch <<EOF
 set network.guest='interface'
 set network.guest.proto='static'
@@ -10,7 +13,10 @@ EOF
 oc_service reload network
 oc_service reload network wireless
 
-# oc_uci_reset_section dhcp guest
+if [ -n "$CLEANUP" ]
+then
+    oc_uci_reset_section dhcp guest
+fi
 uci batch <<EOF
 set dhcp.guest='dhcp'
 set dhcp.guest.interface='guest'
@@ -20,10 +26,13 @@ set dhcp.guest.leasetime='1h'
 EOF
 oc_service reload dnsmasq dhcp
 
-# oc_uci_reset_section firewall guest_zone
-# oc_uci_reset_section firewall guest_forwarding
-# oc_uci_reset_section firewall guest_rule_dns
-# oc_uci_reset_section firewall guest_rule_dhcp
+if [ -n "$CLEANUP" ]
+then
+    oc_uci_reset_section firewall guest_zone
+    oc_uci_reset_section firewall guest_forwarding
+    oc_uci_reset_section firewall guest_rule_dns
+    oc_uci_reset_section firewall guest_rule_dhcp
+fi
 uci batch <<EOF
 set firewall.guest_zone='zone'
 set firewall.guest_zone.name='guest'
