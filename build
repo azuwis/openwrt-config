@@ -227,10 +227,25 @@ update_source() {
             echo "$feed" >> feeds.conf
         fi
     done
-    ./scripts/feeds update -a
+
 
     local feed
     for feed in $(awk '/^src-git / {print $2}' feeds.conf)
+    do
+        local custom
+        custom="custom_$feed"
+        custom="${!custom}"
+        if [ -n "$custom" ]
+        then
+            hr
+            echo "Custom: $feed"
+            sed -i "s/^src-git $feed /src-git-full $feed /" feeds.conf
+            hr
+        fi
+    done
+    ./scripts/feeds update -a
+
+    for feed in $(awk '/^src-git-full / {print $2}' feeds.conf)
     do
         local custom
         custom="custom_$feed"
