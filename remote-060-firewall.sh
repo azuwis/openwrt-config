@@ -1,4 +1,5 @@
 uci batch <<EOF
+set firewall.@zone[1].forward='DROP'
 set firewall.@zone[1].input='DROP'
 EOF
 oc_uci_batch_set "$config_firewall"
