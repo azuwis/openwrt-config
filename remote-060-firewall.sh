@@ -1,3 +1,6 @@
+uci batch <<EOF
+set firewall.@zone[1].input='DROP'
+EOF
 oc_uci_batch_set "$config_firewall"
 # oc_uci_del_type firewall redirect
 firewall_redirect_clean() {
