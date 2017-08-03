@@ -41,14 +41,6 @@ network_wireless() {
             oc_opkg_installed wpad-mini && wifi_need_restart=1
             oc_opkg_remove wpad-mini
             oc_opkg_install wpad
-
-            # https://dev.openwrt.org/ticket/19175
-            if grep -q uci_get_state /lib/netifd/hostapd.sh && \
-                    ! grep -qxF '. /lib/config/uci.sh' /lib/netifd/hostapd.sh
-            then
-                echo 'patch /lib/netifd/hostapd.sh'
-                sed -i '1s#^#. /lib/config/uci.sh\n#' /lib/netifd/hostapd.sh
-            fi
         fi
         oc_service reload network wireless
         if [ "$wifi_need_restart" = 1 ]; then
