@@ -25,7 +25,7 @@ set network.henet.metric='30'
 EOF
     oc_uci_batch_set "$config_henet"
 
-    oc_uci_add_list firewall.@zone[1].network henet
+    oc_uci_add_list firewall.zone_wan.network henet
     oc_service reload firewall
 fi
 

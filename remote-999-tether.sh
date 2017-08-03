@@ -15,7 +15,7 @@ set network.${wan}.metric=20
 EOF
     oc_service reload network
 
-    oc_uci_add_list 'firewall.@zone[1].network' "$wan"
+    oc_uci_add_list 'firewall.zone_wan.network' "$wan"
     oc_service reload firewall 2>/dev/null
 }
 
@@ -35,7 +35,7 @@ EOF
     uci commit wireless
     oc_service reload network
 
-    oc_uci_add_list 'firewall.@zone[1].network' "$wan"
+    oc_uci_add_list 'firewall.zone_wan.network' "$wan"
     oc_service reload firewall 2>/dev/null
 }
 

@@ -48,7 +48,7 @@ mwan_firewall() {
     local i
     for i in $(seq 1 "$config_mwan")
     do
-        oc_uci_add_list 'firewall.@zone[1].network' "mwan${i}"
+        oc_uci_add_list 'firewall.zone_wan.network' "mwan${i}"
     done
     oc_service reload firewall 2>/dev/null
 }
