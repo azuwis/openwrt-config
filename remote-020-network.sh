@@ -5,8 +5,8 @@ network_wireless() {
         oc_uci_delete wireless.radio1.disabled
         oc_uci_exists wireless.radio0 && uci set wireless.radio0.country=CN
         oc_uci_exists wireless.radio1 && uci set wireless.radio1.country=CN
-        oc_uci_rename wireless.@wifi-iface[0] iface0
-        oc_uci_rename wireless.@wifi-iface[1] iface1
+        oc_uci_rename wireless @wifi-iface[0] iface0
+        oc_uci_rename wireless @wifi-iface[1] iface1
         oc_uci_merge wireless "$config_wireless"
         if [ "$config_ieee80211r_enabled" = 1 ]
         then

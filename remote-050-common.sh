@@ -1,7 +1,7 @@
 oc_opkg_install $config_packages_common
 oc_opkg_install $config_packages
 
-oc_uci_rename system.@system[0] system
+oc_uci_rename system @system[0] system
 uci batch <<EOF
 set system.system.timezone='CST-8'
 set system.system.zonename='Asia/Shanghai'

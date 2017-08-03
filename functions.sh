@@ -213,11 +213,12 @@ oc_uci_keep_sections() {
 }
 
 oc_uci_rename() {
-    local key value
-    key="$1"
-    value="$2"
-    if oc_uci_exists "$key"; then
-        uci rename "$key=$value"
+    local prefix from to
+    prefix="$1"
+    from="$2"
+    to="$3"
+    if ! oc_uci_exists "$prefix.$to"; then
+        uci rename "$prefix.$from=$to"
     fi
 }
 

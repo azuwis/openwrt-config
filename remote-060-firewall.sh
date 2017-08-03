@@ -1,5 +1,5 @@
-oc_uci_rename firewall.@zone[0] zone_lan
-oc_uci_rename firewall.@zone[1] zone_wan
+oc_uci_rename firewall @zone[0] zone_lan
+oc_uci_rename firewall @zone[1] zone_wan
 uci batch <<EOF
 set firewall.zone_wan.forward='DROP'
 set firewall.zone_wan.input='DROP'

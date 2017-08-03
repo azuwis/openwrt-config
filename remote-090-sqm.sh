@@ -3,7 +3,7 @@ oc_opkg_install sqm-scripts kmod-sched-cake
 . /lib/functions/network.sh
 network_get_device iface_wan wan
 
-oc_uci_rename sqm.eth1 wan
+oc_uci_rename sqm eth1 wan
 uci batch <<EOF
 set sqm.wan.enabled='0'
 set sqm.wan.interface='${iface_wan}'
