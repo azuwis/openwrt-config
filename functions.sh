@@ -158,6 +158,13 @@ oc_uci_del_type() {
     done
 }
 
+oc_uci_merge() {
+    local package config
+    package="$1"
+    config="$2"
+    echo "$config" | oc_strip_comment | uci -m import "$package"
+}
+
 oc_uci_reset_section() {
     local config="$1"
     local section="$2"
