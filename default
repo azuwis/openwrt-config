@@ -28,39 +28,41 @@ config_freeradius_users='
 
 ##### network #####
 config_network_enabled=1
-config_network='
+config_network="
 ## example for dhcp on wan
-# network.wan.proto=dhcp
+# config interface 'wan'
+#   option proto 'pppoe'
 
 ## example for pppoe on wan
-# network.wan.proto=pppoe
-# network.wan.username=
-# network.wan.password=
-# network.wan.ipv6=1
-'
+# config interface 'wan'
+#   option proto 'pppoe'
+#   option username ''
+#   option password ''
+#   option ipv6 '0'
+"
 
-config_wireless='
-# wireless.iface0.disabled=0
-# wireless.iface0.ssid=
-# wireless.iface0.encryption=psk2
-# wireless.iface0.key=
-# wireless.iface0.ieee80211w=1
-# wireless.iface0.iapp_interface=lan
-# wireless.radio0.channel=13
-# wireless.radio0.htmode=HT20-
-# wireless.radio0.noscan=1
+config_wireless="
+# config wifi-device 'radio0'
+#   option channel '13'
+#   option htmode 'HT20-'
+#   option noscan '1'
 
-# wireless.iface1.disabled=0
-# wireless.iface1.ssid=
-# wireless.iface1.encryption=wpa2
-# wireless.iface1.server=127.0.0.1
-# wireless.iface1.key=
-# wireless.iface1.ieee80211w=1
-# wireless.iface1.iapp_interface=lan
-# wireless.radio1.channel=149
-# wireless.radio1.htmode=HT40
-# wireless.radio1.noscan=1
-'
+# config wifi-iface 'iface0'
+#   option ssid ''
+#   option encryption 'psk2'
+#   option key ''
+
+# config wifi-device 'radio1'
+#   option channel '149'
+#   option htmode 'HT40'
+#   option noscan '1'
+
+# config wifi-iface 'iface1'
+#   option ssid ''
+#   option encryption 'wpa2'
+#   option server '127.0.0.1'
+#   option key ''
+"
 
 config_ieee80211r_enabled='0'
 # config_ieee80211r_ifaces='0 1'

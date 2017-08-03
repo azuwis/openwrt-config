@@ -7,7 +7,7 @@ network_wireless() {
         oc_uci_exists wireless.radio1 && uci set wireless.radio1.country=CN
         oc_uci_rename wireless.@wifi-iface[0] iface0
         oc_uci_rename wireless.@wifi-iface[1] iface1
-        oc_uci_batch_set "$config_wireless"
+        oc_uci_merge wireless "$config_wireless"
         if [ "$config_ieee80211r_enabled" = 1 ]
         then
             for i in $config_ieee80211r_ifaces
@@ -50,7 +50,7 @@ network_wireless() {
 }
 
 chmod 600 /etc/config/network /etc/config/wireless
-oc_uci_batch_set "$config_network"
+oc_uci_merge network "$config_network"
 oc_service reload network
 network_wireless
 
