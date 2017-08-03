@@ -1,14 +1,15 @@
 oc_opkg_install $config_packages_common
 oc_opkg_install $config_packages
 
+oc_uci_rename system.@system[0] system
 uci batch <<EOF
-set system.@system[0].timezone='CST-8'
-set system.@system[0].zonename='Asia/Shanghai'
+set system.system.timezone='CST-8'
+set system.system.zonename='Asia/Shanghai'
 EOF
-oc_uci_batch_set "$config_common"
+oc_uci_merge system "$config_common"
 oc_service reload system
 
-uci set system.@system[0].log_buffer_size='256'
+uci set system.system.log_buffer_size='256'
 oc_service reload log system
 
 cat >/tmp/sysctl-local.conf <<EOF
