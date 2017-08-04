@@ -161,23 +161,31 @@ config_watchcat_pinghosts='www.baidu.com'
 
 ##### shadowsocks #####
 config_shadowsocks_enabled=0
-config_shadowsocks_common='
-# shadowsocks-libev.hi.disabled=0
-# shadowsocks-libev.ss_rules.disabled=0
-# shadowsocks-libev.ss_rules.dst_ips_forward=
-# shadowsocks-libev.ss_rules.dst_ips_bypass_file=/etc/chn-cidr
-# shadowsocks-libev.ss_rules.ipt_args="-m multiport --dports 22,53,80,8000,3000,443,587,993,5222,5228"
-# shadowsocks-libev.ss_rules.src_default=checkdst
-# shadowsocks-libev.ss_rules.src_ips_forward=
-'
 
-config_shadowsocks='
-# shadowsocks-libev.sss0.disabled=0
-# shadowsocks-libev.sss0.method=
-# shadowsocks-libev.sss0.password=
-# shadowsocks-libev.sss0.server=
-# shadowsocks-libev.sss0.server_port=
-'
+config_shadowsocks="
+# config ss_rules 'ss_rules'
+#   option redir_tcp 'redir0'
+#   option redir_udp 'redir0'
+#   option local_default 'checkdst'
+#   option src_default 'checkdst'
+#   option dst_ips_bypass_file '/etc/chn-cidr'
+#   option ipt_args '-m multiport --dports 22,53,80,443,587,993'
+
+# config ss_redir 'redir0'
+#   option server 'server0'
+#   option local_address '0.0.0.0'
+#   option local_port '1100'
+#   option mode 'tcp_and_udp'
+#   option timeout '60'
+#   option fast_open '1'
+#   option reuse_port '1'
+
+# config server 'server0'
+#   option server ''
+#   option server_port ''
+#   option password ''
+#   option method ''
+"
 
 ##### unbound #####
 config_unbound_enabled=0
