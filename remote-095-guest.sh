@@ -37,24 +37,24 @@ then
     oc_uci_reset_section firewall guest_rule_dhcp
 fi
 uci -m import firewall <<EOF
-config zone 'guest_zone'
+config zone 'zone_guest'
   option name 'guest'
   option network 'guest'
   option input 'REJECT'
   option forward 'REJECT'
   option output 'ACCEPT'
 
-config forwarding 'guest_forwarding'
+config forwarding 'forwarding_guest'
   option src 'guest'
   option dest 'wan'
 
-config rule 'guest_rule_dns'
+config rule 'rule_guest_dns'
   option src 'guest'
   option dest_port '53'
   option target 'ACCEPT'
   option family 'ipv4'
 
-config rule 'guest_rule_dhcp'
+config rule 'rule_guest_dhcp'
   option src 'guest'
   option proto 'udp'
   option src_port '67-68'
