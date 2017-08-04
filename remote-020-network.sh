@@ -3,8 +3,16 @@ network_wireless() {
     if oc_uci_exists wireless; then
         oc_uci_delete wireless.radio0.disabled
         oc_uci_delete wireless.radio1.disabled
-        oc_uci_exists wireless.radio0 && uci set wireless.radio0.country=CN
-        oc_uci_exists wireless.radio1 && uci set wireless.radio1.country=CN
+        if oc_uci_exists wireless.radio0
+        then
+           uci set wireless.radio0.country=CN
+           uci set wireless.radio0.noscan=1
+        fi
+        if oc_uci_exists wireless.radio1
+        then
+            uci set wireless.radio1.country=CN
+            uci set wireless.radio1.noscan=1
+        fi
         oc_uci_rename wireless @wifi-iface[0] iface0
         oc_uci_rename wireless @wifi-iface[1] iface1
         oc_uci_merge wireless "$config_wireless"
