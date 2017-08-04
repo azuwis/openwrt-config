@@ -141,11 +141,12 @@ config_ddns="
 
 ##### sqm #####
 config_sqm_enabled=0
-config_sqm='
-# sqm.wan.enabled=1
-# sqm.wan.download=
-# sqm.wan.upload=
-'
+config_sqm="
+# config queue 'wan'
+#   option enabled '1'
+#   option download ''
+#   option upload ''
+"
 
 ##### guest #####
 config_guest_enabled=0
