@@ -126,18 +126,18 @@ config_redirect='
 
 ##### ddns #####
 config_ddns_enabled=0
-config_ddns='
-# ddns.duckdns=service
-# ddns.duckdns.enabled=1
-# ddns.duckdns.service_name=duckdns.org
-# ddns.duckdns.use_https=1
-# ddns.duckdns.cacert=/etc/ssl/certs/ca-certificates.crt
-# ddns.duckdns.domain=
-# ddns.duckdns.username=
-# ddns.duckdns.password=
-# ddns.duckdns.ip_source=interface
-# ddns.duckdns.ip_interface=pppoe-wan
-'
+config_ddns="
+# config service 'duckdns'
+#   option enabled '1'
+#   option service_name 'duckdns.org'
+#   option use_https '1'
+#   option cacert '/etc/ssl/certs/ca-certificates.crt'
+#   option domain ''
+#   option username ''
+#   option password ''
+#   option ip_source 'interface'
+#   option ip_interface 'pppoe-wan'
+"
 
 ##### sqm #####
 config_sqm_enabled=0
