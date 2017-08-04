@@ -93,7 +93,7 @@ config_henet='
 
 ##### common #####
 config_common_enabled=1
-config_common="
+config_system="
 config system 'system'
   option hostname 'LEDE'
 "
