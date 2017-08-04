@@ -4,7 +4,7 @@ uci batch <<EOF
 set firewall.zone_wan.forward='DROP'
 set firewall.zone_wan.input='DROP'
 EOF
-oc_uci_batch_set "$config_firewall"
+oc_uci_merge firewall "$config_firewall"
 # oc_uci_del_type firewall redirect
 firewall_redirect_clean() {
     local all_names proto src_dport dest_ip dest_port name
