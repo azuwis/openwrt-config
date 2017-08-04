@@ -2,27 +2,30 @@ if [ -n "$CLEANUP" ]
 then
     oc_uci_reset_section network guest
 fi
-uci batch <<EOF
-set network.guest='interface'
-set network.guest.proto='static'
-set network.guest.ipaddr='192.168.10.1'
-set network.guest.netmask='255.255.255.0'
-set wireless.${config_guest_wireless}.network=guest
-set wireless.${config_guest_wireless}.isolate=1
+uci -m import network <<EOF
+config interface 'guest'
+  option proto 'static'
+  option ipaddr '192.168.10.1'
+  option netmask '255.255.255.0'
 EOF
 oc_service reload network
+uci -m import wireless <<EOF
+config wifi-iface '${config_guest_wireless}'
+  option network 'guest'
+  option isolate '1'
+EOF
 oc_service reload network wireless
 
 if [ -n "$CLEANUP" ]
 then
     oc_uci_reset_section dhcp guest
 fi
-uci batch <<EOF
-set dhcp.guest='dhcp'
-set dhcp.guest.interface='guest'
-set dhcp.guest.start='50'
-set dhcp.guest.limit='200'
-set dhcp.guest.leasetime='1h'
+uci -m import dhcp <<EOF
+config dhcp 'guest'
+  option interface 'guest'
+  option start '50'
+  option limit '200'
+  option leasetime '1h'
 EOF
 oc_service reload dnsmasq dhcp
 
@@ -33,28 +36,31 @@ then
     oc_uci_reset_section firewall guest_rule_dns
     oc_uci_reset_section firewall guest_rule_dhcp
 fi
-uci batch <<EOF
-set firewall.guest_zone='zone'
-set firewall.guest_zone.name='guest'
-set firewall.guest_zone.network='guest'
-set firewall.guest_zone.input='REJECT'
-set firewall.guest_zone.forward='REJECT'
-set firewall.guest_zone.output='ACCEPT'
-set firewall.guest_forwarding='forwarding'
-set firewall.guest_forwarding.src='guest'
-set firewall.guest_forwarding.dest='wan'
-set firewall.guest_rule_dns='rule'
-set firewall.guest_rule_dns.src='guest'
-set firewall.guest_rule_dns.dest_port='53'
-set firewall.guest_rule_dns.target='ACCEPT'
-set firewall.guest_rule_dns.family='ipv4'
-set firewall.guest_rule_dhcp='rule'
-set firewall.guest_rule_dhcp.src='guest'
-set firewall.guest_rule_dhcp.proto='udp'
-set firewall.guest_rule_dhcp.src_port='67-68'
-set firewall.guest_rule_dhcp.dest_port='67-68'
-set firewall.guest_rule_dhcp.target='ACCEPT'
-set firewall.guest_rule_dhcp.family='ipv4'
+uci -m import firewall <<EOF
+config zone 'guest_zone'
+  option name 'guest'
+  option network 'guest'
+  option input 'REJECT'
+  option forward 'REJECT'
+  option output 'ACCEPT'
+
+config forwarding 'guest_forwarding'
+  option src 'guest'
+  option dest 'wan'
+
+config rule 'guest_rule_dns'
+  option src 'guest'
+  option dest_port '53'
+  option target 'ACCEPT'
+  option family 'ipv4'
+
+config rule 'guest_rule_dhcp'
+  option src 'guest'
+  option proto 'udp'
+  option src_port '67-68'
+  option dest_port '67-68'
+  option target 'ACCEPT'
+  option family 'ipv4'
 EOF
 oc_service reload firewall 2>/dev/null
 
