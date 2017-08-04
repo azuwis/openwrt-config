@@ -1,4 +1,4 @@
-if echo "$config_network6" | grep -qxF 'network.wan6.proto=6to4'; then
+if echo "$config_network6" | grep -qE "^\s*option proto '?6to4'?"; then
     oc_opkg_install 6to4
 fi
 
@@ -10,9 +10,10 @@ set network.wan6='interface'
 set network.wan6.proto='none'
 set network.wan6.metric='50'
 EOF
-oc_uci_batch_set "$config_network6"
+oc_uci_merge network "$config_network6"
+oc_service reload network 2>/dev/null
 
-if echo "$config_henet" | grep -q '^network\.henet'; then
+if echo "$config_henet" | grep -qE "^\s*config interface '?henet'?"; then
     oc_opkg_install 6in4
     if ! grep -q 'local max=8$' /lib/netifd/proto/6in4.sh; then
         echo 'patch /lib/netifd/proto/6in4.sh'
@@ -23,10 +24,8 @@ set network.henet='interface'
 set network.henet.proto='6in4'
 set network.henet.metric='30'
 EOF
-    oc_uci_batch_set "$config_henet"
+    oc_uci_merge network "$config_henet"
 
     oc_uci_add_list firewall.zone_wan.network henet
-    oc_service reload firewall
+    oc_service reload firewall 2>/dev/null
 fi
-
-oc_service reload network 2>/dev/null

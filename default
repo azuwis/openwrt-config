@@ -76,20 +76,23 @@ config_ieee80211r_enabled='0'
 
 ##### network6 #####
 config_network6_enabled=1
-config_network6='
-# network.wan6.proto=none
+config_network6="
+# config interface 'wan6'
+#   option proto 'none'
 
-# network.wan6.proto=6to4
-'
+# config interface 'wan6'
+#   option proto '6to4'
+"
 
-config_henet='
-# network.henet.peeraddr=
-# network.henet.ip6addr=
-# network.henet.ip6prefix=
-# network.henet.tunnelid=
-# network.henet.username=
-# network.henet.password=
-'
+config_henet="
+# config interface 'henet'
+#   option peeraddr ''
+#   option ip6addr ''
+#   option ip6prefix ''
+#   option tunnelid ''
+#   option username ''
+#   option password ''
+"
 
 ##### common #####
 config_common_enabled=1
