@@ -1,39 +1,56 @@
+# -*- mode: sh; -*-
+
 host='root@192.168.1.3'
 # port='22'
 # intra_host='root@192.168.1.3'
 # intra_port='22'
 
-local_modules='local-010-pubkey local-050-bin'
-remote_modules='remote-020-network remote-030-network6 remote-050-common remote-060-firewall remote-810-disable-uhttpd remote-9999-audit'
+##### pubkey #####
+config_pubkey_enabled=1
 
-config_common='
-system.@system[0].hostname=audit
-'
-config_packages=''
+##### bin #####
+config_bin_enabled=1
+
+##### network #####
+config_network_enabled=1
+config_network="
+config interface 'lan'
+  option ipaddr '192.168.2.12'
+
+config interface 'wan'
+  option ifname 'wlan0'
+"
+
+config_wireless="
+config wifi-iface 'iface0'
+  option mode 'sta'
+  option network 'wan'
+  option ssid ''
+  option encryption 'psk2'
+  option key ''
+  option macaddr ''
+"
+
+##### common #####
+config_common_enabled=1
+config_system="
+config system 'system'
+  option hostname 'audit'
+"
 config_root_password=''
 
-config_wireless='
-wireless.iface0.mode=sta
-wireless.iface0.network=wan
-wireless.iface0.ssid=
-wireless.iface0.encryption=psk2
-wireless.iface0.key=
-wireless.iface0.macaddr=
-'
-
-config_network='
-network.lan.ipaddr=192.168.1.3
-network.wan.ifname=wlan0
-'
-
-config_network6='
-network.wan6.disabled=1
-'
-
-config_firewall='
+##### firewall #####
+config_firewall_enabled=1
+config_firewall="
 # for dsniff
-# firewall.zone_wan.forward='ACCEPT'
+# config zone 'zone_wan'
+#   option forward 'ACCEPT'
 # for ettercap
-# firewall.zone_wan.masq=0
-# firewall.zone_wan.mtu_fix=0
-'
+# config zone 'zone_wan'
+#   option forward 'REJECT'
+#   option masq '0'
+#   option mtu_fix '0'
+"
+
+##### audit ######
+config_audit_enabled=1

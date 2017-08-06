@@ -6,30 +6,32 @@ host='root@192.168.1.2'
 # intra_port='22'
 
 ##### network #####
-config_network='
-network.lan.ipaddr=192.168.1.2
-network.lan.gateway=192.168.1.1
-network.lan.dns=192.168.1.1
-network.wan.disabled=1
-'
+config_network_enabled=1
+config_network="
+config interface 'lan'
+  option ipaddr '192.168.1.2'
+  option gateway '192.168.1.1'
+  option dns '192.168.1.1'
 
-config_wireless='
-wireless.iface0.ssid=dumbap
-wireless.iface0.encryption=psk2
-wireless.iface0.key=
-wireless.radio0.channel=6
-'
+config interface 'wan'
+  option disabled '1'
+"
 
-##### network6 #####
-config_network6='
-network.wan6.disabled=1
-'
+config_wireless="
+config wifi-device 'radio0'
+  option channel '6'
+
+config wifi-iface 'iface0'
+  option ssid 'dumbap'
+  option encryption 'psk2'
+  option key ''
+"
 
 ##### common #####
-config_common='
-system.@system[0].hostname=dumbap
-'
-config_packages='diffutils'
+config_system="
+config system 'system'
+  option hostname 'dumbap'
+"
 config_root_password=''
 
 ##### dumbap #####
