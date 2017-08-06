@@ -163,6 +163,7 @@ oc_uci_merge() {
     package="$1"
     config="$2"
     echo "$config" | oc_strip_comment | uci -m import "$package"
+    uci show "$package" | grep "='-'$" | sed -e 's/^/delete /' -e "s/='-'$//" | uci batch
 }
 
 oc_uci_reset_section() {
