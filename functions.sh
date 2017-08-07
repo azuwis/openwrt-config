@@ -164,9 +164,18 @@ oc_uci_merge() {
     config="$2"
     merge_dir='/tmp/oc_uci_merge'
     mkdir -p "$merge_dir"
-    echo "$config" | oc_strip_comment > "$merge_dir/$package"
-    uci -c "$merge_dir" show "$package" | grep -E "='-'( |$)" | sed -e 's/^/delete /' -e "s/='-'.*$//" | uci batch
-    grep -Ev " '?-'?\s*$" "$merge_dir/$package" | uci -m import "$package"
+    echo "$config" | oc_strip_comment | grep -E "(^\s*config | '?-'?\s*$)" > "$merge_dir/$package"
+    uci -c "$merge_dir" show "$package" | grep -E "='-'( |$)" | sed -e 's/^/delete /' -e "s/='-'.*$//" | uci -q batch
+    echo "$config" | oc_strip_comment | grep -Ev " '?-'?\s*$" | grep -Ev '^\s*list ' | uci -m import "$package"
+    list_cb () {
+        local name value
+        name="$1"
+        value="$2"
+        oc_uci_add_list "$package.$CONFIG_SECTION.$name" "$value"
+    }
+    echo "$config" | oc_strip_comment | grep -E '^\s*(config|list) ' | grep -Ev " '?-'?\s*$" > "${merge_dir}/${package}_list"
+    UCI_CONFIG_DIR="$merge_dir" config_load "${package}_list"
+    reset_cb
     rm -r "$merge_dir"
 }
 
