@@ -159,11 +159,15 @@ oc_uci_del_type() {
 }
 
 oc_uci_merge() {
-    local package config
+    local package config merge_dir
     package="$1"
     config="$2"
-    echo "$config" | oc_strip_comment | uci -m import "$package"
-    uci show "$package" | grep "='-'$" | sed -e 's/^/delete /' -e "s/='-'$//" | uci batch
+    merge_dir='/tmp/oc_uci_merge'
+    mkdir -p "$merge_dir"
+    echo "$config" | oc_strip_comment > "$merge_dir/$package"
+    uci -c "$merge_dir" show "$package" | grep "='-'$" | sed -e 's/^/delete /' -e "s/='-'$//" | uci batch
+    grep -Ev " '?-'?\s*$" "$merge_dir/$package" | uci -m import "$package"
+    rm -r "$merge_dir"
 }
 
 oc_uci_reset_section() {
