@@ -176,7 +176,9 @@ oc_uci_merge() {
             oc_uci_add_list "$package.$CONFIG_SECTION.$name" "$value"
         }
         cat "$merge_dir/$package" | grep -E '^\s*(config|list) ' | grep -Ev " '?-'?\s*$" > "${merge_dir}/${package}_list"
-        UCI_CONFIG_DIR="$merge_dir" config_load "${package}_list"
+        UCI_CONFIG_DIR="$merge_dir"
+        config_load "${package}_list"
+        unset UCI_CONFIG_DIR
         reset_cb
         if [ -z "$no_service" ]
         then
