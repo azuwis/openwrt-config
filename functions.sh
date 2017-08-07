@@ -165,7 +165,7 @@ oc_uci_merge() {
     merge_dir='/tmp/oc_uci_merge'
     mkdir -p "$merge_dir"
     echo "$config" | oc_strip_comment > "$merge_dir/$package"
-    uci -c "$merge_dir" show "$package" | grep "='-'$" | sed -e 's/^/delete /' -e "s/='-'$//" | uci batch
+    uci -c "$merge_dir" show "$package" | grep -E "='-'( |$)" | sed -e 's/^/delete /' -e "s/='-'.*$//" | uci batch
     grep -Ev " '?-'?\s*$" "$merge_dir/$package" | uci -m import "$package"
     rm -r "$merge_dir"
 }
