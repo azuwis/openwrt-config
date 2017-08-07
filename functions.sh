@@ -180,7 +180,14 @@ oc_uci_merge() {
         reset_cb
         if [ -z "$no_service" ]
         then
-            oc_service reload "$package"
+            local service
+            service="$(echo "$config" | awk -F'[# ]+' "/^\s*package $package\s*#/ {print \$3}")"
+            if [ -n "$service" ]
+            then
+                oc_service reload "$service"
+            else
+                oc_service reload "$package"
+            fi
         fi
     done
     rm -r "$merge_dir"
