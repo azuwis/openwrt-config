@@ -29,6 +29,8 @@ config_freeradius_users='
 ##### network #####
 config_network_enabled=1
 config_network="
+# package network
+
 ## example for dhcp on wan
 # config interface 'wan'
 #   option proto 'pppoe'
@@ -42,6 +44,8 @@ config_network="
 "
 
 config_wireless="
+# package wireless # network
+
 # config wifi-device 'radio0'
 #   option channel '13'
 #   option htmode 'HT20-'
@@ -77,6 +81,8 @@ config_ieee80211r_enabled='0'
 ##### network6 #####
 config_network6_enabled=1
 config_network6="
+# package network
+
 # config interface 'wan6'
 #   option proto 'none'
 
@@ -85,6 +91,8 @@ config_network6="
 "
 
 config_henet="
+# package network
+
 # config interface 'henet'
 #   option peeraddr ''
 #   option ip6addr ''
@@ -97,6 +105,8 @@ config_henet="
 ##### common #####
 config_common_enabled=1
 config_system="
+package system
+
 config system 'system'
   option hostname 'LEDE'
 "
@@ -127,6 +137,8 @@ config_redirect='
 ##### ddns #####
 config_ddns_enabled=0
 config_ddns="
+# package ddns
+
 # config service 'duckdns'
 #   option enabled '1'
 #   option service_name 'duckdns.org'
@@ -142,6 +154,8 @@ config_ddns="
 ##### sqm #####
 config_sqm_enabled=0
 config_sqm="
+# package sqm
+
 # config queue 'wan'
 #   option enabled '1'
 #   option download ''
@@ -207,6 +221,10 @@ config_mwan_cron_url=http://www.189.cn
 
 ##### miniupnpd #####
 config_miniupnpd_enabled=0
+
+##### wireguard #####
+config_wireguard_enabled=0
+config_wireguard=''
 
 ##### disable_uhttpd #####
 config_disable_uhttpd_enabled=1

@@ -6,8 +6,7 @@ uci batch <<EOF
 set system.system.timezone='CST-8'
 set system.system.zonename='Asia/Shanghai'
 EOF
-oc_uci_merge system "$config_system"
-oc_service reload system
+oc_uci_merge "$config_system"
 
 uci set system.system.log_buffer_size='256'
 oc_service reload log system

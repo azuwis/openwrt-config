@@ -159,23 +159,30 @@ oc_uci_del_type() {
 }
 
 oc_uci_merge() {
-    local package config merge_dir
-    package="$1"
-    config="$2"
+    local config no_service merge_dir package
+    config="$1"
+    no_service="$2"
     merge_dir='/tmp/oc_uci_merge'
     mkdir -p "$merge_dir"
-    echo "$config" | oc_strip_comment | grep -E "(^\s*config | '?-'?\s*$)" > "$merge_dir/$package"
-    uci -c "$merge_dir" show "$package" | grep -E "='-'( |$)" | sed -e 's/^/delete /' -e "s/='-'.*$//" | uci -q batch
-    echo "$config" | oc_strip_comment | grep -Ev " '?-'?\s*$" | grep -Ev '^\s*list ' | uci -m import "$package"
-    list_cb () {
-        local name value
-        name="$1"
-        value="$2"
-        oc_uci_add_list "$package.$CONFIG_SECTION.$name" "$value"
-    }
-    echo "$config" | oc_strip_comment | grep -E '^\s*(config|list) ' | grep -Ev " '?-'?\s*$" > "${merge_dir}/${package}_list"
-    UCI_CONFIG_DIR="$merge_dir" config_load "${package}_list"
-    reset_cb
+    echo "$config" | oc_strip_comment | uci -c "$merge_dir" import
+    for package in $(ls -1 "$merge_dir" | grep -v '_list$')
+    do
+        cat "$merge_dir/$package" | grep -Ev " '?-'?\s*$" | grep -Ev '^\s*list ' | uci -m import "$package"
+        uci -c "$merge_dir" show "$package" | grep -E "='-'( |$)" | sed -e 's/^/delete /' -e "s/='-'.*$//" | uci -q batch
+        list_cb () {
+            local name value
+            name="$1"
+            value="$2"
+            oc_uci_add_list "$package.$CONFIG_SECTION.$name" "$value"
+        }
+        cat "$merge_dir/$package" | grep -E '^\s*(config|list) ' | grep -Ev " '?-'?\s*$" > "${merge_dir}/${package}_list"
+        UCI_CONFIG_DIR="$merge_dir" config_load "${package}_list"
+        reset_cb
+        if [ -z "$no_service" ]
+        then
+            oc_service reload "$package"
+        fi
+    done
     rm -r "$merge_dir"
 }
 

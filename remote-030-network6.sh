@@ -10,8 +10,7 @@ set network.wan6='interface'
 set network.wan6.proto='none'
 set network.wan6.metric='50'
 EOF
-oc_uci_merge network "$config_network6"
-oc_service reload network
+oc_uci_merge "$config_network6"
 
 if echo "$config_henet" | grep -qE "^\s*config interface '?henet'?"; then
     oc_opkg_install 6in4
@@ -24,8 +23,7 @@ set network.henet='interface'
 set network.henet.proto='6in4'
 set network.henet.metric='30'
 EOF
-    oc_uci_merge network "$config_henet"
-    oc_service reload network
+    oc_uci_merge "$config_henet"
 
     oc_uci_add_list firewall.zone_wan.network henet
     oc_service reload firewall 2>/dev/null
