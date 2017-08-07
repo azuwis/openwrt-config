@@ -8,6 +8,8 @@ host='root@192.168.1.2'
 ##### network #####
 config_network_enabled=1
 config_network="
+package network
+
 config interface 'lan'
   option ipaddr '192.168.1.2'
   option gateway '192.168.1.1'
@@ -18,6 +20,8 @@ config interface 'wan'
 "
 
 config_wireless="
+package wireless # network
+
 config wifi-device 'radio0'
   option channel '6'
 
@@ -29,6 +33,8 @@ config wifi-iface 'iface0'
 
 ##### common #####
 config_system="
+package system
+
 config system 'system'
   option hostname 'dumbap'
 "

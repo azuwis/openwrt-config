@@ -14,6 +14,8 @@ config_bin_enabled=1
 ##### network #####
 config_network_enabled=1
 config_network="
+package network
+
 config interface 'lan'
   option ipaddr '192.168.2.12'
 
@@ -22,6 +24,8 @@ config interface 'wan'
 "
 
 config_wireless="
+package wireless # network
+
 config wifi-iface 'iface0'
   option mode 'sta'
   option network 'wan'
@@ -34,6 +38,8 @@ config wifi-iface 'iface0'
 ##### common #####
 config_common_enabled=1
 config_system="
+package system
+
 config system 'system'
   option hostname 'audit'
 "
@@ -42,6 +48,8 @@ config_root_password=''
 ##### firewall #####
 config_firewall_enabled=1
 config_firewall="
+# package firewall
+
 # for dsniff
 # config zone 'zone_wan'
 #   option forward 'ACCEPT'
