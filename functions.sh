@@ -159,16 +159,9 @@ oc_uci_del_type() {
 }
 
 oc_uci_merge() {
-    local package config changes
+    local package config
     package="$1"
     config="$2"
-    changes="$(uci changes)"
-    if [ "$(echo "$changes" | wc -l)" -gt 0 ]
-    then
-        echo "oc_uci_merge revert:"
-        echo "$changes"
-        rm -f "/var/.uci/$package"
-    fi
     echo "$config" | oc_strip_comment | uci -m import "$package"
     uci show "$package" | grep "='-'$" | sed -e 's/^/delete /' -e "s/='-'$//" | uci batch
 }
