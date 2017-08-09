@@ -1,4 +1,4 @@
-oc_opkg_install adblock
+oc_opkg_install adblock ca-bundle libustream-openssl
 
 uci set "adblock.global.adb_fetch=/bin/uclient-fetch"
 uci set "adblock.global.adb_fetchparm=-q --timeout=5 -O"
