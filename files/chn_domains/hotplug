@@ -15,10 +15,10 @@ update_dnsmasq() {
         do
             echo "server=/$domain/${local_dns}"
         done >> $conf
-        if [ "$(uci -q get shadowsocks.@global[0].global_server)" != 'nil' ]; then
+        if [ -x /etc/init.d/shadowsocks-libev ] && /etc/init.d/shadowsocks-libev enabled && [ "$(uci -q get shadowsocks-libev.ss_rules.disabled)" != '1' ]; then
             grep -Ev '(^#|^\s*$)' /etc/chn-domains-extra | while read domain
             do
-                echo "ipset=/$domain/ss_spec_wan_ac"
+                echo "ipset=/$domain/ss_spec_dst_bp"
             done >> $conf
         fi
         local remote_dns
