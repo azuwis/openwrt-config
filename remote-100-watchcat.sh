@@ -12,9 +12,9 @@ set system.@watchcat[0].period='2h'
 set system.@watchcat[0].pinghosts="$config_watchcat_pinghosts"
 EOF
 
-if ! grep -q 'kill -9' /etc/init.d/watchcat; then
+if ! grep -q 'kill -KILL' /etc/init.d/watchcat; then
     echo 'patch /etc/init.d/watchcat'
-    sed -i 's/kill "$pid"/kill -9 "$pid"/' /etc/init.d/watchcat
+    sed -i 's/kill "$pid"/kill -KILL "$pid"/' /etc/init.d/watchcat
     oc_service restart watchcat -
 fi
 
