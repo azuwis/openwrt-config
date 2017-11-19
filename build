@@ -3,7 +3,7 @@ set -e
 
 # profiles
 profiles=(mw4530r wg3526 wg3526_audit wg3526_debug wg3526_luci x86)
-wg3526='wg3526 irqbalance sfe wpad xkcptun'
+wg3526='wg3526 adblock curl dnsmasq sfe shadowsocks wireguard wpad'
 wg3526_audit='wg3526 aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
 wg3526_debug='wg3526 ethtool kallsyms kmod-sched-cake wpad'
 wg3526_luci='wg3526 luci wpad'
@@ -225,7 +225,6 @@ update_source() {
             echo "$feed" >> feeds.conf
         fi
     done
-
 
     local feed
     for feed in $(awk '/^src-git / {print $2}' feeds.conf)
