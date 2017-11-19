@@ -45,7 +45,7 @@ network_wireless() {
             done
         fi
         wifi_need_restart=0
-        if uci -q show wireless | grep -qE 'iapp_interface|ieee80211w|ieee80211r'; then
+        if uci -q show wireless | grep -qE 'iapp_interface|ieee80211w|ieee80211r|server'; then
             oc_opkg_installed wpad-mini && wifi_need_restart=1
             oc_opkg_remove wpad-mini
             oc_opkg_install wpad
