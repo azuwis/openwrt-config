@@ -82,7 +82,7 @@ mwan_allwan() {
 mwan_mwan3() {
     # mwan3
     local i port
-    oc_opkg_install mwan3
+    oc_opkg_install mwan3 ip-full
 
     (
         for i in $(mwan_allwan)
