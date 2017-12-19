@@ -1,4 +1,4 @@
-sysupgrade_url="https://downloads.lede-project.org/snapshots/targets/${arch_full}/lede-${arch_full/\//-}-${sysupgrade}-squashfs-sysupgrade.bin"
+sysupgrade_url="https://downloads.lede-project.org/snapshots/targets/${arch_full}/openwrt-${arch_full/\//-}-${sysupgrade}-squashfs-sysupgrade.bin"
 sysupgrade_img="$(basename "$sysupgrade_url")"
 sysupgrade_sha="https://downloads.lede-project.org/snapshots/targets/${arch_full}/sha256sums"
 download_push "$sysupgrade_url" "/tmp/${sysupgrade_img}"
