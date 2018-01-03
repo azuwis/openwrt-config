@@ -1,6 +1,22 @@
+wireguard_reload() {
+    wireguard_handle_interface() {
+        local config="$1"
+        local proto
+        config_get proto "$config" proto
+        if [ "$proto" == 'wireguard' ]
+        then
+            echo "wireguard_reload $config"
+            ifup "$config"
+        fi
+    }
+    config_load network
+    config_foreach wireguard_handle_interface interface
+}
+
 oc_opkg_install wireguard
 
-oc_uci_merge "$config_wireguard"
+oc_uci_merge "$config_wireguard" no_service
+oc_uci_commit network && wireguard_reload
 
 cat >/tmp/wireguard_cron <<'EOF'
 #!/bin/sh
