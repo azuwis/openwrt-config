@@ -106,6 +106,10 @@ download() {
     if [ x"$file" = x ]; then
         file="files/tmp/$basename"
     fi
+    if [ -n "$CLEANUP" ] && [ -e "$file" ]
+    then
+        rm -v "$file"
+    fi
     if [ ! -e "$file" ]; then
         echo "download: $url -> $file"
         curl --create-dirs -#fSLo "$file" "$url"
