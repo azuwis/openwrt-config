@@ -22,6 +22,7 @@ firewall_redirect_apply() {
     do
         name="${proto}__${src_dport//:/_}"
         uci set "firewall.${name}=redirect"
+        uci set "firewall.${name}.name=${name}"
         uci set "firewall.${name}.target=DNAT"
         uci set "firewall.${name}.src=wan"
         uci set "firewall.${name}.dest=lan"
