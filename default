@@ -169,6 +169,25 @@ config_guest_enabled=0
 # config_guest_download='8000'
 # config_guest_upload='800'
 
+##### iptv #####
+config_iptv_enabled=0
+config_iptv="
+# package network
+
+# config interface 'iptv'
+#   option type 'bridge'
+#   option ifname 'eth0.3'
+#   option proto 'static'
+#   option ipaddr '192.168.1.3'
+#   option netmask '255.255.255.0'
+#   option ipv6 '0'
+
+# package firewall
+
+# config zone 'zone_wan'
+#   list network 'iptv'
+"
+
 ##### watchcat #####
 config_watchcat_enabled=0
 config_watchcat_pinghosts='www.baidu.com'
