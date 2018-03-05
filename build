@@ -6,7 +6,7 @@ profiles=(mw4530r wg3526 wg3526_audit wg3526_debug wg3526_luci x86)
 wg3526='wg3526 adblock curl dnsmasq kmod-ipt-offload shadowsocks wireguard wpad'
 wg3526_audit='wg3526 aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
 wg3526_luci='wg3526 luci wpad'
-mw4530r='mw4530r adblock curl ddns dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon sfe shadowsocks sqm tcpdump watchcat wireguard wpad'
+mw4530r='mw4530r adblock curl ddns dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon shadowsocks sqm tcpdump watchcat wireguard wpad'
 x86='luci2 x86'
 
 # common
