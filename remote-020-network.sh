@@ -1,3 +1,8 @@
+network_switch() {
+    oc_uci_rename network @switch_vlan[0] vlan1
+    oc_uci_rename network @switch_vlan[1] vlan2
+}
+
 network_wireless() {
     local i iface bssid key macs nasid list_r0kh list_r1kh j wifi_need_restart
     if oc_uci_exists wireless; then
@@ -58,6 +63,7 @@ network_wireless() {
 }
 
 chmod 600 /etc/config/network /etc/config/wireless
+network_switch
 oc_uci_merge "$config_network"
 network_wireless
 
