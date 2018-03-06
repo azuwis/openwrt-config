@@ -37,7 +37,9 @@ then
     oc_uci_reset_section firewall rule_guest_dns
     oc_uci_reset_section firewall rule_guest_dhcp
 fi
-uci -m import firewall <<EOF
+oc_uci_merge "
+package firewall
+
 config zone 'zone_guest_lan'
   option name 'guest_lan'
   option network 'guest'
@@ -74,8 +76,7 @@ config rule 'rule_guest_dhcp'
   option dest_port '67-68'
   option target 'ACCEPT'
   option family 'ipv4'
-EOF
-oc_service reload firewall 2>/dev/null
+"
 
 if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
     uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.guest/" -e "s/pppoe-wan/$config_guest_sqm/" -e 's/^/set /' | uci batch
