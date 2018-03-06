@@ -19,4 +19,4 @@ push files/tmp/chn-domains.gz /etc/chn-domains.gz
 push files/chn_domains/chn-domains-extra /etc/chn-domains-extra
 push files/chn_domains/hotplug /etc/hotplug.d/iface/99-chn-domains
 
-push files/chn_domains/keep /lib/upgrade/keep.d/chn-domains
+push files/chn_domains/keep /lib/upgrade/keep.d/oc-chn-domains
