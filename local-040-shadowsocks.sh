@@ -10,5 +10,5 @@ if [ ! -e files/shadowsocks/chn-cidr ]; then
 EOF
 fi
 push files/shadowsocks/chn-cidr /etc/chn-cidr
-push files/shadowsocks/keep /lib/upgrade/keep.d/shadowsocks
+push files/shadowsocks/keep /lib/upgrade/keep.d/oc-shadowsocks
 push files/shadowsocks/ss /root/bin/ss
