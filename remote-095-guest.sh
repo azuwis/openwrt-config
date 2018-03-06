@@ -31,10 +31,11 @@ oc_service reload dnsmasq dhcp
 
 if [ -n "$CLEANUP" ]
 then
-    oc_uci_reset_section firewall guest_zone
-    oc_uci_reset_section firewall guest_forwarding
-    oc_uci_reset_section firewall guest_rule_dns
-    oc_uci_reset_section firewall guest_rule_dhcp
+    oc_uci_reset_section firewall zone_guest_lan
+    oc_uci_reset_section firewall zone_guest_wan
+    oc_uci_reset_section firewall forwarding_guest
+    oc_uci_reset_section firewall rule_guest_dns
+    oc_uci_reset_section firewall rule_guest_dhcp
 fi
 uci -m import firewall <<EOF
 config zone 'zone_guest_lan'
