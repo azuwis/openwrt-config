@@ -10,12 +10,12 @@ network_wireless() {
         oc_uci_delete wireless.radio1.disabled
         if oc_uci_exists wireless.radio0
         then
-           uci set wireless.radio0.country=CN
+           uci set "wireless.radio0.country=${config_wireless_country}"
            uci set wireless.radio0.noscan=1
         fi
         if oc_uci_exists wireless.radio1
         then
-            uci set wireless.radio1.country=CN
+            uci set "wireless.radio1.country=${config_wireless_country}"
             uci set wireless.radio1.noscan=1
         fi
         oc_uci_rename wireless @wifi-iface[0] iface0
