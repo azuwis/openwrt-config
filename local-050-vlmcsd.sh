@@ -5,7 +5,7 @@ if [ ! -e files/vlmcsd/vlmcsd-ar71xx ]; then
 fi
 
 push files/vlmcsd/init /etc/init.d/vlmcsd
-push files/vlmcsd/keep /lib/upgrade/keep.d/vlmcsd
+push files/vlmcsd/keep /lib/upgrade/keep.d/oc-vlmcsd
 
 case "$arch" in
     ar71xx)
