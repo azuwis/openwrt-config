@@ -5,5 +5,5 @@
 /etc/freeradius3/radiusd.conf
 /etc/freeradius3/sites-available/default
 /etc/freeradius3/sites-available/inner-tunnel
-/etc/uci-defaults/freeradius
-/lib/upgrade/keep.d/freeradius3-custom
+/etc/uci-defaults/oc-freeradius
+/lib/upgrade/keep.d/oc-freeradius3
