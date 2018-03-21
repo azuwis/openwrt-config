@@ -1,9 +1,20 @@
-oc_opkg_install shadowsocks-libev-ss-rules
+shadowsocks() {
+    local shadowsocks_installed
 
-echo "$config_shadowsocks" | oc_strip_comment | uci import shadowsocks-libev
-oc_service restart shadowsocks-libev
+    if oc_opkg_installed shadowsocks-libev-ss-rules
+    then
+        shadowsocks_installed=1
+    fi
 
-if [ /etc/chn-cidr -nt /var/etc/shadowsocks-libev.json ]; then
-    echo 'restart shadowsocks'
-    /etc/init.d/shadowsocks-libev restart || true
-fi
+    oc_opkg_install shadowsocks-libev-ss-rules
+
+    echo "$config_shadowsocks" | oc_strip_comment | uci import shadowsocks-libev
+    oc_service restart shadowsocks-libev
+
+    if [ /etc/chn-cidr -nt /var/etc/shadowsocks-libev.json ] || [ -z "$shadowsocks_installed" ]; then
+        echo 'restart shadowsocks'
+        /etc/init.d/shadowsocks-libev restart || true
+    fi
+}
+
+shadowsocks
