@@ -13,12 +13,26 @@ wireguard_reload() {
     config_foreach wireguard_handle_interface interface
 }
 
-oc_opkg_install wireguard
+wireguard() {
+    local wireguard_installed
 
-oc_uci_merge "$config_wireguard" no_service
-oc_uci_commit network && wireguard_reload
+    if oc_opkg_installed wireguard
+    then
+        wireguard_installed=1
+    fi
 
-cat >/tmp/wireguard_cron <<'EOF'
+    oc_opkg_install wireguard
+
+    oc_uci_merge "$config_wireguard" no_service
+    oc_uci_commit network && wireguard_reload
+
+    if [ -z "$wireguard_installed" ]
+    then
+        echo 'workaround: kill netifd'
+        killall netifd
+    fi
+
+    cat >/tmp/wireguard_cron <<'EOF'
 #!/bin/sh
 . /lib/functions.sh
 handle_interface() {
@@ -45,7 +59,10 @@ handle_peer() {
 config_load network
 config_foreach handle_interface interface
 EOF
-mkdir -p ~/bin/
-oc_move /tmp/wireguard_cron ~/bin/wireguard_cron
-chmod 0755 ~/bin/wireguard_cron
-oc_add_cron wireguard '*/7 * * * * ~/bin/wireguard_cron'
+    mkdir -p ~/bin/
+    oc_move /tmp/wireguard_cron ~/bin/wireguard_cron
+    chmod 0755 ~/bin/wireguard_cron
+    oc_add_cron wireguard '*/7 * * * * ~/bin/wireguard_cron'
+}
+
+wireguard
