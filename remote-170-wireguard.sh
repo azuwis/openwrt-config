@@ -23,7 +23,7 @@ wireguard() {
 
     oc_opkg_install wireguard
 
-    oc_uci_merge "$config_wireguard" no_service
+    oc_uci_merge "$config_wireguard"
     oc_uci_commit network && wireguard_reload
 
     if [ -z "$wireguard_installed" ]
