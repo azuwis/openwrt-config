@@ -29,6 +29,7 @@ config_freeradius_users='
 ##### network #####
 config_network_enabled=1
 config_network="
+# merge network, commit network, and reload network if commit changed
 # package network
 
 ## example for dhcp on wan
@@ -45,6 +46,7 @@ config_network="
 
 config_wireless_country='CN'
 config_wireless="
+# merge wireless, commit wireless, and reload network if commit changed
 # package wireless # network
 
 # config wifi-device 'radio0'
@@ -155,7 +157,8 @@ config_ddns="
 ##### sqm #####
 config_sqm_enabled=0
 config_sqm="
-# package sqm
+# merge sqm, but no commit and no reload
+# package sqm # -
 
 # config queue 'wan'
 #   option enabled '1'
