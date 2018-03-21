@@ -1,5 +1,5 @@
 chn_cidr() {
-    awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }'
+    awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' | sort -V | aggregate
 }
 if [ ! -e files/shadowsocks/chn-cidr ]; then
     download http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
