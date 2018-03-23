@@ -69,6 +69,7 @@ config rule 'rule_guest_dhcp'
 if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
     uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.guest/" -e "s/pppoe-wan/$config_guest_sqm/" -e 's/^/set /' | uci batch
     uci batch <<EOF
+set sqm.guest.enabled=1
 set sqm.guest.download=$config_guest_download
 set sqm.guest.upload=$config_guest_upload
 EOF
