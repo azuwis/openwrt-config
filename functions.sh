@@ -167,6 +167,7 @@ oc_uci_merge() {
     for package in $(ls -1tr "$merge_dir" | grep -v '_list$')
     do
         local service
+        rm -f "/var/.uci/$package"
         cat "$merge_dir/$package" | grep -Ev " '?-'?\s*$" | grep -Ev '^\s*list ' | uci -m import "$package"
         uci -c "$merge_dir" show "$package" | grep -E "='-'( |$)" | sed -e 's/^/delete /' -e "s/='-'.*$//" | uci -q batch
         list_cb () {
@@ -185,7 +186,7 @@ oc_uci_merge() {
         then
             if [ "$service" != '-' ]
             then
-                oc_service reload "$service"
+                oc_service reload "$service" "$package"
             fi
         else
             oc_service reload "$package"
