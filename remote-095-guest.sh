@@ -2,19 +2,7 @@ if [ -n "$CLEANUP" ]
 then
     oc_uci_reset_section network guest
 fi
-uci -m import network <<EOF
-config interface 'guest'
-  option proto 'static'
-  option ipaddr '192.168.10.1'
-  option netmask '255.255.255.0'
-EOF
-oc_service reload network
-uci -m import wireless <<EOF
-config wifi-iface '${config_guest_wireless}'
-  option network 'guest'
-  option isolate '1'
-EOF
-oc_service reload network wireless
+oc_uci_merge "$config_guest"
 
 if [ -n "$CLEANUP" ]
 then

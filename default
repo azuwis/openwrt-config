@@ -170,10 +170,28 @@ config_sqm="
 
 ##### guest #####
 config_guest_enabled=0
-# config_guest_wireless='iface0'
+config_guest="
+# package network
+
+# config interface 'guest'
+#   option proto 'static'
+#   option ipaddr '192.168.10.1'
+#   option netmask '255.255.255.0'
+
+# package wireless # network
+
+# config wifi-iface 'iface0'
+#   option device 'radio0'
+#   option mode 'ap'
+#   option ssid ''
+#   option key ''
+#   option network 'guest'
+#   option encryption 'psk2'
+#   option isolate '1'
+"
 # config_guest_sqm='wlan0'
-# config_guest_download='8000'
-# config_guest_upload='800'
+# config_guest_download='800' # download means router <- client
+# config_guest_upload='8000' # upload means router -> client
 
 ##### iptv #####
 config_iptv_enabled=0
