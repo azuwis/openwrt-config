@@ -1,31 +1,36 @@
-if [ -n "$CLEANUP" ]
-then
-    oc_uci_reset_section network guest
-fi
-oc_uci_merge "$config_guest"
+guest_network() {
+    if [ -n "$CLEANUP" ]
+    then
+        oc_uci_reset_section network guest
+    fi
+    oc_uci_merge "$config_guest"
+}
 
-if [ -n "$CLEANUP" ]
-then
-    oc_uci_reset_section dhcp guest
-fi
-uci -m import dhcp <<EOF
+guest_dhcp() {
+    if [ -n "$CLEANUP" ]
+    then
+        oc_uci_reset_section dhcp guest
+    fi
+    uci -m import dhcp <<EOF
 config dhcp 'guest'
   option interface 'guest'
   option start '50'
   option limit '200'
   option leasetime '1h'
 EOF
-oc_service reload dnsmasq dhcp
+    oc_service reload dnsmasq dhcp
+}
 
-if [ -n "$CLEANUP" ]
-then
-    oc_uci_reset_section firewall zone_guest_lan
-    oc_uci_reset_section firewall zone_guest_wan
-    oc_uci_reset_section firewall forwarding_guest
-    oc_uci_reset_section firewall rule_guest_dns
-    oc_uci_reset_section firewall rule_guest_dhcp
-fi
-oc_uci_merge "
+guest_firewall() {
+    if [ -n "$CLEANUP" ]
+    then
+        oc_uci_reset_section firewall zone_guest_lan
+        oc_uci_reset_section firewall zone_guest_wan
+        oc_uci_reset_section firewall forwarding_guest
+        oc_uci_reset_section firewall rule_guest_dns
+        oc_uci_reset_section firewall rule_guest_dhcp
+    fi
+    oc_uci_merge "
 package firewall
 
 config zone 'zone_guest_lan'
@@ -65,13 +70,21 @@ config rule 'rule_guest_dhcp'
   option target 'ACCEPT'
   option family 'ipv4'
 "
+}
 
-if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
-    uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.guest/" -e "s/pppoe-wan/$config_guest_sqm/" -e 's/^/set /' | uci batch
-    uci batch <<EOF
+guest_sqm() {
+    if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
+        uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.guest/" -e "s/pppoe-wan/$config_guest_sqm/" -e 's/^/set /' | uci batch
+        uci batch <<EOF
 set sqm.guest.enabled=1
 set sqm.guest.download=$config_guest_download
 set sqm.guest.upload=$config_guest_upload
 EOF
-fi
-oc_uci_commit sqm && /usr/lib/sqm/run.sh start "$config_guest_sqm"
+    fi
+    oc_uci_commit sqm && /usr/lib/sqm/run.sh start "$config_guest_sqm"
+}
+
+guest_network
+guest_dhcp
+guest_firewall
+guest_sqm
