@@ -72,14 +72,16 @@ config_wireless="
 "
 
 config_ieee80211r_enabled='0'
+## config both iface0 and iface1
 # config_ieee80211r_ifaces='0 1'
-# config_ieee80211r_bssid0='11:11:11:11:11:11'
-# config_ieee80211r_bssid1='33:33:33:33:33:33'
-# config_ieee80211r_macs0='11:11:11:11:11:11 22:22:22:22:22:22'
-# config_ieee80211r_macs1='33:33:33:33:33:33 44:44:44:44:44:44'
-## use `openssl rand -hex 16` to generate
-# config_ieee80211r_key0='00000000000000000000000000000000'
-# config_ieee80211r_key1='00000000000000000000000000000001'
+## config for iface0
+# config_ieee80211r_bssid0='11:11:11:11:11:11' ## bssid of iface0
+# config_ieee80211r_macs0='11:11:11:11:11:11 22:22:22:22:22:22' ## bssid of all nodes in the same ieee80211r domain
+# config_ieee80211r_key0='00000000000000000000000000000000' ## use `openssl rand -hex 16` to generate
+## config for iface1
+# config_ieee80211r_bssid1='33:33:33:33:33:33' ## bssid of iface1
+# config_ieee80211r_macs1='33:33:33:33:33:33 44:44:44:44:44:44' ## bssid of all nodes in the same ieee80211r domain
+# config_ieee80211r_key1='00000000000000000000000000000001' ## use `openssl rand -hex 16` to generate
 
 ##### network6 #####
 config_network6_enabled=1
