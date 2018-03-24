@@ -74,19 +74,13 @@ config rule 'rule_guest_dhcp'
 
 guest_sqm() {
     if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
-        local iface index
-        index=0
-        for iface in $config_guest_sqm
-        do
-            uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.guest${index}/" -e "s/pppoe-wan/$iface/" -e 's/^/set /' | uci batch
-            uci batch <<EOF
-set sqm.guest${index}.enabled=1
-set sqm.guest${index}.download=$config_guest_download
-set sqm.guest${index}.upload=$config_guest_upload
+        uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.guest/" -e "s/pppoe-wan/br-guest/" -e 's/^/set /' | uci batch
+        uci batch <<EOF
+set sqm.guest.enabled=1
+set sqm.guest.download=$config_guest_download
+set sqm.guest.upload=$config_guest_upload
 EOF
-            oc_uci_commit sqm && /usr/lib/sqm/run.sh start "$iface"
-            index="$((index+1))"
-        done
+        oc_uci_commit sqm && /usr/lib/sqm/run.sh start "br-guest"
     fi
 }
 
