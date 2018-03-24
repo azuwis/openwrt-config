@@ -189,7 +189,7 @@ config_guest="
 #   option encryption 'psk2'
 #   option isolate '1'
 "
-# config_guest_sqm='wlan0'
+# config_guest_sqm='wlan0 wlan1'
 # config_guest_download='800' # download means router <- client
 # config_guest_upload='8000' # upload means router -> client
 
