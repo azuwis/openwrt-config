@@ -9,3 +9,7 @@ wireless.radio0.log_level=1
 wireless.radio1.log_level=1
 
 * IEEE80211w may decrease throughput, at least on mt76 and ath9k
+
+* IEEE80211r
+ft_psk_generate_local
+ft_over_ds

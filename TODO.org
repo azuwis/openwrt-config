@@ -12,3 +12,4 @@
 
 * DONE Combine build-* into one script
   CLOSED: [2017-04-15 Sat 10:21]
+* auto install packages after sysupgrade
