@@ -269,6 +269,17 @@ config_miniupnpd_enabled=0
 config_wireguard_enabled=0
 config_wireguard=''
 
+##### asterisk #####
+config_asterisk_enabled=0
+config_asterisk_use_pjsip=0
+config_asterisk_sip_port=5060
+config_asterisk_rtp_start=10000
+config_asterisk_rtp_end=20000
+config_asterisk_sip_peers='
+# 6001 pass6001
+# 6002 pass6002
+'
+
 ##### disable_uhttpd #####
 config_disable_uhttpd_enabled=1
 
