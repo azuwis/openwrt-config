@@ -6,6 +6,12 @@ yate_ysipchan() {
     cat >/tmp/yate-ysipchan.conf <<EOF
 [general]
 port=${config_yate_sip_port:-5060}
+# forward_sdp=yes
+
+[codecs]
+h263=yes
+# vp8=yes
+# vp8/90000=yes
 EOF
     oc_move /tmp/yate-ysipchan.conf /etc/yate/ysipchan.conf && yate_need_restart=1
 }
