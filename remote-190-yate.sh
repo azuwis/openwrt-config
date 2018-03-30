@@ -10,8 +10,9 @@ port=${config_yate_sip_port:-5060}
 
 [codecs]
 h263=yes
-# vp8=yes
-# vp8/90000=yes
+h264=yes
+vp8=yes
+vp9=yes
 EOF
     oc_move /tmp/yate-ysipchan.conf /etc/yate/ysipchan.conf && yate_need_restart=1
 }
@@ -30,7 +31,6 @@ yate_regfile() {
     local user pass
     cat >/tmp/yate-regfile.conf <<'EOF'
 [general]
-; route=100
 file=/var/yate-reg
 EOF
     chmod 640 /tmp/yate-regfile.conf
