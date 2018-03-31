@@ -26,6 +26,7 @@ bindaddr = 0.0.0.0:${config_asterisk_sip_port:-5060}
 # transport = tcp,udp
 videosupport = yes
 allowguest = no
+alwaysauthreject = yes
 srvlookup = no
 
 [peer](!)
