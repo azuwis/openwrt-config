@@ -9,6 +9,7 @@ port=${config_yate_sip_port:-5060}
 # forward_sdp=yes
 
 [codecs]
+speex=yes
 h263=yes
 h264=yes
 vp8=yes
