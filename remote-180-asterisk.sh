@@ -20,24 +20,24 @@ asterisk_sip() {
     local user pass
     cat >/tmp/asterisk-sip.conf <<EOF
 [general]
-bindaddr = 0.0.0.0:${config_asterisk_sip_port:-5060}
-# tcpenable = yes
-# tcpbindaddr = 0.0.0.0:${config_asterisk_sip_port:-5060}
-# transport = tcp,udp
-videosupport = yes
-allowguest = no
-alwaysauthreject = yes
-srvlookup = no
+bindaddr=0.0.0.0:${config_asterisk_sip_port:-5060}
+# tcpenable=yes
+# tcpbindaddr=0.0.0.0:${config_asterisk_sip_port:-5060}
+# transport=tcp,udp
+videosupport=yes
+allowguest=no
+alwaysauthreject=yes
+srvlookup=no
 
 [peer](!)
-type = friend
-context = internal
-host = dynamic
-# nat = yes
-disallow = all
-allow = ulaw
-# allow = speex
-allow = h264
+type=friend
+context=internal
+host=dynamic
+# nat=yes
+disallow=all
+allow=ulaw
+# allow=speex
+allow=h264
 EOF
     chmod 640 /tmp/asterisk-sip.conf
     while read user pass
@@ -45,7 +45,7 @@ EOF
         cat >>/tmp/asterisk-sip.conf <<EOF
 
 [${user}](peer)
-secret = ${pass}
+secret=${pass}
 EOF
     done
     oc_move /tmp/asterisk-sip.conf /etc/asterisk/sip.conf && rc=0
@@ -58,24 +58,24 @@ asterisk_pjsip() {
     local user pass
     cat >/tmp/asterisk-pjsip.conf <<EOF
 [transport-udp]
-type = transport
-bind = 0.0.0.0:${config_asterisk_sip_port:-5060}
-protocol = udp
+type=transport
+bind=0.0.0.0:${config_asterisk_sip_port:-5060}
+protocol=udp
 
 [endpoint](!)
-type = endpoint
-context = internal
-disallow = all
-allow = ulaw
-allow = h264
+type=endpoint
+context=internal
+disallow=all
+allow=ulaw
+allow=h264
 
 [auth](!)
-type = auth
-auth_type = userpass
+type=auth
+auth_type=userpass
 
 [aor](!)
-type = aor
-max_contacts = 1
+type=aor
+max_contacts=1
 EOF
     chmod 640 /tmp/asterisk-pjsip.conf
     while read user pass
@@ -83,12 +83,12 @@ EOF
         cat >>/tmp/asterisk-pjsip.conf <<EOF
 
 [${user}](endpoint)
-auth = ${user}
-aors = ${user}
+auth=${user}
+aors=${user}
 
 [${user}](auth)
-password = ${user}
-username = ${pass}
+password=${user}
+username=${pass}
 
 [${user}](aor)
 EOF
