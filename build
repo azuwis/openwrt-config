@@ -177,6 +177,7 @@ CONFIG_WPA_SUPPLICANT_OPENSSL=y
 
 config_yate='
 CONFIG_PACKAGE_yate=y
+CONFIG_PACKAGE_yate-mod-openssl=y
 CONFIG_PACKAGE_yate-mod-regexroute=y
 CONFIG_PACKAGE_yate-mod-regfile=y
 CONFIG_PACKAGE_yate-mod-yrtpchan=y
