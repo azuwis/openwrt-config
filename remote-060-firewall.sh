@@ -47,4 +47,4 @@ then
     echo "$config_redirect" | oc_strip_comment | firewall_redirect_clean
 fi
 echo "$config_redirect" | oc_strip_comment | firewall_redirect_apply
-oc_service reload firewall 2>/dev/null
+oc_service reload firewall

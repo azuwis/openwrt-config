@@ -264,7 +264,12 @@ oc_service() {
         reload|restart)
             if [ x"$config" = x'-' ] || oc_uci_commit "$config"; then
                 echo "service $action $service"
-                "/etc/init.d/$service" "$action" || true
+                if [ "$service" = 'firewall' ]
+                then
+                    "/etc/init.d/$service" "$action" 2>/dev/null || true
+                else
+                    "/etc/init.d/$service" "$action" || true
+                fi
             fi
             ;;
         enable)
