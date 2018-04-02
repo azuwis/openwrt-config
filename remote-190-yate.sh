@@ -6,7 +6,14 @@ yate_ysipchan() {
     cat >/tmp/yate-ysipchan.conf <<EOF
 [general]
 port=${config_yate_sip_port:-5060}
+useragent=${config_yate_sip_useragent:-YATE/2.0.0}
+realm=${config_yate_sip_realm:-Yate}
+auth_foreign=yes
+autochangeparty=yes
 # forward_sdp=yes
+
+[options]
+enable=no
 
 [codecs]
 speex=yes

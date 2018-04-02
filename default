@@ -283,6 +283,8 @@ config_asterisk_sip_peers='
 ##### yate #####
 config_yate_enabled=0
 config_yate_sip_port=5060
+config_yate_sip_useragent='YATE/2.0.0'
+config_yate_sip_realm='Yate'
 config_yate_rtp_minport=10000
 config_yate_rtp_maxport=20000
 config_yate_users='
