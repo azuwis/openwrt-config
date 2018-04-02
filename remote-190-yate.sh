@@ -10,6 +10,7 @@ yate_ysipchan() {
 [general]
 port=${config_yate_sip_port:-5060}
 type=${config_yate_sip_type:-udp}
+tcp_idle=600
 sslcontext=server
 secure=${secure}
 useragent=${config_yate_sip_useragent:-YATE/2.0.0}
