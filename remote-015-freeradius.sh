@@ -6,6 +6,7 @@ freeradius_packages() {
         [ -z "$config_freeradius_ca" ] && oc_opkg_install freeradius3-democerts
         oc_opkg_install freeradius3 freeradius3-mod-always freeradius3-mod-attr-filter freeradius3-mod-eap freeradius3-mod-eap-tls freeradius3-mod-files freeradius3-mod-mschap
         [ "$config_freeradius_eap_peap_enabled" = 1 ] && oc_opkg_install freeradius3-mod-eap-mschapv2 freeradius3-mod-eap-peap
+        radiusd_need_restart=1
     fi
 }
 
