@@ -1,5 +1,11 @@
-oc_service enable vlmcsd
-oc_service start vlmcsd
+if ! oc_opkg_installed vlmcsd && ! grep -qF openwrt_azuwis /etc/opkg/customfeeds.conf
+then
+    echo 'add openwrt_azuwis to /etc/opkg/customfeeds.conf'
+    (. /etc/openwrt_release; echo "src/gz openwrt_azuwis http://azuwis.github.io/openwrt-binary-packages/${DISTRIB_ARCH}/azuwis" >> customfeeds.conf)
+    opkg update
+fi
+
+oc_opkg_install vlmcsd
 
 uci -m import dhcp <<EOF
 config srvhost 'vlmcsd'
