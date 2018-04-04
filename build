@@ -224,8 +224,10 @@ custom_source() {
     then
         git remote add "$remote" "$url"
     fi
-    git pull "$remote" "$branch"
-    git rebase origin/master
+    if [ "$update_source" = "yes" ]; then
+        git pull "$remote" "$branch"
+        git rebase origin/master
+    fi
     if [ "$push_custom" = "yes" ]; then
         git push --force "$remote" "$branch"
     fi
@@ -235,11 +237,13 @@ custom_source() {
 update_source() {
     local target="$@"
 
-    git pull --rebase origin master
-    hr
-    echo "Custom: openwrt"
+    if [ "$update_source" = "yes" ]; then
+        hr
+        echo "OpenWRT: Update from origin/master"
+        git pull --rebase origin master
+    fi
+    echo "Override: openwrt => $custom_openwrt"
     custom_source . "$custom_openwrt"
-    hr
 
     cp feeds.conf.default feeds.conf
 
@@ -263,13 +267,12 @@ update_source() {
         custom="${!custom}"
         if [ -n "$custom" ]
         then
-            hr
-            echo "Custom: $feed"
             sed -i "s/^src-git $feed /src-git-full $feed /" feeds.conf
-            hr
         fi
     done
-    ./scripts/feeds update -a
+    if [ "$update_source" = "yes" ]; then
+        ./scripts/feeds update -a
+    fi
 
     for feed in $(awk '/^src-git-full / {print $2}' feeds.conf)
     do
@@ -278,13 +281,13 @@ update_source() {
         custom="${!custom}"
         if [ -n "$custom" ]
         then
-            hr
-            echo "Custom: $feed"
+            echo "Override: $feed => $custom"
             custom_source "feeds/$feed" "$custom"
-            hr
         fi
     done
 
+    hr
+    echo 'Feeds install:'
     ./scripts/feeds install -a
 }
 
@@ -332,11 +335,9 @@ do
         exit 1
     fi
 
-    if [ "$update_source" = "yes" ]; then
-        hr
-        echo "Update: $target"
-        update_source "$modules"
-    fi
+    hr
+    echo "Feeds: $target"
+    update_source "$modules"
 
     hr
     echo "Config: $target"
