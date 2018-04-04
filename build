@@ -44,7 +44,7 @@ CONFIG_VDI_IMAGES=y
 '
 
 # custom feeds
-custom_source='azuwis master https://github.com/azuwis/lede-source.git'
+custom_openwrt='azuwis master https://github.com/azuwis/openwrt.git'
 custom_packages='azuwis master https://github.com/azuwis/openwrt-packages.git'
 custom_telephony='azuwis master https://github.com/azuwis/openwrt-telephony.git'
 
@@ -237,8 +237,8 @@ update_source() {
 
     git pull --rebase origin master
     hr
-    echo "Custom: source"
-    custom_source . "$custom_source"
+    echo "Custom: openwrt"
+    custom_source . "$custom_openwrt"
     hr
 
     cp feeds.conf.default feeds.conf
