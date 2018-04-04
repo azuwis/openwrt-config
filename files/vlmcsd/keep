@@ -1,4 +1,0 @@
-/etc/init.d/vlmcsd
-/etc/rc.d/S93vlmcsd
-/lib/upgrade/keep.d/oc-vlmcsd
-/usr/bin/vlmcsd
