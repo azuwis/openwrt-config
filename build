@@ -255,7 +255,11 @@ update_source() {
         feed="${!feed}"
         if [ -n "$feed" ]
         then
+            echo "Custom: $feed"
             echo "$feed" >> feeds.conf
+            local _ feed_name _
+            read -r _ feed_name _ <<<"$feed"
+            custom_feeds="$custom_feeds $feed_name"
         fi
     done
 
@@ -286,14 +290,38 @@ update_source() {
         fi
     done
 
-    hr
-    echo 'Feeds install:'
-    ./scripts/feeds install -a
+    if [ "$update_source" = "yes" ]; then
+        hr
+        echo 'Feeds install:'
+        ./scripts/feeds install -a
+    fi
 }
 
-while getopts ":gpu" option
+push_packages() {
+    hr
+    echo "Binary packages:"
+    if ! [ -e binary-packages ]
+    then
+        git clone --branch gh-pages https://github.com/azuwis/openwrt-binary-packages.git
+    fi
+    for feed in $custom_feeds
+    do
+        rsync -avR --delete bin/packages/./*/$feed/ binary-packages/
+    done
+    pushd binary-packages >/dev/null
+    git add .
+    if [ "$(git status --porcelain | grep -cEv '/(Packages\.sig)$')" -gt 0 ]
+    then
+        git commit -m 'Update'
+        git push
+    fi
+    popd >/dev/null
+}
+
+while getopts ":Pgpu" option
 do
     case "$option" in
+        P) push_packages_only="yes" ;;
         g) generate_only="yes" ;;
         p) push_custom="yes" ;;
         u) update_source="yes" ;;
@@ -337,7 +365,14 @@ do
 
     hr
     echo "Feeds: $target"
+    custom_feeds=''
     update_source "$modules"
+
+    if [ "$push_packages_only" = "yes" ]
+    then
+        push_packages
+        continue
+    fi
 
     hr
     echo "Config: $target"
@@ -356,5 +391,6 @@ do
         else
             make -j12 EXTRA_IMAGE_NAME="$extra_image_name"
         fi
+        push_packages
     fi
 done
