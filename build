@@ -169,7 +169,7 @@ CONFIG_PACKAGE_kmod-sched-cake=y
 CONFIG_PACKAGE_sqm-scripts=y
 '
 
-feed_vlmcsd='src-git-full azuwis https://github.com/azuwis/openwrt-custom-feed.git'
+feed_vlmcsd='src-git-full azuwis https://github.com/azuwis/openwrt-azuwis.git'
 
 config_wpad='
 # CONFIG_PACKAGE_wpad-mini is not set
