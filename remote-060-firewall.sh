@@ -4,6 +4,12 @@ uci batch <<EOF
 set firewall.zone_wan.forward='DROP'
 set firewall.zone_wan.input='DROP'
 EOF
+if oc_opkg_installed kmod-ipt-offload
+then
+   uci set 'firewall.@defaults[0].flow_offloading=1'
+fi
+oc_service reload firewall
+
 oc_uci_merge "$config_firewall"
 # oc_uci_del_type firewall redirect
 firewall_redirect_clean() {
