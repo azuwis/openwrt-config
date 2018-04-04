@@ -85,6 +85,7 @@ config_asterisk='
 CONFIG_PACKAGE_asterisk15=y
 CONFIG_PACKAGE_asterisk15-chan-sip=y
 CONFIG_PACKAGE_asterisk15-res-rtp-asterisk=y
+CONFIG_PACKAGE_asterisk15-res-srtp=y
 '
 
 # config_curl='
