@@ -1,6 +1,7 @@
 network_switch() {
     oc_uci_rename network @switch_vlan[0] vlan1
     oc_uci_rename network @switch_vlan[1] vlan2
+    oc_service reload network
 }
 
 network_wireless() {
@@ -20,6 +21,7 @@ network_wireless() {
         fi
         oc_uci_rename wireless @wifi-iface[0] iface0
         oc_uci_rename wireless @wifi-iface[1] iface1
+        oc_service reload network wireless
         oc_uci_merge "$config_wireless"
         if [ "$config_ieee80211r_enabled" = 1 ]
         then

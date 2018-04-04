@@ -2,6 +2,7 @@ guest_network() {
     if [ -n "$CLEANUP" ]
     then
         oc_uci_reset_section network guest
+        uci commit
     fi
     oc_uci_merge "$config_guest"
 }
@@ -29,6 +30,7 @@ guest_firewall() {
         oc_uci_reset_section firewall forwarding_guest
         oc_uci_reset_section firewall rule_guest_dns
         oc_uci_reset_section firewall rule_guest_dhcp
+        uci commit
     fi
     oc_uci_merge "
 package firewall
