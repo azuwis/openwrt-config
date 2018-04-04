@@ -1,7 +1,7 @@
 if ! oc_opkg_installed vlmcsd && ! grep -qF openwrt_azuwis /etc/opkg/customfeeds.conf
 then
     echo 'add openwrt_azuwis to /etc/opkg/customfeeds.conf'
-    (. /etc/openwrt_release; echo "src/gz openwrt_azuwis http://azuwis.github.io/openwrt-binary-packages/${DISTRIB_ARCH}/azuwis" >> customfeeds.conf)
+    (. /etc/openwrt_release; echo "src/gz openwrt_azuwis http://azuwis.github.io/openwrt-binary-packages/${DISTRIB_ARCH}/azuwis" >> /etc/opkg/customfeeds.conf)
     opkg update
 fi
 
