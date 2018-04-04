@@ -19,8 +19,8 @@ network_wireless() {
             uci set "wireless.radio1.country=${config_wireless_country}"
             uci set wireless.radio1.noscan=1
         fi
-        oc_uci_rename wireless @wifi-iface[0] iface0
-        oc_uci_rename wireless @wifi-iface[1] iface1
+        oc_uci_rename wireless default_radio0 iface0
+        oc_uci_rename wireless default_radio1 iface1
         oc_service reload network wireless
         oc_uci_merge "$config_wireless"
         if [ "$config_ieee80211r_enabled" = 1 ]
