@@ -85,6 +85,12 @@ mwan_mwan3() {
     oc_opkg_install mwan3 ip-full
 
     (
+        cat <<EOF
+config globals 'globals'
+  option enabled '1'
+  option local_source 'lan'
+
+EOF
         for i in $(mwan_allwan)
         do
             port="${i/mwan/}"
