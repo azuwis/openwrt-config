@@ -10,7 +10,7 @@ asterisk_packages() {
 asterisk_extensions() {
     cat >/tmp/asterisk-extensions.conf <<'EOF'
 [internal]
-exten=>_6XXX,1,Dial(SIP/${EXTEN},60)
+exten=>_XXX,1,Dial(SIP/${EXTEN},60)
 EOF
     oc_move /tmp/asterisk-extensions.conf /etc/asterisk/extensions.conf && asterisk_need_restart=1
 }
@@ -21,9 +21,9 @@ asterisk_sip() {
     cat >/tmp/asterisk-sip.conf <<EOF
 [general]
 bindaddr=0.0.0.0:${config_asterisk_sip_port:-5060}
-# tcpenable=yes
-# tcpbindaddr=0.0.0.0:${config_asterisk_sip_port:-5060}
-# transport=tcp,udp
+; tcpenable=yes
+; tcpbindaddr=0.0.0.0:${config_asterisk_sip_port:-5060}
+; transport=tcp,udp
 videosupport=yes
 allowguest=no
 alwaysauthreject=yes
@@ -33,10 +33,11 @@ srvlookup=no
 type=friend
 context=internal
 host=dynamic
-# nat=yes
+; nat=yes
 disallow=all
+; allow=opus
 allow=ulaw
-# allow=speex
+allow=vp8
 allow=h264
 EOF
     chmod 640 /tmp/asterisk-sip.conf
@@ -128,7 +129,7 @@ config rule 'rule_asterisk_rtp'
 }
 
 asterisk_service() {
-    [ "$asterisk_need_restart" = 1 ] && oc_service restart asterisk -
+    [ "$asterisk_need_restart" = 1 ] && oc_service reload asterisk -
 }
 
 asterisk_need_restart=0
