@@ -16,6 +16,7 @@ config_bin_enabled=1
 
 ##### freeradius #####
 config_freeradius_enabled=0
+config_freeradius_eap_peap_enabled=0
 config_freeradius_clients=''
 config_freeradius_secret=''
 config_freeradius_ca=''
@@ -29,7 +30,7 @@ config_freeradius_users='
 ##### network #####
 config_network_enabled=1
 config_network="
-# merge network, commit network, and reload network if commit changed
+## merge network, commit network, and reload network if commit changed
 # package network
 
 ## example for dhcp on wan
@@ -46,29 +47,31 @@ config_network="
 
 config_wireless_country='CN'
 config_wireless="
-# merge wireless, commit wireless, and reload network if commit changed
+## merge wireless, commit wireless, and reload network if commit changed
 # package wireless # network
 
 # config wifi-device 'radio0'
 #   option channel '13'
-#   option htmode 'HT20-'
-#   option noscan '1'
+#   option htmode 'HT40'
+#   option disabled '0'
+
+# config wifi-device 'radio1'
+#   option channel '149'
+#   option htmode 'VHT80'
+#   option disabled '0'
 
 # config wifi-iface 'iface0'
 #   option ssid ''
 #   option encryption 'psk2'
 #   option key ''
-
-# config wifi-device 'radio1'
-#   option channel '149'
-#   option htmode 'HT40'
-#   option noscan '1'
+#   option disabled '0'
 
 # config wifi-iface 'iface1'
 #   option ssid ''
 #   option encryption 'wpa2'
 #   option server '127.0.0.1'
 #   option key ''
+#   option disabled '0'
 "
 
 config_ieee80211r_enabled='0'
@@ -113,11 +116,11 @@ config_system="
 package system
 
 config system 'system'
-  option hostname 'LEDE'
+  option hostname 'OpenWrt'
 "
 config_packages_common='diffutils wpa-cli'
 config_packages=''
-config_root_password=''
+config_root_password='' # mkpasswd -m md5
 
 config_dhcp_host='
 # 192.168.1.100 11:11:11:11:11:11
@@ -129,13 +132,19 @@ config_adblock_enabled=0
 
 ##### firewall #####
 config_firewall_enabled=0
-config_firewall=''
+config_firewall="
+# package firewall
+
+# config zone 'zone_lan'
+#   option masq '1'
+#   option masq_dest '192.168.1.100/32 192.168.1.101/32'
+"
 
 config_redirect='
 # tcp 22220
 # tcp 22221 - 22
 # tcp 22222 192.168.1.2
-# tcp 22223 192.168.1.2 22
+# tcpudp 22223 192.168.1.2 22
 # udp 22224:22229 192.168.1.2
 '
 
@@ -152,18 +161,19 @@ config_ddns="
 #   option domain ''
 #   option username ''
 #   option password ''
-#   option ip_source 'interface'
-#   option ip_interface 'pppoe-wan'
+#   option ip_network 'pppoe-wan'
+#   option interface 'pppoe-wan'
 "
 
 ##### sqm #####
 config_sqm_enabled=0
 config_sqm="
-# merge sqm, but no commit and no reload
+## merge sqm, but no commit and no reload
 # package sqm # -
 
 # config queue 'wan'
 #   option enabled '1'
+#   option script 'piece_of_cake.qos'
 #   option download ''
 #   option upload ''
 "
@@ -190,8 +200,8 @@ config_guest="
 #   option encryption 'psk2'
 #   option isolate '1'
 "
-# config_guest_download='800' # download means router <- client
-# config_guest_upload='8000' # upload means router -> client
+config_guest_download='800' # download means router <- client
+config_guest_upload='8000' # upload means router -> client
 
 ##### iptv #####
 config_iptv_enabled=0
