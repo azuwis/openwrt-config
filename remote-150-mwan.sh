@@ -98,7 +98,7 @@ EOF
             then
                 port=0
             fi
-            port="$((port*10+63000))"
+            port="$((port*10+64000))"
             cat <<EOF
 config interface '$i'
   option enabled '1'
