@@ -7,8 +7,8 @@ network_switch() {
 network_wireless() {
     local i iface bssid key macs nasid list_r0kh list_r1kh j wifi_need_restart
     if oc_uci_exists wireless; then
-        oc_uci_delete wireless.radio0.disabled
-        oc_uci_delete wireless.radio1.disabled
+        # oc_uci_delete wireless.radio0.disabled
+        # oc_uci_delete wireless.radio1.disabled
         if oc_uci_exists wireless.radio0
         then
            uci set "wireless.radio0.country=${config_wireless_country}"
