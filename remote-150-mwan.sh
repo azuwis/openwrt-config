@@ -110,10 +110,10 @@ config policy 'p_$i'
   list use_member 'm_$i'
   # option last_resort 'default'
 
-config rule 'r_udp_$port'
-  option proto 'udp'
-  option dest_port '$port:$((port+9))'
-  option use_policy 'p_$i'
+# config rule 'r_udp_$port'
+#   option proto 'udp'
+#   option dest_port '$port:$((port+9))'
+#   option use_policy 'p_$i'
 EOF
         done
         cat <<EOF
