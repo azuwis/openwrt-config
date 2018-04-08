@@ -275,7 +275,7 @@ update_source() {
         fi
     done
     if [ "$update_source" = "yes" ]; then
-        ./scripts/feeds update -a
+        GIT_MERGE_AUTOEDIT=no ./scripts/feeds update -a
     fi
 
     for feed in $(awk '/^src-git-full / {print $2}' feeds.conf)
