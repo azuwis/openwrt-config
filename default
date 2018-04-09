@@ -286,8 +286,8 @@ config_asterisk_sip_port=5060
 config_asterisk_rtp_start=10000
 config_asterisk_rtp_end=20000
 config_asterisk_sip_peers='
-# 6001 pass6001
-# 6002 pass6002
+# 001 pass001
+# 002 pass002
 '
 
 ##### yate #####
@@ -300,8 +300,8 @@ config_yate_rtp_minport=10000
 config_yate_rtp_maxport=20000
 config_yate_cert=''
 config_yate_users='
-# 6001 pass6001
-# 6002 pass6002
+# 001 pass001
+# 002 pass002
 '
 
 ##### disable_uhttpd #####
