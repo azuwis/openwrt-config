@@ -195,6 +195,14 @@ asterisk_service() {
     [ "$asterisk_need_restart" = 1 ] && oc_service reload asterisk -
 }
 
+asterisk_keep() {
+    cat <<EOF >/tmp/asterisk-keep
+/etc/asterisk/*.pem
+/lib/upgrade/keep.d/oc-asterisk
+EOF
+    oc_move /tmp/asterisk-keep /lib/upgrade/keep.d/oc-asterisk
+}
+
 asterisk_need_restart=0
 asterisk_packages
 asterisk_extensions
@@ -208,3 +216,4 @@ echo "$config_asterisk_sip_transport" | grep -qF tls && asterisk_tls
 asterisk_rtp
 asterisk_firewall
 asterisk_service
+asterisk_keep
