@@ -37,6 +37,7 @@ yate_yrtpchan() {
 [general]
 minport=${config_yate_rtp_minport:-10000}
 maxport=${config_yate_rtp_maxport:-20000}
+# rtcp=no
 EOF
     oc_move /tmp/yate-yrtpchan.conf /etc/yate/yrtpchan.conf && yate_need_restart=1
 }
