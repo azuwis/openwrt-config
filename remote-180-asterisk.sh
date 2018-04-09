@@ -18,13 +18,27 @@ EOF
 asterisk_sip() {
     local rc=1
     local user pass
-    cat >/tmp/asterisk-sip.conf <<EOF
+    (
+        cat <<EOF
 [general]
+transport=${config_asterisk_sip_transport:-udp}
 bindaddr=0.0.0.0:${config_asterisk_sip_port:-5060}
-; tcpenable=yes
-; tcpbindaddr=0.0.0.0:${config_asterisk_sip_port:-5060}
-; transport=tcp,udp
+EOF
+        echo "$config_asterisk_sip_transport" | grep -qF tcp && cat <<EOF
+tcpenable=yes
+tcpbindaddr=0.0.0.0:${config_asterisk_sip_port_tcp:-5060}
+EOF
+        echo "$config_asterisk_sip_transport" | grep -qF tls && cat <<EOF
+tlsenable=yes
+tlsbindaddr=0.0.0.0:${config_asterisk_sip_port_tls:-5061}
+tlscafile=/etc/asterisk/ca.pem
+tlscertfile=/etc/asterisk/server.pem
+EOF
+        cat <<EOF
+useragent=${config_asterisk_sip_useragent:-Asterisk}
+realm=${config_asterisk_sip_realm:-Asterisk}
 videosupport=yes
+nat=force_rport,comedia
 allowguest=no
 alwaysauthreject=yes
 srvlookup=no
@@ -40,6 +54,11 @@ allow=ulaw
 allow=vp8
 allow=h264
 EOF
+        echo "$config_asterisk_sip_transport" | grep -qF tls && cat <<EOF
+transport=tls
+encryption=yes
+EOF
+    ) >/tmp/asterisk-sip.conf
     chmod 640 /tmp/asterisk-sip.conf
     while read user pass
     do
@@ -99,6 +118,24 @@ EOF
     return $rc
 }
 
+asterisk_tls() {
+    oc_opkg_install asterisk15-res-srtp
+
+    if [ -n "$config_asterisk_ca" ]
+    then
+        echo -n "$config_asterisk_ca" | tail -n +2 >/tmp/asterisk-ca.pem
+        chmod 640 /tmp/asterisk-ca.pem
+        oc_move /tmp/asterisk-ca.pem /etc/asterisk/ca.pem && asterisk_need_restart=1
+    fi
+
+    if [ -n "$config_asterisk_cert" ]
+    then
+        echo -n "$config_asterisk_cert" | tail -n +2 >/tmp/asterisk-server.pem
+        chmod 640 /tmp/asterisk-server.pem
+        oc_move /tmp/asterisk-server.pem /etc/asterisk/server.pem && asterisk_need_restart=1
+    fi
+}
+
 asterisk_rtp() {
     cat >/tmp/asterisk-rtp.conf <<EOF
 [general]
@@ -109,15 +146,9 @@ EOF
 }
 
 asterisk_firewall() {
-    oc_uci_merge "
+    local config
+    config="
 package firewall
-
-config rule 'rule_asterisk_sip'
-  option name 'Allow-Asterisk-Sip'
-  option src 'wan'
-  option dest_port '${config_asterisk_sip_port:-5060}'
-  option target 'ACCEPT'
-  option proto 'udp'
 
 config rule 'rule_asterisk_rtp'
   option name 'Allow-Asterisk-Rtp'
@@ -126,6 +157,38 @@ config rule 'rule_asterisk_rtp'
   option target 'ACCEPT'
   option proto 'udp'
 "
+
+    if echo "$config_asterisk_sip_transport" | grep -qF udp || [ -z "$config_asterisk_sip_transport" ]
+    then
+        config="$config
+
+    config rule 'rule_asterisk_sip_udp'
+    option name 'Allow-Asterisk-Sip-Udp'
+    option src 'wan'
+    option dest_port '${config_asterisk_sip_port:-5060}'
+    option target 'ACCEPT'
+    option proto 'udp'
+"
+    fi
+    echo "$config_asterisk_sip_transport" | grep -qF tcp && config="$config
+
+    config rule 'rule_asterisk_sip_tcp'
+    option name 'Allow-Asterisk-Sip-Tcp'
+    option src 'wan'
+    option dest_port '${config_asterisk_sip_port:-5060}'
+    option target 'ACCEPT'
+    option proto 'tcp'
+"
+    echo "$config_asterisk_sip_transport" | grep -qF tls && config="$config
+
+    config rule 'rule_asterisk_sip_tls'
+    option name 'Allow-Asterisk-Tls'
+    option src 'wan'
+    option dest_port '${config_asterisk_sip_port_tls:-5061}'
+    option target 'ACCEPT'
+    option proto 'tcp'
+"
+    oc_uci_merge "$config"
 }
 
 asterisk_service() {
@@ -141,6 +204,7 @@ then
 else
     echo "$config_asterisk_sip_peers" | oc_strip_comment | asterisk_sip && asterisk_need_restart=1
 fi
+echo "$config_asterisk_sip_transport" | grep -qF tls && asterisk_tls
 asterisk_rtp
 asterisk_firewall
 asterisk_service
