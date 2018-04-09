@@ -113,7 +113,7 @@ config rule 'rule_yate_rtp'
 }
 
 yate_service() {
-    [ "$yate_need_restart" = 1 ] && oc_service restart yate -
+    [ "$yate_need_restart" = 1 ] && oc_service reload yate -
 }
 
 yate_need_restart=0
