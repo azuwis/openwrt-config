@@ -23,6 +23,7 @@ asterisk_sip() {
 [general]
 transport=${config_asterisk_sip_transport:-udp}
 bindaddr=0.0.0.0:${config_asterisk_sip_port:-5060}
+keepalive=1200
 EOF
         echo "$config_asterisk_sip_transport" | grep -qF tcp && cat <<EOF
 tcpenable=yes
@@ -36,9 +37,11 @@ tlscertfile=/etc/asterisk/server.pem
 EOF
         cat <<EOF
 useragent=${config_asterisk_sip_useragent:-Asterisk}
+sdpsession=${config_asterisk_sip_useragent:-Asterisk}
 realm=${config_asterisk_sip_realm:-Asterisk}
 videosupport=yes
 nat=force_rport,comedia
+directmedia=no
 allowguest=no
 alwaysauthreject=yes
 srvlookup=no
@@ -47,7 +50,6 @@ srvlookup=no
 type=friend
 context=internal
 host=dynamic
-; nat=yes
 disallow=all
 ; allow=opus
 allow=ulaw
