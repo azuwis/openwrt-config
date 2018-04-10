@@ -88,7 +88,7 @@ mwan_mwan3() {
         cat <<EOF
 config globals 'globals'
   option enabled '1'
-  option local_source 'lan'
+  # option local_source 'lan'
 
 EOF
         for i in $(mwan_allwan)
