@@ -8,7 +8,7 @@ fi
 uci batch <<EOF
 set system.@watchcat[0].forcedelay='30'
 set system.@watchcat[0].mode='ping'
-set system.@watchcat[0].period='2h'
+set system.@watchcat[0].period='30m'
 set system.@watchcat[0].pinghosts="$config_watchcat_pinghosts"
 EOF
 
