@@ -304,6 +304,26 @@ config_yate_users='
 # 002 pass002
 '
 
+##### acme #####
+config_acme_enabled=0
+config_acme="
+# package acme
+
+# config acme 'acme'
+#   option account_email ''
+#   option debug '0'
+
+# config cert 'foo'
+#   option enabled '1'
+#   option use_staging '0'
+#   option keylength '2048'
+#   option update_uhttpd '0'
+#   option dns 'dns_dynu'
+#   list domains -
+#   list domains 'foo.dynu.net'
+#   list domains '*.foo.dynu.net'
+"
+
 ##### disable_uhttpd #####
 config_disable_uhttpd_enabled=1
 
