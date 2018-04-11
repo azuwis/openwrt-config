@@ -32,8 +32,9 @@ EOF
         echo "$config_asterisk_sip_transport" | grep -qF tls && cat <<EOF
 tlsenable=yes
 tlsbindaddr=0.0.0.0:${config_asterisk_sip_port_tls:-5061}
-tlscafile=/etc/asterisk/ca.pem
-tlscertfile=/etc/asterisk/server.pem
+tlscafile=${config_asterisk_cafile:-/etc/asterisk/ca.pem}
+tlscertfile=${config_asterisk_certfile:-/etc/asterisk/server.pem}
+tlsprivatekey=${config_asterisk_keyfile:-/etc/asterisk/server.pem}
 EOF
         cat <<EOF
 useragent=${config_asterisk_sip_useragent:-Asterisk}
