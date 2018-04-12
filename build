@@ -5,7 +5,7 @@ set -e
 profiles=(mw4530r mw4530r_yate wg3526 wg3526_audit wg3526_iptv wg3526_luci wg3526_office x86)
 mw4530r='mw4530r adblock curl ddns dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon shadowsocks sqm tcpdump vlmcsd watchcat wireguard wpad'
 mw4530r_yate='mw4530r adblock yate ddns dnsmasq freeradius miniupnpd mwan shadowsocks sqm watchcat vlmcsd wireguard wpad'
-wg3526='wg3526 adblock asterisk curl ddns dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon shadowsocks sqm tcpdump vlmcsd watchcat wireguard wpad'
+wg3526='wg3526 acme adblock asterisk curl ddns dnsmasq freeradius mactelnet miniupnpd mwan nlbwmon shadowsocks sqm tcpdump vlmcsd watchcat wireguard wpad'
 wg3526_audit='wg3526 aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux wpad'
 wg3526_iptv='wg3526 curl kmod-ipt-offload wpad'
 wg3526_luci='wg3526 luci wpad'
