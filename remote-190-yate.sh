@@ -5,19 +5,23 @@ yate_packages() {
 
 yate_ysipchan() {
     local secure
-    [ "$config_yate_sip_type" = 'tls' ] && secure='yes' || secure='no'
-    cat >/tmp/yate-ysipchan.conf <<EOF
+    (
+        cat <<EOF
 [general]
 port=${config_yate_sip_port:-5060}
 type=${config_yate_sip_type:-udp}
 tcp_idle=600
-sslcontext=server
-secure=${secure}
 useragent=${config_yate_sip_useragent:-YATE/2.0.0}
 realm=${config_yate_sip_realm:-Yate}
 auth_foreign=yes
 autochangeparty=yes
 # forward_sdp=yes
+EOF
+        [ "$config_yate_sip_type" = 'tls' ] && cat <<EOF
+sslcontext=server
+secure=yes
+EOF
+        cat <<EOF
 
 [options]
 enable=no
@@ -29,6 +33,7 @@ h264=yes
 vp8=yes
 vp9=yes
 EOF
+    ) >/tmp/yate-ysipchan.conf
     oc_move /tmp/yate-ysipchan.conf /etc/yate/ysipchan.conf && yate_need_restart=1
 }
 
