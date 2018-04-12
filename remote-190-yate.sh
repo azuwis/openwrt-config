@@ -48,11 +48,19 @@ EOF
 }
 
 yate_openssl() {
-    cat >/tmp/yate-openssl.conf <<EOF
+    (
+        cat <<EOF
 [server]
 enable=yes
 certificate=server.pem
 EOF
+        if [ -n "$config_yate_key" ] || [ -n "$config_yate_keyfile" ]
+        then
+            cat <<EOF
+key=server.key
+EOF
+        fi
+    ) >/tmp/yate-openssl.conf
     oc_move /tmp/yate-openssl.conf /etc/yate/openssl.conf && yate_need_restart=1
 
     if [ -n "$config_yate_cert" ]
@@ -60,6 +68,22 @@ EOF
         echo -n "$config_yate_cert" | tail -n +2 >/tmp/yate-server.pem
         chmod 640 /tmp/yate-server.pem
         oc_move /tmp/yate-server.pem /etc/yate/server.pem && radiusd_need_restart=1
+        if [ -n "$config_yate_key" ]
+        then
+            echo -n "$config_yate_key" | tail -n +2 >/tmp/yate-server.key
+            chmod 640 /tmp/yate-server.key
+            oc_move /tmp/yate-server.key /etc/yate/server.key && radiusd_need_restart=1
+        fi
+    elif [ -n "$config_yate_certfile" ]
+    then
+        if [ ! -L /etc/yate/server.pem ]
+        then
+            ln -sf "$config_yate_certfile" /etc/yate/server.pem
+        fi
+        if [ -n "$config_yate_keyfile" ] && [ ! -L /etc/yate/server.key ]
+        then
+            ln -sf "$config_yate_keyfile" /etc/yate/server.key
+        fi
     fi
 }
 
