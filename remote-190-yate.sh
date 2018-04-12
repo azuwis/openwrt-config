@@ -4,7 +4,6 @@ yate_packages() {
 }
 
 yate_ysipchan() {
-    local secure
     (
         cat <<EOF
 [general]
