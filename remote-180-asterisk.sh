@@ -8,10 +8,18 @@ asterisk_packages() {
 }
 
 asterisk_extensions() {
-    cat >/tmp/asterisk-extensions.conf <<'EOF'
+    if [ "$config_asterisk_use_pjsip" = 1 ]
+    then
+        cat >/tmp/asterisk-extensions.conf <<'EOF'
+[internal]
+exten=>_XXX,1,Dial(PJSIP/${EXTEN},60)
+EOF
+    else
+        cat >/tmp/asterisk-extensions.conf <<'EOF'
 [internal]
 exten=>_XXX,1,Dial(SIP/${EXTEN},60)
 EOF
+    fi
     oc_move /tmp/asterisk-extensions.conf /etc/asterisk/extensions.conf && asterisk_need_restart=1
 }
 
@@ -59,7 +67,7 @@ allow=h264
 EOF
         echo "$config_asterisk_sip_transport" | grep -qF tls && cat <<EOF
 transport=tls
-encryption=yes
+encryption=no
 EOF
     ) >/tmp/asterisk-sip.conf
     chmod 640 /tmp/asterisk-sip.conf
@@ -79,43 +87,89 @@ EOF
 asterisk_pjsip() {
     local rc=1
     local user pass
-    cat >/tmp/asterisk-pjsip.conf <<EOF
+    (
+        cat <<EOF
+[global]
+keep_alive_interval=1200
+user_agent=${config_asterisk_sip_useragent:-Asterisk}
+sdp_session=${config_asterisk_sip_useragent:-Asterisk}
+
+[identify]
+srv_lookups=no
+
+EOF
+        if echo "$config_asterisk_sip_transport" | grep -qF udp || [ -z "$config_asterisk_sip_transport" ]
+        then
+            cat <<EOF
 [transport-udp]
 type=transport
 bind=0.0.0.0:${config_asterisk_sip_port:-5060}
 protocol=udp
 
+EOF
+        fi
+        echo "$config_asterisk_sip_transport" | grep -qF tcp && cat <<EOF
+[transport-tcp]
+type=transport
+bind=0.0.0.0:${config_asterisk_sip_port:-5060}
+protocol=tcp
+
+EOF
+        echo "$config_asterisk_sip_transport" | grep -qF tls && cat <<EOF
+[transport-tls]
+type=transport
+bind=0.0.0.0:${config_asterisk_sip_port_tls:-5060}
+protocol=tls
+cert_file=${config_asterisk_certfile:-/etc/asterisk/server.pem}
+priv_key_file=${config_asterisk_keyfile:-/etc/asterisk/server.pem}
+
+EOF
+        cat <<EOF
 [endpoint](!)
 type=endpoint
 context=internal
 disallow=all
 allow=ulaw
+allow=vp8
 allow=h264
+direct_media=no
+rtp_symmetric=yes
+force_rport=yes
+rewrite_contact=yes
+EOF
+        echo "$config_asterisk_sip_transport" | grep -qF tls && cat <<EOF
+transport=transport-tls
+; media_encryption=sdes
+EOF
+        cat <<EOF
 
 [auth](!)
 type=auth
 auth_type=userpass
+realm=${config_asterisk_sip_realm:-Asterisk}
 
 [aor](!)
 type=aor
 max_contacts=1
+remove_existing=yes
 EOF
-    chmod 640 /tmp/asterisk-pjsip.conf
-    while read user pass
-    do
-        cat >>/tmp/asterisk-pjsip.conf <<EOF
+        while read user pass
+        do
+            cat >>/tmp/asterisk-pjsip.conf <<EOF
 
 [${user}](endpoint)
 auth=${user}
 aors=${user}
 
 [${user}](auth)
-password=${user}
-username=${pass}
+username=${user}
+password=${pass}
 
 [${user}](aor)
 EOF
-    done
+        done
+    ) >/tmp/asterisk-pjsip.conf
+    chmod 640 /tmp/asterisk-pjsip.conf
     oc_move /tmp/asterisk-pjsip.conf /etc/asterisk/pjsip.conf && rc=0
     chmod 640 /etc/asterisk/pjsip.conf
     return $rc
