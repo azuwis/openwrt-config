@@ -136,6 +136,7 @@ direct_media=no
 rtp_symmetric=yes
 force_rport=yes
 rewrite_contact=yes
+timers_min_se=600
 EOF
         echo "$config_asterisk_sip_transport" | grep -qF tls && cat <<EOF
 transport=transport-tls
@@ -152,6 +153,7 @@ realm=${config_asterisk_sip_realm:-Asterisk}
 type=aor
 max_contacts=1
 remove_existing=yes
+minimum_expiration=600
 EOF
         while read user pass
         do
