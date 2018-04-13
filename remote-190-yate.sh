@@ -14,11 +14,11 @@ useragent=${config_yate_sip_useragent:-YATE/2.0.0}
 realm=${config_yate_sip_realm:-Yate}
 auth_foreign=yes
 autochangeparty=yes
-# forward_sdp=yes
+; forward_sdp=yes
 EOF
         [ "$config_yate_sip_type" = 'tls' ] && cat <<EOF
 sslcontext=server
-secure=yes
+; secure=yes
 EOF
         cat <<EOF
 
@@ -42,7 +42,7 @@ yate_yrtpchan() {
 minport=${config_yate_rtp_minport:-10000}
 maxport=${config_yate_rtp_maxport:-20000}
 thread=highest
-# rtcp=no
+; rtcp=no
 EOF
     oc_move /tmp/yate-yrtpchan.conf /etc/yate/yrtpchan.conf && yate_need_restart=1
 }
