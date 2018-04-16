@@ -76,11 +76,11 @@ EOF
         fi
     elif [ -n "$config_yate_certfile" ]
     then
-        if [ ! -L /etc/yate/server.pem ]
+        if [ "$(readlink -f /etc/yate/server.pem)" != "$config_yate_certfile" ]
         then
             ln -sf "$config_yate_certfile" /etc/yate/server.pem
         fi
-        if [ -n "$config_yate_keyfile" ] && [ ! -L /etc/yate/server.key ]
+        if [ -n "$config_yate_keyfile" ] && [ "$(readlink -f /etc/yate/server.key)" != "$config_yate_keyfile" ]
         then
             ln -sf "$config_yate_keyfile" /etc/yate/server.key
         fi
