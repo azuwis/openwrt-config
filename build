@@ -10,7 +10,11 @@ wg3526_audit='wg3526 aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdi
 wg3526_iptv='wg3526 curl kmod-ipt-offload wpad'
 wg3526_luci='wg3526 luci wpad'
 wg3526_office='wg3526 adblock curl dnsmasq shadowsocks wireguard wpad yate'
-x86='luci2 x86'
+x86='x86'
+x86_acme='x86 acme acme-dnsapi luci luci-app-acme luci-app-uhttpd'
+x86_fwknopd='x86 fwknopd luci luci-app-fwknopd'
+x86_luci2='x86 luci2'
+x86_vuci='x86 vuci'
 
 # common
 config_common='
@@ -140,6 +144,8 @@ config_kallsyms='CONFIG_KERNEL_KALLSYMS=y'
 config_luci='
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_luci-theme-material=y
+'
+config_luci_zh='
 CONFIG_LUCI_LANG_zh-cn=y
 '
 
@@ -180,6 +186,11 @@ CONFIG_PACKAGE_sqm-scripts=y
 '
 
 feed_vlmcsd='src-git-full azuwis https://github.com/azuwis/openwrt-azuwis.git'
+
+feed_vuci='src-git vuci https://github.com/zhaojh329/vuci.git'
+config_vuci='
+CONFIG_PACKAGE_vuci-ui-base=y
+'
 
 config_wpad='
 # CONFIG_PACKAGE_wpad-mini is not set
