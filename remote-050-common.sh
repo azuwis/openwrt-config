@@ -12,10 +12,10 @@ oc_uci_merge "$config_system"
 uci set system.system.log_buffer_size='256'
 oc_service reload log system
 
-cat >/tmp/sysctl-local.conf <<EOF
+cat >/tmp/sysctl.conf <<EOF
 net.netfilter.nf_conntrack_max=32768
 EOF
-if oc_move /tmp/sysctl-local.conf /etc/sysctl.d/local.conf
+if oc_move /tmp/sysctl.conf /etc/sysctl.conf
 then
     oc_service restart sysctl - 2>/dev/null
 fi
