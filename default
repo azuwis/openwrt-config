@@ -132,6 +132,7 @@ config_adblock_enabled=0
 
 ##### firewall #####
 config_firewall_enabled=0
+config_firewall_flow_offloading=0
 config_firewall="
 # package firewall
 
@@ -323,6 +324,9 @@ config_acme="
 #   list domains 'foo.dynu.net'
 #   list domains '*.foo.dynu.net'
 "
+
+##### fwknop #####
+config_fwknop_enabled=0
 
 ##### disable_uhttpd #####
 config_disable_uhttpd_enabled=1

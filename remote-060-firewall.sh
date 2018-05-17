@@ -6,7 +6,7 @@ set firewall.zone_wan.input='DROP'
 EOF
 if oc_opkg_installed kmod-ipt-offload
 then
-   uci set 'firewall.@defaults[0].flow_offloading=1'
+   uci set "firewall.@defaults[0].flow_offloading=${config_firewall_flow_offloading}"
 fi
 oc_service reload firewall
 
