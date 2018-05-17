@@ -50,7 +50,7 @@ CONFIG_VDI_IMAGES=y
 # custom feeds
 custom_openwrt='azuwis master https://github.com/azuwis/openwrt.git'
 custom_packages='azuwis master https://github.com/azuwis/openwrt-packages.git'
-custom_telephony='azuwis master https://github.com/azuwis/openwrt-telephony.git'
+# custom_telephony='azuwis master https://github.com/azuwis/openwrt-telephony.git'
 
 # modules
 config_adblock='
