@@ -1,0 +1,2 @@
+#!/bin/sh
+swconfig dev switch0 show | grep -Ev '^$|^Rx|^Tx|^Filtered|mib:|enable_eee:|igmp_snooping:|vlan_prio:'
