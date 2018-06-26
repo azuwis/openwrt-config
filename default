@@ -325,6 +325,9 @@ config_acme="
 #   list domains '*.foo.dynu.net'
 "
 
+##### avahi #####
+config_avahi_enabled=0
+
 ##### fwknop #####
 config_fwknop_enabled=0
 
