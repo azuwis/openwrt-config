@@ -261,7 +261,7 @@ update_source() {
     if [ "$update_source" = "yes" ]; then
         hr
         echo "OpenWRT: Update from origin/master"
-        git pull --rebase origin master
+        GIT_MERGE_AUTOEDIT=no git pull --rebase origin master
     fi
     echo "Override: openwrt => $custom_openwrt"
     custom_source . "$custom_openwrt"
