@@ -32,7 +32,11 @@ wireguard() {
         killall netifd
     fi
 
-    cat >/tmp/wireguard_cron <<'EOF'
+    if [ -e /usr/bin/wireguard_watchdog ]
+    then
+        oc_add_cron wireguard '*/7 * * * * /usr/bin/wireguard_watchdog'
+    else
+        cat >/tmp/wireguard_cron <<'EOF'
 #!/bin/sh
 . /lib/functions.sh
 handle_interface() {
@@ -59,10 +63,11 @@ handle_peer() {
 config_load network
 config_foreach handle_interface interface
 EOF
-    mkdir -p ~/bin/
-    oc_move /tmp/wireguard_cron ~/bin/wireguard_cron
-    chmod 0755 ~/bin/wireguard_cron
-    oc_add_cron wireguard '*/7 * * * * ~/bin/wireguard_cron'
+        mkdir -p ~/bin/
+        oc_move /tmp/wireguard_cron ~/bin/wireguard_cron
+        chmod 0755 ~/bin/wireguard_cron
+        oc_add_cron wireguard '*/7 * * * * ~/bin/wireguard_cron'
+    fi
 }
 
 wireguard
