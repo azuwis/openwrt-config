@@ -13,3 +13,7 @@ wireless.radio1.log_level=1
 * IEEE80211r
 ft_psk_generate_local
 ft_over_ds
+
+* Ath9k Dynack
+CONFIG_PACKAGE_ATH_DYNACK
+https://github.com/openwrt/openwrt/commit/8b42a260ed8ff6809cd0ade20a5c1fa003feb6d0
