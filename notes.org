@@ -17,3 +17,9 @@ ft_over_ds
 * Ath9k Dynack
 CONFIG_PACKAGE_ATH_DYNACK
 https://github.com/openwrt/openwrt/commit/8b42a260ed8ff6809cd0ade20a5c1fa003feb6d0
+
+* Make all mtd writable
+opkg install kmod-mtd-rw
+insmod mtd-rw i_want_a_brick=1
+https://github.com/openwrt/packages/blob/master/kernel/mtd-rw/Makefile
+https://github.com/jclehner/mtd-rw
