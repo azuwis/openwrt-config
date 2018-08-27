@@ -55,6 +55,10 @@ config forwarding 'forwarding_guest'
   option src 'guest_lan'
   option dest 'guest_wan'
 
+config forwarding 'forwarding_guest_lan'
+  option src 'lan'
+  option dest 'guest_lan'
+
 config rule 'rule_guest_dns'
   option name 'Allow-Guest-DNS'
   option src 'guest_lan'
