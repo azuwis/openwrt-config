@@ -17,7 +17,6 @@ config dhcp 'guest'
   option interface 'guest'
   option start '50'
   option limit '200'
-  option leasetime '1h'
 EOF
     oc_service reload dnsmasq dhcp
 }
