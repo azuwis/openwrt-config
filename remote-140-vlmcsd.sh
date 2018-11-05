@@ -1,8 +1,18 @@
-if ! oc_opkg_installed vlmcsd && ! grep -qF openwrt_azuwis /etc/opkg/customfeeds.conf
+if ! oc_opkg_installed vlmcsd
 then
-    opkg_install libustream-openssl
-    echo 'add openwrt_azuwis to /etc/opkg/customfeeds.conf'
-    (. /etc/openwrt_release; echo "src/gz openwrt_azuwis http://azuwis.github.io/openwrt-binary-packages/${DISTRIB_ARCH}/azuwis" >> /etc/opkg/customfeeds.conf)
+    oc_opkg_install libustream-openssl
+    if ! grep -qF openwrt_azuwis /etc/opkg/customfeeds.conf
+    then
+        echo 'add openwrt_azuwis to /etc/opkg/customfeeds.conf'
+        (. /etc/openwrt_release; echo "src/gz openwrt_azuwis http://azuwis.github.io/openwrt-binary-packages/${DISTRIB_ARCH}/azuwis" >> /etc/opkg/customfeeds.conf)
+    fi
+    if ! [ -e /etc/opkg/keys/8b2b6e8037ed6eda ]
+    then
+        cat >/etc/opkg/keys/8b2b6e8037ed6eda <<EOF
+untrusted comment: Local build key
+RWSLK26AN+1u2lMBvSv9Pv07OptFN6R0dhl7dr9JIDSgQMYcLebP3qYp
+EOF
+    fi
     opkg update
 fi
 
