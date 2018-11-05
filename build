@@ -200,7 +200,7 @@ CONFIG_PACKAGE_vuci-ui-base=y
 '
 
 config_wpad='
-# CONFIG_PACKAGE_wpad-mini is not set
+# CONFIG_PACKAGE_wpad-basic is not set
 CONFIG_PACKAGE_wpad=y
 CONFIG_WPA_MSG_MIN_PRIORITY=1
 CONFIG_WPA_SUPPLICANT_OPENSSL=y
