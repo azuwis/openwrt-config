@@ -27,4 +27,8 @@ cat >/tmp/hass.json <<'EOF'
   }
 }
 EOF
-oc_move /tmp/hass.json /usr/share/rpcd/acl.d/hass.json
+if oc_move /tmp/hass.json /usr/share/rpcd/acl.d/hass.json
+then
+    oc_service restart rpcd -
+    oc_service restart uhttpd -
+fi
