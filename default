@@ -45,7 +45,7 @@ config_network="
 #   option ipv6 '0'
 "
 
-config_wireless_country='CN'
+config_wireless_country='US'
 config_wireless="
 ## merge wireless, commit wireless, and reload network if commit changed
 # package wireless # network
