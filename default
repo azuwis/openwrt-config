@@ -237,7 +237,7 @@ config_shadowsocks="
 #   option local_default 'checkdst'
 #   option src_default 'checkdst'
 #   option dst_ips_bypass_file '/etc/chn-cidr'
-#   option ipt_args '-m multiport --dports 22,53,80,443,587,993'
+#   option ipt_args '-p tcp -m multiport --dports 22,53,80,443,587,993'
 
 # config ss_redir 'redir0'
 #   option server 'server0'
