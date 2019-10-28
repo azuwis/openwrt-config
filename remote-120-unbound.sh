@@ -50,6 +50,7 @@ server:
 
   cache-min-ttl: 120
   cache-max-ttl: 36000
+  cache-max-negative-ttl: 5
   val-bogus-ttl: 300
   infra-host-ttl: 900
 
