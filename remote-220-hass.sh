@@ -4,6 +4,11 @@ oc_uci_rename rpcd @login[0] hass
 uci commit
 
 oc_uci_merge "
+package uhttpd
+
+config uhttpd 'main'
+  option redirect_https '0'
+
 package rpcd
 
 config login 'hass'
