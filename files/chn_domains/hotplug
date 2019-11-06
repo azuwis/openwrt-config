@@ -18,7 +18,7 @@ update_dnsmasq() {
         if [ -x /etc/init.d/shadowsocks-libev ] && /etc/init.d/shadowsocks-libev enabled && [ "$(uci -q get shadowsocks-libev.ss_rules.disabled)" != '1' ]; then
             grep -Ev '(^#|^\s*$)' /etc/chn-domains-extra | while read domain
             do
-                echo "ipset=/$domain/ss_spec_dst_bp"
+                echo "ipset=/$domain/ss_rules_dst_bypass"
             done >> $conf
         fi
         local remote_dns
