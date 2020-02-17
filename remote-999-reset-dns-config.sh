@@ -9,7 +9,7 @@ echo
 
 # unbound
 echo 'clean unbound'
-oc_opkg_remove unbound
+oc_opkg_remove unbound-daemon
 rm -rf /etc/unbound/
 echo
 

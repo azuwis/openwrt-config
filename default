@@ -262,7 +262,7 @@ config_unbound_tcp='yes'
 
 ##### chn_domains #####
 config_chn_domains_enabled=0
-config_chn_domains_remote_dns='127.0.0.1#5354'
+config_chn_domains_remote_dns='127.0.0.1#5453'
 config_chn_domains_dnsmasq_full='1'
 
 ##### vlmcsd #####

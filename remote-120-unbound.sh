@@ -1,4 +1,4 @@
-oc_opkg_install unbound >/dev/null 2>&1
+oc_opkg_install unbound-daemon >/dev/null 2>&1
 cat >/tmp/unbound.conf <<EOF
 server:
   username: unbound
@@ -15,7 +15,7 @@ server:
 
   edns-buffer-size: 1280
   msg-buffer-size: 8192
-  port: 5354
+  port: 5453
   tcp-upstream: ${config_unbound_tcp}
   outgoing-port-permit: 10240-65535
 
@@ -59,7 +59,7 @@ forward-zone:
   forward-addr: ${config_unbound_forwarder}
 EOF
 uci batch <<EOF
-set unbound.@unbound[0].listen_port='5354'
+set unbound.@unbound[0].listen_port='5453'
 set unbound.@unbound[0].manual_conf='1'
 set unbound.@unbound[0].query_minimize='1'
 set unbound.@unbound[0].resource='tiny'
