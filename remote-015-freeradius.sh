@@ -1,5 +1,5 @@
 freeradius_packages() {
-    oc_opkg_remove wpad-mini
+    oc_opkg_remove wpad-basic wpad-mini
     oc_opkg_install wpad
     if ! pgrep -x /usr/sbin/radiusd >/dev/null
     then
