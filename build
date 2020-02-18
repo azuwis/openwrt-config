@@ -190,7 +190,7 @@ CONFIG_PACKAGE_kmod-shortcut-fe=y
 
 config_shadowsocks='
 CONFIG_PACKAGE_shadowsocks-libev-ss-rules=y
-CONFIG_PACKAGE_unbound-daemon=y
+CONFIG_PACKAGE_stubby=y
 '
 
 config_sqm='
