@@ -1,0 +1,115 @@
+#!/bin/bash
+set -e
+
+# profiles and targets
+mw4530r='mw4530r-v1 ar71xx/generic'
+wdr4300='tl-wdr4300-v1 ar71xx/generic'
+wg3526='zbtlink_zbt-wg3526-16m ramips/mt7621'
+x86='x86/64'
+
+# packages
+common='diffutils wpa-cli -odhcpd-ipv6only'
+adblock='adblock ca-bundle libustream-openssl'
+aircrack='aircrack-ng airmon-ng grep kmod-tun pciutils procps-ng procps-ng-ps usbutils'
+asterisk="$asterisk_pjsip"
+asterisk_pjsip='asterisk15 asterisk15-bridge-simple asterisk15-pjsip asterisk15-res-rtp-asterisk asterisk15-res-srtp'
+asterisk_sip='asterisk15 asterisk15-chan-sip asterisk15-res-rtp-asterisk asterisk15-res-srtp'
+ddns='ca-bundle ddns-scripts'
+dnsmasq='dnsmasq-full -dnsmasq'
+freeradius='freeradius3 freeradius3-mod-always freeradius3-mod-attr-filter freeradius3-mod-eap freeradius3-mod-eap-mschapv2 freeradius3-mod-eap-peap freeradius3-mod-eap-tls freeradius3-mod-files freeradius3-mod-mschap'
+hass='rpcd uhttpd-mod-ubus uhttpd'
+luci2='luci2-ui-base'
+luci='luci luci-theme-material'
+luci_zh='luci-i18n-base-zh-cn'
+mactelnet='mac-telnet-client mac-telnet-discover'
+mwan='ip-full kmod-macvlan mwan3'
+shadowsocks='shadowsocks-libev-ss-rules stubby'
+sqm='kmod-sched-cake sqm-scripts'
+wpad='-wpad-basic -wpad-mini wpad'
+yate='yate yate-mod-openssl yate-mod-regexroute yate-mod-regfile yate-mod-yrtpchan yate-mod-ysipchan'
+
+REPOS='src/gz azuwis http://azuwis.github.io/openwrt-binary-packages/{{ pkg_arch }}/azuwis'
+
+# profiles
+profiles=(wg3526_main wg3526_audit wg3526_iptv wg3526_luci wg3526_office wdr4300_main mw4530r_main mw4530r_yate x86_main)
+wg3526_main="$wg3526 $common acme $adblock curl $ddns $dnsmasq etherwake $freeradius $hass $mactelnet miniupnpd $shadowsocks $sqm tcpdump vlmcsd wireguard $wpad"
+wg3526_audit="$wg3526 $aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux"
+wg3526_iptv="$wg3526 curl kmod-ipt-offload $wpad"
+wg3526_luci="$wg3526 $luci"
+wg3526_office="$wg3526 $adblock avahi-nodbus-daemon curl $dnsmasq $shadowsocks vlmcsd wireguard"
+mw4530r_main="$mw4530r $adblock curl $ddns $dnsmasq $freeradius $mactelnet miniupnpd nlbwmon $shadowsocks $sqm tcpdump vlmcsd watchcat wireguard $wpad"
+mw4530r_yate="$mw4530r $adblock $yate $ddns $dnsmasq $freeradius miniupnpd $shadowsocks $sqm watchcat vlmcsd wireguard $wpad"
+wdr4300_main="$wdr4300"
+x86_main="$x86"
+x86_acme="$x86 acme acme-dnsapi luci luci-app-acme luci-app-uhttpd"
+x86_fwknopd="$x86 fwknopd luci luci-app-fwknopd"
+x86_luci2="$x86 luci2"
+x86_vuci="$x86 vuci"
+
+build() {
+    device="$1"
+    shift
+    profile="$1"
+    shift
+    target="$1"
+    shift
+    packages="$@"
+    echo "PROFILE=$profile TARGET=$target PACKAGES=\"$packages\" EXTRA_IMAGE_NAME="$device" REPOS=\"$REPOS\""
+    if [ "$GEN_ONLY" != 'yes' ]
+    then
+        PROFILE="$profile" TARGET="$target" PACKAGES="$packages" EXTRA_IMAGE_NAME="$device" REPOS="$REPOS" ./meta image
+    fi
+}
+
+hr() {
+    echo '------------------------------------------------------------'
+}
+
+while getopts "g" option
+do
+    case "$option" in
+        g) GEN_ONLY="yes" ;;
+        *) ;;
+    esac
+done
+shift "$((OPTIND-1))"
+
+devices="$@"
+if [ -z "$devices" ]
+then
+    for i in "${!profiles[@]}"
+    do
+        printf "%s %s\n" "[$((i+1))]" "${profiles[$i]}"
+    done
+    echo -en "\ndevices:\033[1A\radd: "
+    while read -r i
+    do
+        if [ "$i" = '' ]
+        then
+            if [ -z "$devices" ]
+            then
+                devices="${profiles[0]}"
+                echo -e "devices: ${devices}\033[1A\033[2K\radd: "
+            fi
+            break
+        fi
+        devices="${profiles[$((i-1))]} $devices"
+        echo -en "devices: ${devices}\033[1A\033[2K\radd: "
+    done
+    echo
+fi
+
+for device in $devices
+do
+    modules="${!device}"
+    if [ -z "$modules" ]
+    then
+        echo "No device found: $device"
+        exit 1
+    fi
+
+    hr
+
+    echo "Build: $device"
+    build "$device" $modules
+done
