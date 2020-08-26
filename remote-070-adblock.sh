@@ -1,4 +1,4 @@
-oc_opkg_install adblock ca-bundle libustream-openssl20150806
+oc_opkg_install adblock ca-bundle libustream-openssl20200215
 
 if grep -q '^#' /etc/config/adblock
 then

@@ -1,6 +1,6 @@
 if ! oc_opkg_installed vlmcsd
 then
-    oc_opkg_install libustream-openssl20150806
+    oc_opkg_install libustream-openssl20200215
     if ! grep -qF openwrt_azuwis /etc/opkg/customfeeds.conf
     then
         echo 'add openwrt_azuwis to /etc/opkg/customfeeds.conf'
