@@ -9,7 +9,6 @@ x86='x86/64'
 
 # packages
 common='diffutils wpa-cli -odhcpd-ipv6only'
-adblock='adblock ca-bundle libustream-openssl'
 aircrack='aircrack-ng airmon-ng grep kmod-tun pciutils procps-ng procps-ng-ps usbutils'
 asterisk="$asterisk_pjsip"
 asterisk_pjsip='asterisk15 asterisk15-bridge-simple asterisk15-pjsip asterisk15-res-rtp-asterisk asterisk15-res-srtp'
@@ -32,13 +31,13 @@ REPOS='src/gz azuwis http://azuwis.github.io/openwrt-binary-packages/{{ pkg_arch
 
 # profiles
 profiles=(wg3526_main wg3526_audit wg3526_iptv wg3526_luci wg3526_office wdr4300_main mw4530r_main mw4530r_yate x86_main)
-wg3526_main="$wg3526 $common acme $adblock curl $ddns $dnsmasq etherwake $freeradius $hass $mactelnet miniupnpd $shadowsocks $sqm tcpdump vlmcsd wireguard $wpad"
+wg3526_main="$wg3526 $common acme adblock curl $ddns $dnsmasq etherwake $freeradius $hass $mactelnet miniupnpd $shadowsocks $sqm tcpdump vlmcsd wireguard $wpad"
 wg3526_audit="$wg3526 $aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux"
 wg3526_iptv="$wg3526 curl kmod-ipt-offload $wpad"
 wg3526_luci="$wg3526 $luci"
-wg3526_office="$wg3526 $adblock avahi-nodbus-daemon curl $dnsmasq $shadowsocks vlmcsd wireguard"
-mw4530r_main="$mw4530r $adblock curl $ddns $dnsmasq $freeradius $mactelnet miniupnpd nlbwmon $shadowsocks $sqm tcpdump vlmcsd watchcat wireguard $wpad"
-mw4530r_yate="$mw4530r $adblock $yate $ddns $dnsmasq $freeradius miniupnpd $shadowsocks $sqm watchcat vlmcsd wireguard $wpad"
+wg3526_office="$wg3526 adblock avahi-nodbus-daemon curl $dnsmasq $shadowsocks vlmcsd wireguard"
+mw4530r_main="$mw4530r adblock curl $ddns $dnsmasq $freeradius $mactelnet miniupnpd nlbwmon $shadowsocks $sqm tcpdump vlmcsd watchcat wireguard $wpad"
+mw4530r_yate="$mw4530r adblock $yate $ddns $dnsmasq $freeradius miniupnpd $shadowsocks $sqm watchcat vlmcsd wireguard $wpad"
 wdr4300_main="$wdr4300"
 x86_main="$x86"
 x86_acme="$x86 acme acme-dnsapi luci luci-app-acme luci-app-uhttpd"
