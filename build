@@ -2,13 +2,14 @@
 set -e
 
 # profiles
-profiles=(wg3526 wg3526_audit wg3526_iptv wg3526_luci wg3526_office wdr4300 mw4530r mw4530r_yate x86)
+profiles=(wg3526 wg3526_audit wg3526_iptv wg3526_luci wg3526_office wdr4300 mw4530r mw4530r_iptv mw4530r_yate x86)
 wg3526='wg3526 acme adblock curl ddns dnsmasq etherwake freeradius hass mactelnet miniupnpd shadowsocks sqm tcpdump vlmcsd wireguard wpad'
 wg3526_audit='wg3526 aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux'
 wg3526_iptv='wg3526 curl kmod-ipt-offload wpad'
 wg3526_luci='wg3526 luci'
 wg3526_office='wg3526 adblock avahi-nodbus-daemon curl dnsmasq shadowsocks wireguard'
 mw4530r='mw4530r adblock curl ddns dnsmasq freeradius mactelnet miniupnpd nlbwmon shadowsocks sqm tcpdump vlmcsd watchcat wireguard wpad'
+mw4530r_iptv='mw4530r curl kmod-ipt-offload wpad'
 mw4530r_yate='mw4530r adblock yate ddns dnsmasq freeradius miniupnpd shadowsocks sqm watchcat vlmcsd wireguard wpad'
 wdr4300='wdr4300'
 x86='x86'
@@ -30,9 +31,9 @@ CONFIG_PACKAGE_wpa-cli=y
 
 # targets
 config_mw4530r='
-CONFIG_TARGET_ar71xx=y
-CONFIG_TARGET_ar71xx_generic=y
-CONFIG_TARGET_ar71xx_generic_DEVICE_mw4530r-v1=y
+CONFIG_TARGET_ath79=y
+CONFIG_TARGET_ath79_generic=y
+CONFIG_TARGET_ath79_generic_DEVICE_mercury_mw4530r-v1=y
 '
 
 config_wdr4300='
