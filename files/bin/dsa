@@ -1,0 +1,61 @@
+#!/bin/sh
+
+. /lib/functions.sh
+
+show_switch() {
+	local switch=$1
+
+	printf "Switch: %s\n" "$switch"
+	printf "VLAN/"
+
+	local port ports
+	for port in "/sys/class/net/$switch/lower_"*; do
+		port=${port##*/lower_}
+
+
+		printf " | %-5s" "$port"
+		append ports "$port"
+	done
+
+	printf " |\nLink:"
+
+	for port in $ports; do
+		local carrier=$(cat "/sys/class/net/$port/carrier")
+		local duplex=$(cat "/sys/class/net/$port/duplex" 2>/dev/null)
+		local speed=$(cat "/sys/class/net/$port/speed" 2>/dev/null)
+
+		if [ -z "$speed" ]; then
+			printf " | %-5s" "N/A"
+    else
+			if [ ${carrier:-0} -eq 0 ]; then
+				printf " | %-5s" "down"
+			else
+				[ "$duplex" = "full" ] && duplex=F || duplex=H
+				printf " | %4d%s" "$speed" "$duplex"
+			fi
+		fi
+	done
+
+	local vlans=$(bridge vlan show dev "$switch" | sed -ne 's#^[^ ]* \+\([0-9]\+\).*$#\1#p')
+	local vlan
+	for vlan in $vlans; do
+		printf " |\n%4d " "$vlan"
+
+		for port in $ports; do
+			local pvid="" utag="" word
+			for word in $(bridge vlan show dev "$port" vid "$vlan"); do
+				case "$word" in
+					PVID) pvid="*" ;;
+					"$vlan") utag="t" ;;
+					Untagged) utag="u" ;;
+				esac
+			done
+
+			printf " |  %-2s  " "$utag$pvid"
+		done
+	done
+
+	printf " |\n\n"
+}
+
+show_switch "${1:-switch}"
