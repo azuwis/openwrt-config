@@ -162,6 +162,7 @@ custom_repos() {
     cp "$IB_DIR/repositories.conf.orig" "$IB_DIR/repositories.conf"
     echo "$REPOS" >> "$IB_DIR/repositories.conf"
     sed -i \
+        -e '/^option check_signature$/d' \
         -e "s/{{ pkg_arch }}/$(get_ib_arch)/" \
         -e "s#{{ target }}#$TARGET#" \
         -e "s/{{ ib_version }}/${IB_VERSION:-$VERSION}/" \

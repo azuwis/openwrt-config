@@ -26,7 +26,7 @@ shadowsocks='shadowsocks-libev-ss-rules stubby'
 wpad='-wpad-basic-wolfssl wpad-wolfssl'
 yate='yate yate-mod-openssl yate-mod-regexroute yate-mod-regfile yate-mod-yrtpchan yate-mod-ysipchan'
 
-REPOS='src/gz azuwis http://azuwis.github.io/openwrt-binary-packages/{{ pkg_arch }}/azuwis'
+REPOS='src/gz azuwis https://azuwis.github.io/openwrt-binary-packages/{{ pkg_arch }}/azuwis'
 
 # profiles
 profiles=(wg3526_main wg3526_audit wg3526_iptv wg3526_luci wg3526_office wdr4300_main mw4530r_main mw4530r_iptv mw4530r_yate x86_main)
