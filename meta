@@ -53,6 +53,10 @@ meta_setup() {
     curl 'https://git.openwrt.org/?p=keyring.git;a=blob_plain;f=gpg/2074BE7A.asc' | gpg --import \
             && echo 'D9C6901F45C9B86858687DFF28A39BC32074BE7A:6:' | gpg --import-ownertrust
 
+    # PGP key for 21.02 release builds
+    curl 'https://git.openwrt.org/?p=keyring.git;a=blob_plain;f=gpg/88CA59E8.asc' | gpg --import \
+            && echo '667205E379BAF348863A5C6688CA59E88F681580:6:' | gpg --import-ownertrust
+
     # Public usign key for unattended snapshot builds
     curl 'https://git.openwrt.org/?p=keyring.git;a=blob_plain;f=usign/b5043e70f9a75cde' --create-dirs \
             -o ./usign/b5043e70f9a75cde
@@ -60,6 +64,10 @@ meta_setup() {
     # Public usign key for 19.07 release builds
     curl 'https://git.openwrt.org/?p=keyring.git;a=blob_plain;f=usign/f94b9dd6febac963' --create-dirs \
             -o ./usign/f94b9dd6febac963
+
+    # Public usign key for 21.02 release builds
+    curl 'https://git.openwrt.org/?p=keyring.git;a=blob_plain;f=usign/2f8b0b98e08306bf' --create-dirs \
+            -o ./usign/2f8b0b98e08306bf
 
     touch "$ROOT_DIR/.meta_setup"
 }
