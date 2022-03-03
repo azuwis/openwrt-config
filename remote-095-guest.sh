@@ -79,6 +79,7 @@ config rule 'rule_guest_dhcp'
 
 guest_sqm() {
     if oc_opkg_installed sqm-scripts && /etc/init.d/sqm enabled; then
+        # TODO br-guest is wrong for DSA
         uci -q show sqm.wan | sed -e "s/sqm.wan/sqm.guest/" -e "s/pppoe-wan/br-guest/" -e 's/^/set /' | uci batch
         uci batch <<EOF
 set sqm.guest.enabled=1
