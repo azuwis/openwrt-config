@@ -69,7 +69,9 @@ network_switch
 oc_uci_merge "$config_network"
 network_wireless
 
-# uci batch <<EOF
-# set dhcp.lan.dhcpv6='disabled'
-# EOF
-# oc_service restart odhcpd dhcp
+uci batch <<EOF
+set dhcp.lan.dhcpv6='disabled'
+EOF
+uci commit
+oc_service stop odhcpd
+oc_service disable odhcpd
