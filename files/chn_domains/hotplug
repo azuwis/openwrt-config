@@ -3,6 +3,7 @@
 update_dnsmasq() {
     local conf
     conf=/tmp/dnsmasq.d/99-chn-domains.conf
+    chn_domains=/var/run/dnsmasq/chn-domains
     if [ "$ACTION" = "ifup" ] && [ ! -e "$conf" ]; then
         local local_dns
         local_dns="$(awk '/^# Interface wan$/ {getline; print $2}' /var/resolv.conf.d/resolv.conf.auto)"
@@ -14,7 +15,7 @@ update_dnsmasq() {
         (zcat /etc/chn-domains.gz; cat /etc/chn-domains-extra) | grep -Ev '(^#|^\s*$)' | while read -r domain
         do
             echo "server=/$domain/${local_dns}"
-        done >> $conf
+        done >> "$chn_domains"
         if [ -x /etc/init.d/shadowsocks-libev ] && /etc/init.d/shadowsocks-libev enabled && [ "$(uci -q get shadowsocks-libev.ss_rules.disabled)" != '1' ]; then
             grep -Ev '(^#|^\s*$)' /etc/chn-domains-extra | while read domain
             do
@@ -26,6 +27,7 @@ update_dnsmasq() {
         printf "no-resolv\nserver=%s\n" "$remote_dns" >> $conf
         /etc/init.d/dnsmasq restart
     elif [ "$ACTION" = "ifdown" ] && [ -e "$conf" ]; then
+        rm "$chn_domains"
         rm "$conf"
         /etc/init.d/dnsmasq restart
     fi

@@ -25,6 +25,7 @@ if [ ! -e /tmp/dnsmasq.d/99-chn-domains.conf ]; then
 fi
 if [ /etc/chn-domains.gz -nt /tmp/dnsmasq.d/99-chn-domains.conf ] || [ /etc/chn-domains-extra -nt /tmp/dnsmasq.d/99-chn-domains.conf ] || [ /etc/hotplug.d/iface/99-chn-domains -nt /tmp/dnsmasq.d/99-chn-domains.conf ]; then
     echo 'run /etc/hotplug.d/iface/99-chn-domains'
+    rm /var/run/dnsmasq/chn-domains
     rm /tmp/dnsmasq.d/99-chn-domains.conf
     INTERFACE='wan' ACTION='ifup' sh /etc/hotplug.d/iface/99-chn-domains
 fi

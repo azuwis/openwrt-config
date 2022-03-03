@@ -13,6 +13,7 @@ if [ ! -e files/tmp/chn-domains.gz -o files/chn_domains/chn-domains -nt files/tm
 fi
 
 remote uci set dhcp.@dnsmasq[0].remote_dns="$config_chn_domains_remote_dns"
+remote uci set dhcp.@dnsmasq[0].serversfile="/var/run/dnsmasq/chn-domains"
 remote uci commit
 
 push files/tmp/chn-domains.gz /etc/chn-domains.gz
