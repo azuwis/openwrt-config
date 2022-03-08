@@ -24,6 +24,7 @@ oc_uci_set_list system ntp server 0.debian.pool.ntp.org 1.debian.pool.ntp.org 2.
 oc_service restart sysntpd system
 
 uci set dhcp.@dnsmasq[0].cachesize=1024
+uci set dhcp.@dnsmasq[0].localuse=1
 oc_uci_add_list dhcp.@dnsmasq[0].bogusnxdomain 122.229.30.202 60.191.124.236
 
 # oc_uci_del_type dhcp host
