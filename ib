@@ -56,7 +56,7 @@ build() {
     echo "PROFILE=$profile TARGET=$target PACKAGES=\"$packages\" EXTRA_IMAGE_NAME="$device" REPOS=\"$REPOS\""
     if [ "$GEN_ONLY" != 'yes' ]
     then
-        PROFILE="$profile" TARGET="$target" PACKAGES="$packages" EXTRA_IMAGE_NAME="$device" REPOS="$REPOS" ./meta image
+        PROFILE="$profile" TARGET="$target" PACKAGES="$packages" EXTRA_IMAGE_NAME="$device" REPOS="$REPOS" FILES="files/$device" ./meta image
     fi
 }
 
