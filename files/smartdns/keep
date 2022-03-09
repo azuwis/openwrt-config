@@ -1,0 +1,3 @@
+/etc/hotplug.d/iface/99-smartdns
+/etc/smartdns/address.conf.gz
+/lib/upgrade/keep.d/oc-smartdns

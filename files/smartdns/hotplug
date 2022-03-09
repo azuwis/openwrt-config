@@ -1,0 +1,29 @@
+#!/bin/sh
+
+update() {
+    local resolv_conf address_conf
+    resolv_conf=/tmp/smartdns-resolv.conf
+    address_conf=/tmp/smartdns-address.conf
+    if [ "$ACTION" = "ifup" ] && [ ! -e "$resolv_conf" ]; then
+        local local_dns
+        local_dns="$(awk '/^# Interface wan$/ {getline; print $2}' /var/resolv.conf.d/resolv.conf.auto)"
+        if [ x"$local_dns" = x ]; then
+            exit
+        fi
+        echo "server $local_dns -group l -exclude-default-group" > "$resolv_conf"
+        if [ ! -e "$address_conf" ]
+        then
+            zcat /etc/smartdns/address.conf.gz > "$address_conf"
+        fi
+        /etc/init.d/smartdns restart
+    elif [ "$ACTION" = "ifdown" ] && [ -e "$resolv_conf" ]; then
+        rm "$resolv_conf"
+        /etc/init.d/smartdns restart
+    fi
+}
+
+case "$INTERFACE" in
+    wan)
+        update
+    ;;
+esac
