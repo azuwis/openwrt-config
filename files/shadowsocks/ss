@@ -1,8 +1,8 @@
 #!/bin/sh
 if [ x"$1" = x"off" ]; then
     /etc/init.d/shadowsocks-libev stop
-    INTERFACE='wan' ACTION='ifdown' sh /etc/hotplug.d/iface/99-chn-domains
+    INTERFACE='wan' ACTION='ifdown' sh /etc/hotplug.d/iface/99-smartdns
 else
     /etc/init.d/shadowsocks-libev start
-    INTERFACE='wan' ACTION='ifup' sh /etc/hotplug.d/iface/99-chn-domains
+    INTERFACE='wan' ACTION='ifup' sh /etc/hotplug.d/iface/99-smartdns
 fi
