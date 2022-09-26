@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # PRE:
 # 1) telnet 2) passwd 3) reboot
 
