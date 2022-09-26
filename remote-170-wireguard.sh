@@ -16,12 +16,12 @@ wireguard_reload() {
 wireguard() {
     local wireguard_installed
 
-    if oc_opkg_installed wireguard
+    if oc_opkg_installed wireguard-tools
     then
         wireguard_installed=1
     fi
 
-    oc_opkg_install wireguard
+    oc_opkg_install wireguard-tools
 
     oc_uci_merge "$config_wireguard"
     oc_uci_commit network && wireguard_reload
