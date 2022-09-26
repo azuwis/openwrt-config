@@ -1,4 +1,4 @@
-oc_opkg_install miniupnpd
+oc_opkg_install miniupnpd-nftables
 
 uci batch <<EOF
 set upnpd.config.enabled='1'
