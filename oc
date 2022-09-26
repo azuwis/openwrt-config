@@ -79,10 +79,10 @@ do
     esac
 done
 
-scp="scp -pq"
+scp="scp -Opq"
 ssh="ssh"
 if [ x"$port" != x ]; then
-    scp="scp -pqP$port"
+    scp="scp -OpqP$port"
     ssh="ssh -p$port"
 fi
 
