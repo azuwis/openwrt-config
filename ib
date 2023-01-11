@@ -5,6 +5,7 @@ set -e
 mw4530r='mercury_mw4530r-v1 ath79/generic'
 wdr4300='tplink_tl-wdr4300-v1 ath79/generic'
 wg3526='zbtlink_zbt-wg3526-16m ramips/mt7621'
+xr500='netgear_xr500 ipq806x/generic'
 x86='x86/64'
 
 # packages
@@ -29,7 +30,9 @@ yate='yate yate-mod-openssl yate-mod-regexroute yate-mod-regfile yate-mod-yrtpch
 REPOS='src/gz azuwis https://azuwis.github.io/openwrt-binary-packages/{{ pkg_arch }}/azuwis'
 
 # profiles
-profiles=(wg3526_main wg3526_audit wg3526_iptv wg3526_luci wg3526_office wdr4300_main mw4530r_main mw4530r_iptv mw4530r_yate x86_main)
+profiles=(xr500_main wg3526_main wg3526_audit wg3526_iptv wg3526_luci wg3526_office wdr4300_main mw4530r_main mw4530r_iptv mw4530r_yate x86_main)
+xr500_main="$xr500 $common curl $ddns $dnsmasq etherwake $hass $mactelnet miniupnpd-nftables $shadowsocks sqm-scripts tcpdump wireguard-tools"
+wg3526_main="$wg3526 $common acme adblock curl $ddns $dnsmasq etherwake $freeradius $hass $mactelnet miniupnpd-nftables $shadowsocks sqm-scripts tcpdump vlmcsd wireguard-tools ip-bridge $wpad"
 wg3526_main="$wg3526 $common acme adblock curl $ddns $dnsmasq etherwake $freeradius $hass $mactelnet miniupnpd-nftables $shadowsocks sqm-scripts tcpdump vlmcsd wireguard-tools ip-bridge $wpad"
 wg3526_audit="$wg3526 $aircrack arp-scan dsniff ettercap iputils-arping mdk3 netdiscover nmap-ssl tcpdump tmux"
 wg3526_iptv="$wg3526 $common curl $wpad rpcd uhttpd uhttpd-mod-ubus"
