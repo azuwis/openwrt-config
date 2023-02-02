@@ -5,7 +5,8 @@ set -e
 mw4530r='mercury_mw4530r-v1 ath79/generic'
 wdr4300='tplink_tl-wdr4300-v1 ath79/generic'
 wg3526='zbtlink_zbt-wg3526-16m ramips/mt7621'
-xr500='netgear_xr500 ipq806x/generic -ath10k-firmware-qca9984-ct -kmod-ath10k-ct ath10k-firmware-qca9984 kmod-ath10k'
+xr500='netgear_xr500 ipq806x/generic'
+ath10k_noct='-ath10k-firmware-qca9984-ct -kmod-ath10k-ct ath10k-firmware-qca9984 kmod-ath10k'
 x86='x86/64'
 
 # packages
